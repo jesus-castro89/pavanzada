@@ -1,79 +1,71 @@
-# Starter
+# ¡Bienvenido a Programación Avanzada!
 
-<!--Writerside adds this topic when you create a new documentation project.
-You can use it as a sandbox to play with Writerside features, and remove it from the TOC when you don't need it anymore.-->
+## Introducción
 
-## Add new topics
-You can create empty topics, or choose a template for different types of content that contains some boilerplate structure to help you get started:
+¡Hola! Soy el profesor de Programación Avanzada. En este curso aprenderás a programar en Java, un lenguaje de
+programación muy popular en la actualidad. Java es un lenguaje de programación orientado a objetos, lo que significa que
+se basa en la creación de objetos y clases. En este curso aprenderás a programar en Java, un lenguaje de programación
+muy popular en la actualidad. Java es un lenguaje de programación orientado a objetos, lo que significa que se basa en
+la creación de objetos y clases.
 
-![Create new topic options](new_topic_options.png){ width=290 }{border-effect=line}
+## Objetivos
 
-## Write content
-%product% supports two types of markup: Markdown and XML.
-When you create a new help article, you can choose between two topic types, but this doesn't mean you have to stick to a single format.
-You can author content in Markdown and extend it with semantic attributes or inject entire XML elements.
+- Aprender a programar en Java.
+- Conocer los conceptos básicos de la programación orientada a objetos.
+- Aprender a utilizar las herramientas de programación más comunes.
+- Conocer las mejores prácticas de programación.
+- Aprender a trabajar en equipo.
+- Conocer las herramientas de programación más comunes.
 
-## Inject XML
-For example, this is how you inject a procedure:
+## Contenido
 
-<procedure title="Inject a procedure" id="inject-a-procedure">
-    <step>
-        <p>Start typing and select a procedure type from the completion suggestions:</p>
-        <img src="completion_procedure.png" alt="completion suggestions for procedure" border-effect="line"/>
-    </step>
-    <step>
-        <p>Press <shortcut>Tab</shortcut> or <shortcut>Enter</shortcut> to insert the markup.</p>
-    </step>
-</procedure>
+1. El paradigma de la programación orientada a objetos.
+2. El paradigma de la programación visual.
+3. Lenguajes de programación orientados a objetos y a eventos.
+4. Los 4 pilares de la programación orientada a objetos.
+5. Declara y define clases y objetos.
+6. Instancia objetos y utiliza métodos.
+7. Referencia objetos y utiliza métodos.
+8. Niveles de acceso y encapsulamiento.
+9. Casting implícito y explícito.
+10. Alcance de variables y métodos.
+11. Tiempo de vida de atributos y métodos.
+12. Constructores y destructores.
+13. Sobrecarga de operadores y métodos.
+14. Herencia y polimorfismo.
+15. Clases abstractas e interfaces.
+16. Excepciones y errores.
+17. Manejo de archivos.
+18. Programación Visual.
 
-## Add interactive elements
+## Lenguaje de programación
 
-### Tabs
-To add switchable content, you can make use of tabs (inject them by starting to type `tab` on a new line):
+Para nuestro curso usaremos Java, un lenguaje de programación orientado a objetos muy popular en la actualidad. Java es
+un lenguaje de programación de propósito general que se utiliza en una amplia variedad de aplicaciones, desde
+aplicaciones de escritorio y web hasta aplicaciones móviles. Java se destaca por su portabilidad, seguridad y facilidad
+de uso, lo que lo convierte en uno de los lenguajes de programación más populares y versátiles en la actualidad.
 
-<tabs>
-    <tab title="Markdown">
-        <code-block lang="plain text">![Alt Text](new_topic_options.png){ width=450 }</code-block>
-    </tab>
-    <tab title="Semantic markup">
-        <code-block lang="xml">
-            <![CDATA[<img src="new_topic_options.png" alt="Alt text" width="450px"/>]]></code-block>
-    </tab>
-</tabs>
+## Evaluación
 
-### Collapsible blocks
-Apart from injecting entire XML elements, you can use attributes to configure the behavior of certain elements.
-For example, you can collapse a chapter that contains non-essential information:
+La evaluación del curso se realizará a través de exámenes teóricos y prácticos, así como de proyectos individuales y en
+equipo.
 
-#### Supplementary info {collapsible="true"}
-Content under a collapsible header will be collapsed by default,
-but you can modify the behavior by adding the following attribute:
-`default-state="expanded"`
+Para ser especificos, la evaluación se realizará de la siguiente manera:
 
-### Convert selection to XML
-If you need to extend an element with more functions, you can convert selected content from Markdown to semantic markup.
-For example, if you want to merge cells in a table, it's much easier to convert it to XML than do this in Markdown.
-Position the caret anywhere in the table and press <shortcut>Alt+Enter</shortcut>:
+| Tema                           | Criterios de evaluación                  |
+|--------------------------------|------------------------------------------|
+| 1. Introducción                | - Actividades (40%)<br/>- Examen (60%)   |
+| 2. Objetos y Clases            | - Actividades (40%)<br/>- Examen (60%)   |
+| 3. Herencia                    | - Actividades (40%)<br/>- Examen (60%)   |
+| 4. Polimorfismo y Excepciones  | - Actividades (40%)<br/>- Examen (60%)   |
+| 5. Programación Visual         | - Actividades (50%)<br/>- Proyecto (50%) |
+| 6. Formas, Controles y Eventos | - Actividades (50%)<br/>- Proyecto (50%) |
 
-<img src="convert_table_to_xml.png" alt="Convert table to XML" width="706" border-effect="line"/>
+**Es importante destacar que es necesario obtener al menos el 70% de cada uno de los criterios de evaluación para
+aprobar cada unidad, de lo contrario se deberá repetir la unidad en segunda oportunidad.**
 
-## Feedback and support
-Please report any issues, usability improvements, or feature requests to our
-<a href="https://youtrack.jetbrains.com/newIssue?project=WRS">YouTrack project</a>
-(you will need to register).
+## Recursos
 
-You are welcome to join our
-<a href="https://jb.gg/WRS_Slack">public Slack workspace</a>.
-Before you do, please read our [Code of conduct](https://www.jetbrains.com/help/writerside/writerside-code-of-conduct.html).
-We assume that you’ve read and acknowledged it before joining.
-
-You can also always email us at [writerside@jetbrains.com](mailto:writerside@jetbrains.com).
-
-<seealso>
-    <category ref="wrs">
-        <a href="https://www.jetbrains.com/help/writerside/markup-reference.html">Markup reference</a>
-        <a href="https://www.jetbrains.com/help/writerside/manage-table-of-contents.html">Reorder topics in the TOC</a>
-        <a href="https://www.jetbrains.com/help/writerside/local-build.html">Build and publish</a>
-        <a href="https://www.jetbrains.com/help/writerside/configure-search.html">Configure Search</a>
-    </category>
-</seealso>
+- [Java](https://www.java.com/es/)
+- [IntelliJ IDEA](https://www.jetbrains.com/es-es/idea/) (IDE) Usaremos la versión Community.
+- [Moodle del Tecnológico de Toluca](https://moodle.toluca.tecnm.mx/)

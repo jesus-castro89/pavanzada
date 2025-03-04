@@ -7,4 +7,35 @@
                  start-page="starter.md">
 
     <toc-element topic="starter.md"/>
+    <toc-element toc-title="Paradigmas de Programación">
+        <toc-element topic="paradigma-que-es.md"/>
+        <toc-element topic="poo.md"/>
+        <toc-element topic="pvisual.md"/>
+    </toc-element>
+    <toc-element toc-title="Clases y Objetos">
+        <toc-element topic="clases.md"/>
+        <toc-element topic="convenciones.md"/>
+    </toc-element>
+    <toc-element toc-title="Java">
+        <toc-element topic="java.md"/>
+        <toc-element topic="ide.md"/>
+        <toc-element topic="plugins.md"/>
+        <toc-element topic="estructura.md"/>
+        <toc-element topic="tipos-datos.md"/>
+        <toc-element topic="casting.md"/>
+    </toc-element>
+    <toc-element toc-title="Trabjando con Clases">
+        <toc-element topic="niveles-acceso.md"/>
+        <toc-element topic="declaracion-clase.md"/>
+        <toc-element topic="constructor.md"/>
+        <toc-element topic="llamada.md"/>
+        <toc-element topic="modularidad.md"/>
+    </toc-element>
+    <toc-element toc-title="Entrada y Salida">
+        <toc-element topic="output.md"/>
+        <toc-element topic="lectura.md"/>
+        <toc-element topic="joptionpane.md"/>
+        <toc-element topic="uimanager.md"/>
+        <toc-element topic="cadenas-formato.md"/>
+    </toc-element>
 </instance-profile>
