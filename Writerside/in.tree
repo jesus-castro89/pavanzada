@@ -38,6 +38,11 @@
         <toc-element topic="uimanager.md"/>
         <toc-element topic="cadenas-formato.md"/>
     </toc-element>
+    <toc-element toc-title="Arreglos">
+        <toc-element topic="array.md"/>
+        <toc-element topic="dinamic-array.md"/>
+        <toc-element topic="hash-map.md"/>
+    </toc-element>
     <toc-element toc-title="Dibujando con Swing">
         <toc-element topic="paint.md"/>
         <toc-element topic="graphics.md"/>
