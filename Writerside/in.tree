@@ -31,6 +31,9 @@
         <toc-element topic="llamada.md"/>
         <toc-element topic="modularidad.md"/>
     </toc-element>
+    <toc-element toc-title="Clases Predefinidas">
+        <toc-element topic="point.md"/>
+    </toc-element>
     <toc-element toc-title="Entrada y Salida">
         <toc-element topic="output.md"/>
         <toc-element topic="lectura.md"/>
@@ -46,10 +49,10 @@
     <toc-element toc-title="Dibujando con Swing">
         <toc-element topic="paint.md"/>
         <toc-element topic="graphics.md"/>
-        <toc-element topic="point.md"/>
     </toc-element>
     <toc-element toc-title="Proyecto">
         <toc-element topic="project-start.md"/>
         <toc-element topic="sprite.md"/>
+        <toc-element topic="cache.md"/>
     </toc-element>
 </instance-profile>

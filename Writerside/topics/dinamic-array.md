@@ -54,13 +54,35 @@ queremos agregar.
 numeros.add(0, 0);
 ```
 
-En el ejemplo anterior, agregamos el elemento `0` en la posición `0` del arreglo dinámico `numeros`.
+La operación anterior se puede representar de la siguiente manera:
+Primero, tenemos el arreglo dinámico `numeros` con los elementos `1`, `2`, `3`, `4` y `5` y el valor `0` que queremos
+agregar en la posición `0`.
+
+```d2
+direction: right
+0 {near:top-center}
+1 -> 2 -> 3 -> 4 -> 5
+```
+
+Entonces, el cero se agrega en la posición `0` del arreglo dinámico `numeros`.
+
+```d2
+direction: right
+0 -> 1
+1 -> 2 -> 3 -> 4 -> 5: {style: {animated: true}}
+```
 
 Toma en cuenta que al agregar un elemento en una posición específica del arreglo dinámico, los elementos existentes en
 posiciones posteriores se desplazarán hacia la derecha. Por ejemplo, si agregamos un elemento en la posición `0`, el
 elemento que estaba en la posición `0` pasará a la posición `1`, el elemento que estaba en la posición `1` pasará a la
 posición `2`, y así sucesivamente. De igual manera esto solo será posible siempre y cuando la posición que se desea
 agregar sea menor o igual al tamaño del arreglo dinámico.
+
+```d2
+direction: right
+0 (6) -> X
+1 -> 2 -> 3 -> 4 -> 5
+```
 
 ## Agregando al inicio y al final de un `ArrayList`
 
@@ -134,6 +156,20 @@ numeros.removeLast();// Es equivalente a numeros.remove(numeros.size() - 1);
 
 En el ejemplo anterior, eliminamos el primer y el último elemento del arreglo dinámico `numeros` utilizando los métodos
 `removeFirst` y `removeLast`.
+
+## Filtrar elementos de un `ArrayList`
+
+Para filtrar elementos de un arreglo dinámico en Java, podemos utilizar el método `removeIf` de la clase `ArrayList`.
+Este método recibe como parámetro un `Predicate` que define la condición de filtrado y elimina los elementos que cumplen
+dicha condición.
+
+```java
+// Eliminar los números pares del ArrayList
+numeros.removeIf(numero -> numero % 2 == 0);
+```
+
+En el ejemplo anterior, eliminamos los números pares del arreglo dinámico `numeros` utilizando el método `removeIf` y un
+`Predicate` que verifica si un número es par.
 
 ## Actualizar elementos de un `ArrayList`
 
