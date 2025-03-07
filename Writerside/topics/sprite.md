@@ -12,9 +12,8 @@ definiremos una estructura de herencia para clases de sprites como el `Brick`, `
 ## Objetivos
 
 * Crear la clase `Sprite`.
-* Crear la clase `StaticSprite` que hereda de `Sprite`.
 * Crear la clase `MovingSprite` que hereda de `Sprite`.
-* Crear las clases  `Brick`, `Paddle` y `Ball` que heredan de `StaticSprite` y `MovingSprite`.
+* Crear las clases  `Brick`, `Paddle` y `Ball` que heredan de `StaticSprite` y `Sprite`.
 * Crear el tipo enumerado `BrickType` que define los tipos de ladrillos.
 * Crear el tipo enumerado `BallType` que define los tipos de pelotas.
 * Crear el tipo enumerado `PaddleType` que define los tipos de paletas.
