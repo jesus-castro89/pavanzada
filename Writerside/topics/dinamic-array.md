@@ -60,16 +60,25 @@ agregar en la posición `0`.
 
 ```d2
 direction: right
-0 {near:top-center}
-1 -> 2 -> 3 -> 4 -> 5
+0{
+shape: circle
+} 
+1 -- 2 -- 3 -- 4 -- 5
 ```
 
 Entonces, el cero se agrega en la posición `0` del arreglo dinámico `numeros`.
 
 ```d2
 direction: right
-0 -> 1
-1 -> 2 -> 3 -> 4 -> 5: {style: {animated: true}}
+
+0 -- 1 -- 2 -- 3 -- 4
+4 -- 5: "New"
+
+0 -> 1:1 {style: {animated: true}}
+1 -> 2:2 {style: {animated: true}}
+2 -> 3:3 {style: {animated: true}}
+3 -> 4:4 {style: {animated: true}}
+4 -> 5:5 {style: {animated: true}}
 ```
 
 Toma en cuenta que al agregar un elemento en una posición específica del arreglo dinámico, los elementos existentes en
