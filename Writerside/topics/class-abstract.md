@@ -35,7 +35,10 @@ Algunas reglas para las clases abstractas en Java son las siguientes:
 * Una clase abstracta puede tener variables de instancia y métodos estáticos.
 * Una clase abstracta puede implementar interfaces.
 * Una clase abstracta puede tener métodos finales.
+    * Estos métodos no pueden ser sobreescritos por las subclases. Por tanto, no pueden ser abstractos.
 * Una clase abstracta puede tener métodos privados.
+    * Estos métodos no pueden ser sobreescritos por las subclases, dado que no son visibles para ellas. Por tanto, no
+      pueden ser abstractos.
 * Una clase abstracta puede tener métodos estáticos.
 
 ## Ejemplo

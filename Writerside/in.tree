@@ -43,6 +43,9 @@
         <toc-element topic="uimanager.md"/>
         <toc-element topic="cadenas-formato.md"/>
     </toc-element>
+    <toc-element toc-title="Static y Final">
+        <toc-element topic="static.md"/>
+    </toc-element>
     <toc-element toc-title="Arreglos">
         <toc-element topic="array.md"/>
         <toc-element topic="dinamic-array.md"/>
@@ -60,6 +63,9 @@
     </toc-element>
     <toc-element toc-title="Dibujando con Swing">
         <toc-element topic="paint.md"/>
+    </toc-element>
+    <toc-element toc-title="Entregables">
+        <toc-element topic="entregable-1.md"/>
     </toc-element>
     <toc-element toc-title="Proyecto">
         <toc-element topic="project-start.md"/>
