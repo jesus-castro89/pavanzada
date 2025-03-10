@@ -45,6 +45,7 @@
     </toc-element>
     <toc-element toc-title="Static y Final">
         <toc-element topic="static.md"/>
+        <toc-element topic="final.md"/>
     </toc-element>
     <toc-element toc-title="Arreglos">
         <toc-element topic="array.md"/>
@@ -68,6 +69,7 @@
         <toc-element topic="notas-entregables.md"/>
         <toc-element topic="entregable-1.md"/>
     </toc-element>
+    <toc-element topic="github.md"/>
     <toc-element toc-title="Proyecto">
         <toc-element topic="project-start.md"/>
         <toc-element topic="sprite.md"/>
