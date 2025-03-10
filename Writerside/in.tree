@@ -48,6 +48,16 @@
         <toc-element topic="dinamic-array.md"/>
         <toc-element topic="hash-map.md"/>
     </toc-element>
+    <toc-element toc-title="Herencia">
+        <toc-element topic="herencia.md"/>
+        <toc-element topic="tipos-herencia.md"/>
+        <toc-element topic="object.md"/>
+        <toc-element topic="class-constructor.md"/>
+        <toc-element topic="sobreescritura.md"/>
+    </toc-element>
+    <toc-element toc-title="Clases Abstractas e Interfaces">
+        <toc-element topic="class-abstract.md"/>
+    </toc-element>
     <toc-element toc-title="Dibujando con Swing">
         <toc-element topic="paint.md"/>
     </toc-element>

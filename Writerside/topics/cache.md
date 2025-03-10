@@ -57,9 +57,19 @@ public class Main {
 }
 ```
 
-Ejecuta la clase `Main` y verifica que la imagen del gato se haya cargado correctamente.
+Ejecuta la clase `Main` y verífica que la imagen del gato se haya cargado correctamente.
 
-## Entrega
+## Criterios de evaluación
 
-Esta actividad no requiere entrega, pero es importante que la realices para que puedas utilizar la caché de imágenes en
-las siguientes actividades.
+| Criterio | Descripción                                                                             | Puntaje |
+|----------|-----------------------------------------------------------------------------------------|---------|
+| Portada  | La portada contiene el nombre de los integrantes del equipo y el nombre de la actividad | 5%      |
+| Clase    | La clase `ImageCache` tiene los atributos y métodos requeridos                          | 30%     |
+| Pruebas  | El código de prueba carga la imagen del gato correctamente                              | 65%     |
+| Total    |                                                                                         | 100%    |
+
+## Fecha de entrega
+
+La fecha de entrega es el día 10 de marzo de 2025 a las 11:59 p.m.
+
+Actividades enviadas después de la fecha y hora límite serán evaluadas sobre el 70% de la calificación total.
