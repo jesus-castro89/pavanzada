@@ -19,10 +19,44 @@ permita generar los niveles y su matriz de ladrillos.
     - `musicName`: Nombre de la música de fondo del nivel. Debe ser de tipo `String`.
     - `currentLevel`: Número de nivel actual. Debe ser de tipo `int`.
 5. Su constructor debe recibir ambos valores de tipo `String` y asignarlos a los atributos correspondientes.
+    * ```java
+      public Level(String backgroundName, String musicName) {
+
+        // Asignación de valores a los atributos
+        this.backgroundName = backgroundName;
+        this.musicName = musicName;
+      }
+      ```
 6. Se debe inicializar la matriz de ladrillos como un arreglo de `Brick` de tamaño `LEVEL_WIDTH` por `LEVEL_HEIGHT`.
+    * ```java
+      public Level(String backgroundName, String musicName) {
+
+        // Asignación de valores a los atributos
+        // Inicialización de la matriz de ladrillos
+        bricks = new Brick[LEVEL_WIDTH][LEVEL_HEIGHT];
+      }
+      ```
 7. Se debera asignar a `currentLevel` el valor de `levelNumber`. Y sumarle 1 a `levelNumber`.
+    * ```java
+      public Level(String backgroundName, String musicName) {
+
+        // Asignación de valores a los atributos
+        // Inicialización de la matriz de ladrillos
+        currentLevel = levelNumber++;
+      }
+      ```
 8. Se deberá generar la función `populateLevel` que no reciba parámetros y que genere los ladrillos del nivel. Misma que
    deberá ser llamada en el constructor.
+    * ```java
+      public Level(String backgroundName, String musicName) {
+
+        // Asignación de valores a los atributos
+        // Inicialización de la matriz de ladrillos
+        // Aumentar el nivel actual
+        // Generar los ladrillos del nivel
+        populateLevel();
+      }
+      ```
 
 > Recuerda que las constantes de las clases deben ser `public static final` y que los atributos de las clases deben ser
 > `private`. Y que las constantes locales de una clase deben ser `private static final`.
@@ -38,16 +72,29 @@ La función `populateLevel` deberá generar los ladrillos del nivel. Para ello, 
 5. Dentro del ciclo `for`:
     - Asignar a `brickType` un valor aleatorio de `BrickType`. Mediante la siguiente fórmula:
         ```java
-        brickType = BrickType.values()[Randomized.randomInt(0, BrickType.values().length - 1)];
+        int random = Randomized.randomInt(1, BrickType.values().length) - 1;
+        brickType = BrickType.values()[random];
         ```
     - Asignar a `brickPosition` la posición del ladrillo en la matriz. Mediante la siguiente fórmula:
         ```java
-        position = new Point(column * Brick.BRICK_WIDTH + ROW_MARGIN,
+        brickPosition = new Point(column * Brick.BRICK_WIDTH + ROW_MARGIN,
                         row * Brick.BRICK_HEIGHT + COLUMN_MARGIN);
         ```
-    - Crear un nuevo ladrillo con los valores de `brickType` y `brickPosition`.
-    - Asignar el ladrillo a la matriz de ladrillos.
-6. Al finalizar la función, se deberá llamar desde el constructor.
+    - Crear un nuevo ladrillo con los valores de `brickType` y `brickPosition`. Mediante la siguiente fórmula:
+        ```java
+        bricks[row][column] = new Brick(brickPosition, "", brickType);
+        ```
+6. Al finalizar la función, se deberá llamar desde el constructor. Deberá quedar de la siguiente forma:
+    ```java
+    public Level(String backgroundName, String musicName) {
+
+        // Asignación de valores a los atributos
+        // Inicialización de la matriz de ladrillos
+        // Aumentar el nivel actual
+        // Generar los ladrillos del nivel
+        populateLevel();
+    }
+    ```
 
 Con esto, ya tendrás la capacidad de generar niveles de forma dinámica. ¡A por ello!
 

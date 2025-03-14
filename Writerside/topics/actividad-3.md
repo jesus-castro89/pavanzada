@@ -8,7 +8,6 @@ anterior derivado del uso de clases abstractas y herencia.
 ## Diagrama de clases
 
 ```plantuml
-```plantuml
 @startuml
 
 left to right direction
@@ -129,6 +128,7 @@ adecuar las clases `Ball`, `Missile`, `Bonus`, `Brick` y `Paddle` para que cumpl
     - La pelota debe tener un tamaño de 20x20 pixeles.
     - La pelota debe tener una velocidad inicial de 2 píxeles por movimiento.
     - La pelota debe sobreescribir los métodos `draw` y `move` de la clase `MovingSprite`.
+    - La coordenada inicial de la pelota es (**x: 224, y: 585**) pixeles.
 2. `Missile`:
     - El misil debe tener un tamaño de 16x37 pixeles.
     - El misil debe tener una velocidad de 5 píxeles por movimiento.
@@ -145,7 +145,7 @@ adecuar las clases `Ball`, `Missile`, `Bonus`, `Brick` y `Paddle` para que cumpl
     - El ladrillo debe sobreescribir el método `draw` de la clase `Sprite`.
 6. `Paddle`:
     - El tamaño de la raqueta está dado por su tipo.
-    - Las coordenadas iniciales de la raqueta son (202, 604) pixeles.
+    - Las coordenadas iniciales de la raqueta son (**x: 202, y: 604**) pixeles.
     - La paleta debe sobreescribir los métodos `draw` y `move` de la clase `MovingSprite`.
 7. `PaddleType`:
     - Debe tener los siguientes tipos de raquetas: `SMALL`, `MEDIUM`, `LARGE` y `SHOOTER`.
