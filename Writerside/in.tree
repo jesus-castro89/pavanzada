@@ -58,9 +58,11 @@
         <toc-element topic="object.md"/>
         <toc-element topic="class-constructor.md"/>
         <toc-element topic="sobreescritura.md"/>
+        <toc-element topic="sobrecarga.md"/>
     </toc-element>
     <toc-element toc-title="Clases Abstractas e Interfaces">
         <toc-element topic="class-abstract.md"/>
+        <toc-element topic="polimorfismo.md"/>
     </toc-element>
     <toc-element toc-title="Dibujando con Swing">
         <toc-element topic="paint.md"/>

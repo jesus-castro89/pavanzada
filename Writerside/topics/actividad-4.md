@@ -1,4 +1,4 @@
-# El Nivel
+# Actividad 4: El Nivel
 
 En esta ocasión trabajaremos para poder crear niveles de forma dinámica. Para ello, necesitaremos una clase que nos
 permita generar los niveles y su matriz de ladrillos.
@@ -83,7 +83,6 @@ public class Randomized {
     public static int randomInt(int min, int max) {
 
         Random random = new Random();
-        random.setSeed(System.currentTimeMillis());
         return random.nextInt(max - min + 1) + min;
     }
 }

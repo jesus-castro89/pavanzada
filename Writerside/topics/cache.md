@@ -70,6 +70,6 @@ Ejecuta la clase `Main` y verífica que la imagen del gato se haya cargado corre
 
 ## Fecha de entrega
 
-La fecha de entrega es el día 10 de marzo de 2025 a las 11:59 p.m.
+La fecha de entrega es el día 19 de marzo de 2025 a las 11:59 p.m.
 
 Actividades enviadas después de la fecha y hora límite serán evaluadas sobre el 70% de la calificación total.
