@@ -63,9 +63,14 @@
     <toc-element toc-title="Clases Abstractas e Interfaces">
         <toc-element topic="class-abstract.md"/>
         <toc-element topic="polimorfismo.md"/>
+        <toc-element topic="interface.md"/>
+        <toc-element topic="interface-tipo.md"/>
     </toc-element>
     <toc-element toc-title="Dibujando con Swing">
         <toc-element topic="paint.md"/>
+        <toc-element topic="graph.md"/>
+        <toc-element topic="dibujando-imagenes.md"/>
+        <toc-element topic="font.md"/>
     </toc-element>
     <toc-element toc-title="Entregables">
         <toc-element topic="notas-entregables.md"/>
