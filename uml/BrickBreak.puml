@@ -1,0 +1,76 @@
+@startuml
+
+package com.brick_break {
+    class Sprite{
+        # int cordX
+        # int cordY
+        # int width
+        # int height
+        # String name
+    }
+
+    class Ball extends Sprite{
+        - int directionXStop
+        - int directionX
+        - int directionY
+        - boolean isMoving
+        + void resetState()
+        + int getMiddle()
+        + int getCenter()
+    }
+
+    class Laser extends Sprite{
+        - boolean isDestroyed
+    }
+
+    package bricks{
+        class Brick extends com.brick_break.Sprite{
+            # int hitPoints
+            # int score
+            # int minX
+            # int minY
+            # int maxX
+            # int maxY
+            # boolean isDestroyed
+            + void hit()
+        }
+
+        class NormalBrick extends Brick{
+            + NormalBrick()
+        }
+
+        class UnbreakableBrick extends Brick{
+            + UnbreakableBrick()
+        }
+    }
+
+    package paddle{
+        class Paddle extends com.brick_break.Sprite{
+            - int directionX
+            - int minX
+            - int maxX
+            - int minY
+            - int maxY
+            - int border
+            - int normalZone
+            - int centerZone
+            - int endStartZone
+            - int startCenterZone
+            - int endCenterZone
+            - int startEndZone
+            - int endEndZone
+            - int lowerZone
+            - boolean isShooting
+        }
+    }
+
+    package bonus{
+
+        class Bonus extends com.brick_break.Sprite{
+            - int directionY
+            - boolean isTaken
+        }
+    }
+}
+
+@enduml
