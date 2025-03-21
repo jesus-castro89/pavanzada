@@ -3,11 +3,12 @@ package org.brick_breaker.sprites;
 import java.awt.Point;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.io.Serializable;
 
 /**
  * Clase que representa un sprite en el juego.
  */
-public abstract class Sprite {
+public abstract class Sprite implements Serializable {
 
     /**
      * Posición del sprite.

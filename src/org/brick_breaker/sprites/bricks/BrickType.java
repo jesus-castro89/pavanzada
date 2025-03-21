@@ -1,9 +1,11 @@
 package org.brick_breaker.sprites.bricks;
 
+import java.io.Serializable;
+
 /**
  * Enumerado que representa los tipos de ladrillos que existen en el juego.
  */
-public enum BrickType {
+public enum BrickType implements Serializable {
     /**
      * Ladrillo amarillo. Cuenta con 1 vida y otorga 10 puntos al ser destruido.
      */

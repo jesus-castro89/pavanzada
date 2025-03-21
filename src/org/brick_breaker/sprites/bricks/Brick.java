@@ -3,11 +3,12 @@ package org.brick_breaker.sprites.bricks;
 import org.brick_breaker.sprites.Sprite;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * Clase que representa un ladrillo en el juego.
  */
-public class Brick extends Sprite {
+public class Brick extends Sprite implements Serializable {
     /**
      * Ancho del ladrillo.
      */

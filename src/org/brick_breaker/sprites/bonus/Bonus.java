@@ -39,73 +39,12 @@ public class Bonus extends MovingSprite implements Serializable {
     @Override
     public void move() {
 
-        position.y++;
+        position.y += dy;
     }
 
     @Override
     public void draw(Graphics g) {
 
-    }
-
-    /**
-     * Función que se ejecutará cada cierto tiempo para mantener en movimiento el bloque de Bonus.
-     *
-     * @param x Posición X en el arreglo de bonus.
-     * @param y Posición Y en el arreglo de bonus.
-     */
-    public void start(int x, int y) {
-        // Aquí se moverá el bonus
-        move();
-        // Validamos si el bonus está activo
-        if (this.active) {
-            //Esto valida si el sprite de bonus llega a la parte inferior de la pantalla
-            if (position.y == 680) {
-
-                this.active = false;
-                //Aquí eliminamos el elemento de la matriz de bonus
-                delete(x, y);
-            }
-            //Validamos si el jugador entro en contacto con el bonus
-            take(x, y);
-        }
-    }
-
-    /**
-     * Esta función eliminará el elemento de la matriz de bonus.
-     *
-     * @param x Posición X en el arreglo de bonus.
-     * @param y Posición Y en el arreglo de bonus.
-     */
-    public void delete(int x, int y) {
-        //TODO: Implementar la eliminación del bonus de la matriz de bonus
-    }
-
-    /**
-     * Función que valida la colisión entre el jugador y el bonus.
-     *
-     * @param x Posición X en el arreglo de bonus.
-     * @param y Posición Y en el arreglo de bonus
-     */
-    public void take(int x, int y) {
-
-        //TODO: Implementar la validación de la colisión entre el jugador y el bonus
-    }
-
-    /**
-     * Función que se encargará de activar el bonus de multiesferas.
-     */
-    private void multiBall() {
-
-        //TODO: Implementar la lógica para el bonus de multi esferas
-    }
-
-    /**
-     * Función que se encargará de recuperar la posición de la esfera principal.
-     */
-    private int getBallPosition() {
-
-        return (int) Math.floor(Math.random() * ((Brick.BRICK_WIDTH * 10) - Level.ROW_MARGIN) +
-                Level.ROW_MARGIN);
     }
 
     public boolean isActive() {

@@ -17,16 +17,56 @@ import java.io.Serializable;
  */
 public enum BonusType implements Serializable {
 
-    L("l_bonus"),
-    S("s_bonus"),
-    M("m_bonus"),
-    R("r_bonus"),
-    E("e_bonus"),
-    B("b_bonus"),
-    C("c_bonus"),
-    D("D_bonus"),
-    P("p_bonus"),
-    T("t_bonus");
+    L("l_bonus") {
+        @Override
+        public void activateBonus() {
+        }
+    },
+    S("s_bonus") {
+        @Override
+        public void activateBonus() {
+        }
+    },
+    M("m_bonus") {
+        @Override
+        public void activateBonus() {
+        }
+    },
+    R("r_bonus") {
+        @Override
+        public void activateBonus() {
+        }
+    },
+    E("e_bonus") {
+        @Override
+        public void activateBonus() {
+        }
+    },
+    B("b_bonus") {
+        @Override
+        public void activateBonus() {
+        }
+    },
+    C("c_bonus") {
+        @Override
+        public void activateBonus() {
+        }
+    },
+    D("D_bonus") {
+        @Override
+        public void activateBonus() {
+        }
+    },
+    P("p_bonus") {
+        @Override
+        public void activateBonus() {
+        }
+    },
+    T("t_bonus") {
+        @Override
+        public void activateBonus() {
+        }
+    };
 
     /**
      * Nombre del archivo de imagen para cada tipo de Bonus
@@ -45,4 +85,6 @@ public enum BonusType implements Serializable {
     public String getImageName() {
         return imageName;
     }
+
+    public abstract void activateBonus();
 }

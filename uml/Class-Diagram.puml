@@ -1,0 +1,163 @@
+@startuml
+class org.brick_breaker.sprites.Missile extends org.brick_breaker.sprites.MovingSprite {
++ {static} MISSILE_WIDTH: int
++ {static} MISSILE_HEIGHT: int
++ {static} MISSILE_SPEED: int
++ {static} MISSILE_SIZE: Dimension
+- destroyed: boolean
++ move(): void
++ draw(g: Graphics): void
+}
+
+enum org.brick_breaker.sprites.bricks.BrickType {
+YELLOW
+RED
+BLUE
+GREEN
+- life: int
+- score: int
+}
+
+class org.brick_breaker.sprites.bricks.Brick extends org.brick_breaker.sprites.Sprite {
++ {static} BRICK_WIDTH: int
++ {static} BRICK_HEIGHT: int
++ {static} BRICK_SIZE: Dimension
+- BrickType type: BrickType
+- int life: int
+- destroyed: boolean
++ draw(g: Graphics): void
++ hit(): void
+}
+
+abstract class org.brick_breaker.sprites.MovingSprite extends org.brick_breaker.sprites.Sprite {
+# dx: int
+# dy: int
++ {abstract} move(): void
+}
+
+enum org.brick_breaker.sprites.bonus.BonusType {
+L
+S
+M
+R
+E
+B
+C
+D
+P
+T
+- imageName: String
+}
+
+class org.brick_breaker.utils.FileManager {
++ {static} readLevel(currentLevel: int): Level
++ {static} void writeLevel(level: Level, currentLevel: int)
+}
+
+class org.brick_breaker.game.Level {
++ {static} ROW_MARGIN: int
++ {static} COLUMN_MARGIN: int
++ {static} LEVEL_WIDTH: int
++ {static} LEVEL_HEIGHT: int
++ {static} levelNumber: int
+- bricks: Brick[][]
+- backgroundName: String
+- musicName: String
+- currentLevel: int
+- populateLevel(): void
+}
+
+class org.brick_breaker.cache.SpriteCache {
+- cache: HashMap<String,BufferedImage>
+- {static} INSTANCE: SpriteCache
++ {static} getInstance(): SpriteCache
++ addImage(name: String, image:BufferedImage): void
++ getImage(name: String): BufferedImage
+}
+
+class org.brick_breaker.utils.SoundPlayer {
+- backgroundClip: Clip
+- overlayClip: Clip
++ playBackground(): void
++ stopBackground(): void
++ playOverlay(overlayFile: String): void
++ close(): void
+}
+
+class org.brick_breaker.sprites.Ball extends org.brick_breaker.sprites.MovingSprite implements org.brick_breaker.sprites.Resettable {
++ {static} BALL_WIDTH: int
++ {static} INITIAL_BALL_X: int
++ {static} INITIAL_BALL_Y: int
++ {static} INITIAL_BALL_POSITION: Point
++ {static} BALL_SIZE: Dimension
+- int speed: int
+- boolean stop: boolean
+- int dxStop: int
++ move(): void
++ draw(g: Graphics): void
++ resetPosition(): void
+}
+
+enum org.brick_breaker.sprites.paddles.PaddleType {
+SMALL
+MEDIUM
+LARGE
+SHOOTER
+- size: Dimension
++ getImageName(): String
+}
+
+class org.brick_breaker.sprites.bonus.Bonus extends org.brick_breaker.sprites.MovingSprite {
+- active: boolean
+- type: BonusType
++ move(): void
++ draw(g: Graphics): void
++ start(x: int, y: int)
++ delete(x: int, y: int)
++ take(x: int, y: int)
+- multiBall(): void
+- getBallPosition(): int
+}
+
+class org.brick_breaker.utils.Randomized {
++ {static} randomInt(min: int, max: int): int
+}
+
+abstract class org.brick_breaker.sprites.Sprite implements org.brick_breaker.sprites.Drawable{
+# position: Point
+# imageName: String
+# size: Dimension
+}
+
+class org.brick_breaker.sprites.paddles.Paddle extends org.brick_breaker.sprites.MovingSprite implements org.brick_breaker.sprites.Resettable {
+- {static} INSTANCE: Paddle
++ {static} INITIAL_PADDLE_X: int
++ {static} INITIAL_PADDLE_Y: int
++ {static} INITIAL_PADDLE_POSITION: Point
+- type: PaddleType
++ {static} getInstance(): Paddle
++ move(): void
++ draw(Graphics): void
++ resetPosition(): void
+}
+
+interface org.brick_breaker.sprites.Drawable {
+~ draw(g: Graphics): void
+}
+
+enum org.brick_breaker.sprites.Borders implements org.brick_breaker.sprites.Drawable {
+LEFT_BAR
+RIGHT_BAR
+TOP_BAR
+BOTTOM_BAR
+- imageName: String
+- position: Point
+- dimension: Dimension
++ draw(g: Graphics): void
+}
+
+
+interface org.brick_breaker.sprites.Resettable {
+~ resetPosition(): void
+}
+@enduml

@@ -5,11 +5,12 @@ import org.brick_breaker.sprites.bricks.BrickType;
 import org.brick_breaker.utils.Randomized;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * Clase que representa un nivel en el juego.
  */
-public class Level {
+public class Level implements Serializable {
 
     public static final int ROW_MARGIN = 18;
     public static final int COLUMN_MARGIN = 19;
@@ -48,6 +49,7 @@ public class Level {
         this.musicName = musicName;
         bricks = new Brick[LEVEL_WIDTH][LEVEL_HEIGHT];
         currentLevel = levelNumber++;
+        populateLevel();
     }
 
     /**
