@@ -12,7 +12,13 @@ import java.io.Serializable;
  */
 public class Level implements Serializable {
 
+    /**
+     * Margen entre los ladrillos en el eje X.
+     */
     public static final int ROW_MARGIN = 18;
+    /**
+     * Margen entre los ladrillos en el eje Y.
+     */
     public static final int COLUMN_MARGIN = 19;
     /**
      * Ancho del nivel en bloques.
@@ -43,6 +49,12 @@ public class Level implements Serializable {
      */
     private int currentLevel;
 
+    /**
+     * Constructor de la clase.
+     *
+     * @param backgroundName Nombre de la imagen de fondo del nivel.
+     * @param musicName      Nombre de la música del nivel.
+     */
     public Level(String backgroundName, String musicName) {
 
         this.backgroundName = backgroundName;
@@ -60,7 +72,9 @@ public class Level implements Serializable {
         BrickType brickType;
         Point position;
         for (int row = 0; row < LEVEL_WIDTH; row++) {
+
             for (int column = 0; column < LEVEL_HEIGHT; column++) {
+
                 // Se genera un número aleatorio para seleccionar un tipo de ladrillo.
                 brickType = BrickType.values()[Randomized.randomInt(0, BrickType.values().length - 1)];
                 // Se generá la posición del ladrillo.
@@ -68,6 +82,7 @@ public class Level implements Serializable {
                         row * Brick.BRICK_HEIGHT + COLUMN_MARGIN);
                 // Se crea el ladrillo según el tipo.
                 switch (brickType) {
+
                     case RED -> bricks[row][column] = new Brick(position, "red_brick", BrickType.RED);
                     case BLUE -> bricks[row][column] = new Brick(position, "blue_brick", BrickType.BLUE);
                     case GREEN -> bricks[row][column] = new Brick(position, "green_brick", BrickType.GREEN);

@@ -5,10 +5,21 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Clase que se encarga de cargar los sonidos que se van a reproducir en el juego.
+ */
 public class AudioLoader {
 
+    /**
+     * Función que carga un sonido.
+     *
+     * @param path Ruta del sonido.
+     * @return Sonido cargado.
+     */
     public static Clip loadMusic(String path) {
+
         try {
+
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(path));
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);

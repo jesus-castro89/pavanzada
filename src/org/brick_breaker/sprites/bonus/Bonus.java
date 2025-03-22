@@ -43,10 +43,11 @@ public class Bonus extends MovingSprite implements Serializable {
     }
 
     @Override
-    public void draw(Graphics g) {
+    public void addImageToCache() {
 
     }
 
+    // Getters y Setters
     public boolean isActive() {
         return active;
     }

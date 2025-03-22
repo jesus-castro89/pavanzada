@@ -24,6 +24,7 @@ public class SpriteLoader {
     public static BufferedImage loadImage(String fileName) {
 
         try {
+
             return ImageIO.read(new File(SPRITES_PATH + fileName));
         } catch (IOException e) {
             JOptionPane.showConfirmDialog(null,

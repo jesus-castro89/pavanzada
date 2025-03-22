@@ -3,6 +3,9 @@ package org.brick_breaker.cache;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
+/**
+ * Clase que se encarga de almacenar las imágenes que se van a utilizar en la aplicación.
+ */
 public class SpriteCache {
 
     /**

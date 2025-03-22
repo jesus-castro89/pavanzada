@@ -50,7 +50,7 @@ public class Brick extends Sprite implements Serializable {
     }
 
     @Override
-    public void draw(Graphics g) {
+    protected void addImageToCache() {
 
     }
 
@@ -58,6 +58,7 @@ public class Brick extends Sprite implements Serializable {
 
         life--;
         if (life == 0) {
+
             destroyed = true;
         }
     }
