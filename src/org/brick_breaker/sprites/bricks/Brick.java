@@ -62,6 +62,11 @@ public class Brick extends Sprite implements Serializable {
         }
     }
 
+    @Override
+    public String toString() {
+        return type.toString();
+    }
+
     public boolean isDestroyed() {
         return destroyed;
     }

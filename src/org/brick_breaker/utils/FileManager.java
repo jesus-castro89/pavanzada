@@ -9,10 +9,10 @@ public class FileManager {
 
     public static Level readLevel(int currentLevel) {
 
-        Level level = null;
-        InputStream file = null;
-        InputStream buffer = null;
-        ObjectInput input = null;
+        Level level;
+        InputStream file;
+        InputStream buffer;
+        ObjectInput input;
         try {
 
             file = new FileInputStream("levels/level_" + currentLevel + ".lvl");
@@ -34,9 +34,9 @@ public class FileManager {
 
     public static void writeLevel(Level level) {
 
-        OutputStream file = null;
-        OutputStream buffer = null;
-        ObjectOutputStream output = null;
+        OutputStream file;
+        OutputStream buffer;
+        ObjectOutputStream output;
         try {
 
             file = new FileOutputStream(

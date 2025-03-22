@@ -24,7 +24,6 @@ public class Randomized {
     public static int randomInt(int min, int max) {
 
         Random random = new Random();
-        random.setSeed(System.currentTimeMillis());
         return random.nextInt(max - min + 1) + min;
     }
 }
