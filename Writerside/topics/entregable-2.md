@@ -27,6 +27,18 @@ Para ello, se deben seguir los siguientes pasos:
       especificados.
 3. Crear una clase concreta para cada uno de los tipos de vehículos mencionados anteriormente que herede de la clase
    `Vehicle` e implemente los métodos `calculateTripCost`, `printTicket` y `displayVehicleInfo` según corresponda.
+    * La clase `Automobile` debe tener un atributo adicional `fuelConsumption` que indique el consumo de combustible del
+      automóvil en kilómetros por litro. Así como una función adicional `calculateFuelCost(double distance)` que calcule
+      el costo de combustible para un viaje de la distancia especificada.
+    * La clase `Motorcycle` debe tener un atributo adicional `engineDisplacement` que indique la cilindrada del motor de
+      la motocicleta en centímetros cúbicos. Así como una función adicional `calculateInsuranceCost()` que calcule el
+      costo del seguro de la motocicleta.
+    * La clase `Scooter` debe tener un atributo adicional `maxSpeed` que indique la velocidad máxima de la scooter en
+      kilómetros por hora. Así como una función adicional `calculateHelmetCost(int helmets)` que calcule el costo de los
+      cascos para el número especificado.
+    * La clase `Van` debe tener un atributo adicional `maxLoad` que indique la carga máxima que puede transportar la
+      camioneta en kilogramos. Así como una función adicional `calculateLoadCost(double load)` que calcule el costo de
+      la carga para el peso especificado.
 4. Implementar la interfaz `Rentable` en las clases `Automobile`, `Motorcycle`, `Scooter` y `Van`.
 5. Crear una clase `TransportApp` que contenga un arreglo dinámico de vehículos.
 6. Define las funciones que cubrán los siguientes requerimientos:
@@ -34,6 +46,11 @@ Para ello, se deben seguir los siguientes pasos:
     * Mostrar la información de todos los vehículos.
     * Calcular la tarifa de un viaje para un vehículo específico.
     * Calcular el costo de renta de un vehículo por los días especificados.
+    * Calcular el costo de combustible de un automóvil para un viaje de la distancia especificada.
+    * Calcular el costo del seguro de una motocicleta.
+    * Calcular el costo de los cascos para una scooter.
+    * Calcular el costo de la carga para una camioneta.
+    * Mostrar el ticket con los datos del vehículo y la tarifa calculada.
 7. Realizar pruebas unitarias para verificar el correcto funcionamiento de las clases implementadas.
 8. Documentar el código y explicar el funcionamiento de las clases y métodos implementados.
 
