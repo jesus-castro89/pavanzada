@@ -66,6 +66,9 @@
         <toc-element topic="interface.md"/>
         <toc-element topic="interface-tipo.md"/>
     </toc-element>
+    <toc-element toc-title="GUI">
+        <toc-element topic="jframe.md"/>
+    </toc-element>
     <toc-element toc-title="Dibujando con Swing">
         <toc-element topic="paint.md"/>
         <toc-element topic="graph.md"/>
@@ -84,5 +87,6 @@
         <toc-element topic="cache.md"/>
         <toc-element topic="actividad-3.md"/>
         <toc-element topic="actividad-4.md"/>
+        <toc-element topic="actividad-5.md"/>
     </toc-element>
 </instance-profile>

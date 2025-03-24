@@ -8,7 +8,7 @@ import java.util.Arrays;
 /**
  * Clase utilitaria que permite determinar la colisión entre la pelota y los bordes de los sprites.
  */
-public final class Collision {
+public final class  Collision {
 
     /**
      * Constructor privado de la clase.
