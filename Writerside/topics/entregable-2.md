@@ -15,6 +15,13 @@ Para ello, se deben seguir los siguientes pasos:
     * `printTicket()`: Este método debe devolver una cadena de texto con los datos del vehículo y la tarifa calculada.
       **Es tu decisión si es concrete o abstracto.**
     * `displayVehicleInfo()`: Este método debe mostrar en consola la información del vehículo.
+    * Así como los siguientes atributos:
+        * `brand`: Marca del vehículo.
+        * `model`: Modelo del vehículo.
+        * `year`: Año de fabricación del vehículo.
+        * `licensePlate`: Placa del vehículo.
+        * `rentalPrice`: Precio de renta del vehículo por día.
+        * `pricePerKm`: Precio por kilómetro del vehículo.
 2. Crear una interfaz `Rentable` con el siguiente método:
     * `rentVehicle(int days)`: Este método debe calcular y devolver el costo de renta del vehículo por los días
       especificados.
