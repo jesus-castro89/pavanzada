@@ -75,6 +75,7 @@
     <toc-element toc-title="Entregables">
         <toc-element topic="notas-entregables.md"/>
         <toc-element topic="entregable-1.md"/>
+        <toc-element topic="entregable-2.md"/>
     </toc-element>
     <toc-element topic="github.md"/>
     <toc-element toc-title="Proyecto">
