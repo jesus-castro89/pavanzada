@@ -13,7 +13,7 @@ public class SpriteLoader {
     /**
      * Ruta de las imágenes.
      */
-    private static final String SPRITES_PATH = "images/";
+    private static final String SPRITES_PATH = "image/";
 
     /**
      * Función que se encarga de cargar una imagen en formato png.
