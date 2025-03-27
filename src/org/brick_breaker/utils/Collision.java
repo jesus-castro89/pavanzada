@@ -1,6 +1,7 @@
 package org.brick_breaker.utils;
 
 import org.brick_breaker.sprites.Ball;
+import org.brick_breaker.sprites.Borders;
 import org.brick_breaker.sprites.Sprite;
 
 import java.util.Arrays;
@@ -8,7 +9,7 @@ import java.util.Arrays;
 /**
  * Clase utilitaria que permite determinar la colisión entre la pelota y los bordes de los sprites.
  */
-public final class  Collision {
+public final class Collision {
 
     /**
      * Constructor privado de la clase.
@@ -97,9 +98,44 @@ public final class  Collision {
         }
         // Se calcula el ángulo de rebote de la pelota.
         angle = 2 * angle - Math.PI;
+        System.out.println(Math.cos(angle) + " " + Math.sin(angle) + " " + ball.getDx() + " " + ball.getDy());
         // Se calcula la nueva dirección de la pelota.
         ball.setDx(Math.cos(angle) > 0 ? 1 : -1);
         ball.setDy(Math.sin(angle) > 0 ? 1 : -1);
+    }
+
+    private static void changeBallDirection(Ball ball, EdgeType edgeType, Sprite sprite) {
+
+        System.out.println(edgeType);
+        if (sprite instanceof Borders) {
+            // Se obtiene el ángulo de rebote de la pelota.
+            double angle = Math.atan2(ball.getDy(), ball.getDx());
+            // Se calcula el ángulo de rebote de la pelota.
+            if (edgeType == EdgeType.LEFT_EDGE) {
+                if (ball.getDx() == 0 || ball.getDx() == -1) {
+
+                    ball.setDx(1);
+                }
+            } else if (edgeType == EdgeType.RIGHT_EDGE) {
+
+                if (ball.getDx() == 0 || ball.getDx() == 1) {
+
+                    ball.setDx(-1);
+                }
+            } else if (edgeType == EdgeType.TOP_EDGE) {
+                if (ball.getDy() == 0 || ball.getDy() == 1) {
+
+                    ball.setDy(-1);
+                }
+            } else if (edgeType == EdgeType.BOTTOM_EDGE) {
+                if (ball.getDy() == 0 || ball.getDy() == -1) {
+
+                    ball.setDy(1);
+                }
+            }
+        } else {
+            changeBallDirection(ball, edgeType);
+        }
     }
 
     /**
@@ -120,11 +156,12 @@ public final class  Collision {
         // Se obtiene la distancia mínima.
         double minDistance = Arrays.stream(distances).min().getAsDouble();
         // Se determina el borde con el que la pelota colisiona y rebota.
+        System.out.println("Bounce "+ sprite.getImageName() );
         switch ((int) minDistance) {
-            case 0 -> changeBallDirection(ball, EdgeType.BOTTOM_EDGE);
-            case 1 -> changeBallDirection(ball, EdgeType.TOP_EDGE);
-            case 2 -> changeBallDirection(ball, EdgeType.LEFT_EDGE);
-            case 3 -> changeBallDirection(ball, EdgeType.RIGHT_EDGE);
+            case 0 -> changeBallDirection(ball, EdgeType.BOTTOM_EDGE, sprite);
+            case 1 -> changeBallDirection(ball, EdgeType.TOP_EDGE, sprite);
+            case 2 -> changeBallDirection(ball, EdgeType.LEFT_EDGE, sprite);
+            case 3 -> changeBallDirection(ball, EdgeType.RIGHT_EDGE, sprite);
         }
     }
 }

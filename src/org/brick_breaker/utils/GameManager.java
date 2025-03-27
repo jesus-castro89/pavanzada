@@ -1,10 +1,15 @@
 package org.brick_breaker.utils;
 
+import org.brick_breaker.cache.SpriteCache;
 import org.brick_breaker.game.Level;
 import org.brick_breaker.sprites.Ball;
+import org.brick_breaker.sprites.bricks.Brick;
 import org.brick_breaker.sprites.paddles.Paddle;
 import org.brick_breaker.sprites.paddles.PaddleType;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 
 public class GameManager {
@@ -21,12 +26,45 @@ public class GameManager {
     private int levelNumber = INITIAL_LEVEL;
     private final ArrayList<Ball> balls = new ArrayList<>();
     private final Paddle paddle;
+    public static Timer timer;
+    private boolean inGame;
 
     public GameManager() {
 
         this.level = FileManager.readLevel(levelNumber);
         this.paddle = new Paddle(PaddleType.MEDIUM);
         this.balls.add(new Ball());
+        //timer = new Timer(10, new GameCycle(this));
+        timer.start();
+    }
+
+    public void stopGame() {
+
+        this.inGame = false;
+        timer.stop();
+    }
+
+    public void playGame() {
+
+        this.inGame = true;
+        timer.start();
+        //this.requestFocus();
+    }
+
+    public void draw(Graphics2D g2d, ImageObserver observer) {
+
+        for (Brick[] row : level.getBricks()) {
+
+            for (Brick brick : row) {
+
+                brick.draw(g2d);
+            }
+        }
+        for (Ball ball : balls) {
+
+            ball.draw(g2d, observer);
+        }
+        paddle.draw(g2d);
     }
 
     private void loadNextLevel() {

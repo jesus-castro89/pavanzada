@@ -1,5 +1,7 @@
 package org.brick_breaker.sprites.paddles;
 
+import org.brick_breaker.cache.SpriteCache;
+import org.brick_breaker.cache.SpriteLoader;
 import org.brick_breaker.sprites.MovingSprite;
 import org.brick_breaker.sprites.Resettable;
 
@@ -27,6 +29,15 @@ public class Paddle extends MovingSprite implements Resettable {
     @Override
     protected void addImageToCache() {
 
+        SpriteCache spriteCache = SpriteCache.getInstance();
+        spriteCache.addImage(PaddleType.SMALL.getImageName(),
+                SpriteLoader.loadImage("paddle.png"));
+        spriteCache.addImage(PaddleType.MEDIUM.getImageName(),
+                SpriteLoader.loadImage("paddle.png"));
+        spriteCache.addImage(PaddleType.LARGE.getImageName(),
+                SpriteLoader.loadImage("paddle-large.png"));
+        spriteCache.addImage(PaddleType.SHOOTER.getImageName(),
+                SpriteLoader.loadImage("paddle-laser.png"));
     }
 
     // Getters y setters

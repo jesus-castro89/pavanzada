@@ -1,5 +1,7 @@
 package org.brick_breaker.sprites.bricks;
 
+import org.brick_breaker.cache.SpriteCache;
+
 import java.io.Serializable;
 
 /**
@@ -22,7 +24,6 @@ public enum BrickType implements Serializable {
      * Ladrillo verde. Cuenta con 4 vidas y otorga 40 puntos al ser destruido.
      */
     GREEN(4, 40);
-
     /**
      * Vidas del ladrillo.
      */

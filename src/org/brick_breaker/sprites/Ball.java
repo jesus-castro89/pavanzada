@@ -1,6 +1,11 @@
 package org.brick_breaker.sprites;
 
+import org.brick_breaker.cache.SpriteCache;
+import org.brick_breaker.cache.SpriteLoader;
+
+import javax.swing.*;
 import java.awt.*;
+import java.awt.image.ImageObserver;
 
 public class Ball extends MovingSprite {
 
@@ -21,6 +26,15 @@ public class Ball extends MovingSprite {
         this.dxStop = 0;
     }
 
+    public void draw(Graphics2D g2d, ImageObserver observer) {
+
+        SpriteCache cache = SpriteCache.getInstance();
+        ImageIcon ballIcon = cache.getImage(getImageName(), true);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.drawImage(ballIcon.getImage(), position.x, position.y, observer);
+    }
+
     @Override
     public void move() {
         if (!stop) {
@@ -33,6 +47,9 @@ public class Ball extends MovingSprite {
 
     @Override
     public void addImageToCache() {
+
+        SpriteCache.getInstance().addImage("ball",
+                SpriteLoader.loadGif("ball.gif"));
     }
 
     // Getters y setters

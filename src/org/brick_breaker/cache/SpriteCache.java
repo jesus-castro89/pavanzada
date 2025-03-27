@@ -1,5 +1,6 @@
 package org.brick_breaker.cache;
 
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
@@ -12,6 +13,7 @@ public class SpriteCache {
      * Caché de imágenes. Se almacenan las imágenes cargadas en la aplicación.
      */
     private final HashMap<String, BufferedImage> cache = new HashMap<>();
+    private final HashMap<String, ImageIcon> gifCache = new HashMap<>();
     /**
      * Instancia de la caché de imágenes.
      */
@@ -45,6 +47,10 @@ public class SpriteCache {
         cache.putIfAbsent(name, image);
     }
 
+    public void addImage(String name, ImageIcon image) {
+        gifCache.putIfAbsent(name, image);
+    }
+
     /**
      * Función que se encarga de obtener una imagen de la caché.
      *
@@ -54,5 +60,9 @@ public class SpriteCache {
     public BufferedImage getImage(String name) {
 
         return cache.getOrDefault(name, null);
+    }
+
+    public ImageIcon getImage(String name, boolean gif) {
+        return gifCache.getOrDefault(name, null);
     }
 }

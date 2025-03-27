@@ -1,10 +1,13 @@
 package org.brick_breaker.game;
 
+import org.brick_breaker.cache.SpriteCache;
+import org.brick_breaker.cache.SpriteLoader;
 import org.brick_breaker.sprites.bricks.Brick;
 import org.brick_breaker.sprites.bricks.BrickType;
 import org.brick_breaker.utils.Randomized;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 /**
@@ -48,6 +51,14 @@ public class Level implements Serializable {
      * Nivel actual.
      */
     private int currentLevel;
+
+    static {
+        SpriteCache spriteCache = SpriteCache.getInstance();
+        spriteCache.addImage("red_brick", SpriteLoader.loadImage("brick-red.png"));
+        spriteCache.addImage("blue_brick", SpriteLoader.loadImage("brick-blue.png"));
+        spriteCache.addImage("green_brick", SpriteLoader.loadImage("brick-green.png"));
+        spriteCache.addImage("yellow_brick", SpriteLoader.loadImage("brick-yellow.png"));
+    }
 
     /**
      * Constructor de la clase.

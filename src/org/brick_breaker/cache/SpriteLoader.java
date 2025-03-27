@@ -34,4 +34,15 @@ public class SpriteLoader {
         }
         return null;
     }
+
+    /**
+     * Función que se encarga de cargar una imagen en formato gif.
+     *
+     * @param fileName Nombre de la imagen a cargar con formato gif.
+     * @return Imagen cargada.
+     */
+    public static ImageIcon loadGif(String fileName) {
+
+        return new ImageIcon(SPRITES_PATH + fileName);
+    }
 }

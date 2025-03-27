@@ -69,6 +69,7 @@
     <toc-element toc-title="GUI">
         <toc-element topic="awt-swing.md"/>
         <toc-element topic="jframe.md"/>
+        <toc-element topic="jpanel.md"/>
     </toc-element>
     <toc-element toc-title="Dibujando con Swing">
         <toc-element topic="paint.md"/>
