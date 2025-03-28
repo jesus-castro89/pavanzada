@@ -10,7 +10,7 @@ import java.awt.*;
 public class Paddle extends MovingSprite implements Resettable {
 
     public static final int INITIAL_PADDLE_X = 202;
-    public static final int INITIAL_PADDLE_Y = 604;
+    public static final int INITIAL_PADDLE_Y = 588;
     public static final Point INITIAL_PADDLE_POSITION =
             new Point(INITIAL_PADDLE_X, INITIAL_PADDLE_Y);
     private PaddleType type;
@@ -41,10 +41,6 @@ public class Paddle extends MovingSprite implements Resettable {
     }
 
     // Getters y setters
-    public PaddleType getType() {
-        return type;
-    }
-
     public void changeType(PaddleType type) {
 
         this.type = type;
@@ -55,4 +51,6 @@ public class Paddle extends MovingSprite implements Resettable {
     public void resetPosition() {
 
     }
+
+
 }

@@ -56,7 +56,6 @@ public class Brick extends Sprite implements Serializable {
 
     public void hit() {
 
-        System.out.println("Brick hit " + type + " life: " + life);
         life--;
         if (life == 0) {
 

@@ -8,6 +8,7 @@ import org.brick_breaker.sprites.bricks.Brick;
 import org.brick_breaker.sprites.paddles.Paddle;
 import org.brick_breaker.sprites.paddles.PaddleType;
 import org.brick_breaker.utils.Collision;
+import org.brick_breaker.utils.EdgeType;
 import org.brick_breaker.utils.FileManager;
 import org.brick_breaker.utils.GameCycle;
 
@@ -25,6 +26,7 @@ public class GamePanel extends JPanel {
     private static final Borders LEFT_BORDER = Borders.LEFT_BAR;
     private static final Borders RIGHT_BORDER = Borders.RIGHT_BAR;
     private static final Borders TOP_BORDER = Borders.TOP_BAR;
+    private static final Borders BOTOOM_BORDER = Borders.BOTTOM_BAR;
     private Level level;
     private final ArrayList<Ball> balls = new ArrayList<>();
     private Paddle paddle;
@@ -76,22 +78,26 @@ public class GamePanel extends JPanel {
                 RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
                 RenderingHints.VALUE_RENDER_QUALITY);
-        LEFT_BORDER.draw(g2d);
-        RIGHT_BORDER.draw(g2d);
-        TOP_BORDER.draw(g2d);
-        for (Brick[] row : level.getBricks()) {
+        if (gameRunning) {
+            LEFT_BORDER.draw(g2d);
+            RIGHT_BORDER.draw(g2d);
+            TOP_BORDER.draw(g2d);
+            BOTOOM_BORDER.draw(g2d);
+            for (Brick[] row : level.getBricks()) {
 
-            for (Brick brick : row) {
+                for (Brick brick : row) {
 
-                if (!brick.isDestroyed())
-                    brick.draw(g2d);
+                    if (!brick.isDestroyed())
+                        brick.draw(g2d);
+                }
             }
-        }
-        for (Ball ball : balls) {
+            for (Ball ball : balls) {
 
-            ball.draw(g2d, this);
+                ball.draw(g2d, this);
+            }
+            paddle.draw(g2d);
         }
-        paddle.draw(g2d);
+        Toolkit.getDefaultToolkit().sync();
     }
 
     public void stopGame() {
@@ -109,11 +115,37 @@ public class GamePanel extends JPanel {
 
     public void update() {
 
+        Brick[][] bricks = this.level.getBricks();
         for (Ball ball : balls) {
 
             if (ball.getBounds().intersects(paddle.getBounds())) {
 
                 Collision.bounceBall(ball, paddle);
+            }
+            if (ball.getBounds().intersects(LEFT_BORDER.getBounds())) {
+
+                borderCollision(ball, LEFT_BORDER);
+            }
+            if (ball.getBounds().intersects(RIGHT_BORDER.getBounds())) {
+
+                borderCollision(ball, RIGHT_BORDER);
+            }
+            if (ball.getBounds().intersects(TOP_BORDER.getBounds())) {
+
+                borderCollision(ball, TOP_BORDER);
+            }
+            if (ball.getBounds().intersects(BOTOOM_BORDER.getBounds())) {
+
+                ball.setStop(true);
+                ball.setDx(0);
+                ball.setDy(0);
+                ball.resetPosition();
+                lives--;
+                if (lives == 0) {
+
+                    stopGame();
+                }
+                break;
             }
             for (int row = 0; row < level.getBricks().length; row++) {
 
@@ -122,24 +154,16 @@ public class GamePanel extends JPanel {
                     if (!level.getBricks()[row][col].isDestroyed() &&
                             ball.getBounds().intersects(level.getBricks()[row][col].getBounds())) {
 
-                        System.out.println("Ball hit brick");
-                        Collision.bounceBall(ball, level.getBricks()[row][col]);
                         level.getBricks()[row][col].hit();
+                        Collision.bounceBall(ball, level.getBricks()[row][col]);
                     }
                 }
             }
-            if (ball.getBounds().intersects(LEFT_BORDER.getBounds())) {
-
-                Collision.bounceBall(ball, LEFT_BORDER);
-            }
-            if (ball.getBounds().intersects(RIGHT_BORDER.getBounds())) {
-
-                Collision.bounceBall(ball, RIGHT_BORDER);
-            }
-            if (ball.getBounds().intersects(TOP_BORDER.getBounds())) {
-
-                Collision.bounceBall(ball, TOP_BORDER);
-            }
         }
+    }
+
+    private void borderCollision(Ball ball, Borders border) {
+
+        Collision.bounceBall(ball, border);
     }
 }

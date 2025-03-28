@@ -14,6 +14,7 @@ public class Borders extends Sprite {
     public static final Borders LEFT_BAR = new Borders("leftBar", new Point(0, 0));
     public static final Borders RIGHT_BAR = new Borders("rightBar", new Point(438, 0));
     public static final Borders TOP_BAR = new Borders("topBar", new Point(18, 0));
+    public static final Borders BOTTOM_BAR = new Borders("topBar", new Point(18, 622));
 
     /**
      * Constructor de la clase.

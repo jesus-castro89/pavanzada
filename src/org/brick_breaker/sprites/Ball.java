@@ -7,11 +7,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.ImageObserver;
 
-public class Ball extends MovingSprite {
+public class Ball extends MovingSprite implements Resettable {
 
     public static final int BALL_WIDTH = 20;
     public static final int INITIAL_BALL_X = 224;
-    public static final int INITIAL_BALL_Y = 585;
+    public static final int INITIAL_BALL_Y = 570;
     public static final Point INITIAL_BALL_POSITION = new Point(INITIAL_BALL_X, INITIAL_BALL_Y);
     public static final Dimension BALL_SIZE = new Dimension(BALL_WIDTH, BALL_WIDTH);
     private int speed;
@@ -48,8 +48,17 @@ public class Ball extends MovingSprite {
     @Override
     public void addImageToCache() {
 
-        SpriteCache.getInstance().addImage("ball",
-                SpriteLoader.loadGif("ball.gif"));
+        SpriteCache.getInstance().addImage(imageName, SpriteLoader.loadGif("ball.gif"));
+    }
+
+    public ImageIcon getImageIcon() {
+
+        return SpriteCache.getInstance().getImage(getImageName(), true);
+    }
+
+    public int getMiddle() {
+
+        return getImageIcon().getIconWidth() / 2;
     }
 
     // Getters y setters
@@ -75,5 +84,11 @@ public class Ball extends MovingSprite {
 
     public void setDxStop(int dxStop) {
         this.dxStop = dxStop;
+    }
+
+    @Override
+    public void resetPosition() {
+
+        position = new Point(INITIAL_BALL_X, INITIAL_BALL_Y);
     }
 }
