@@ -62,7 +62,7 @@ public class GameManager {
         }
         for (Ball ball : balls) {
 
-            ball.draw(g2d, observer);
+            ball.draw(g2d);
         }
         paddle.draw(g2d);
     }

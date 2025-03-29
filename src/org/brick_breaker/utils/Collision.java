@@ -21,33 +21,33 @@ public final class Collision {
         throw new IllegalStateException("Utility class");
     }
 
+    /**
+     * Función que permite determinar el borde con el que la pelota colisiona y rebota.
+     *
+     * @param sprite1 Pelota con la que se desea comparar.
+     * @param sprite2 Sprite con el que se desea comparar.
+     * @return Tipo de borde con el que colisiona la pelota.
+     */
     public static EdgeType distanceBallEdge(Ball sprite1, Sprite sprite2) {
 
+        EdgeType edgeType = EdgeType.LEFT_EDGE;
         int leftImpact = sprite1.getPosition().x + sprite1.getImageIcon().getIconWidth() - sprite2.getPosition().x;
         int rightImpact = sprite2.getPosition().x + sprite2.getSize().width - sprite1.getPosition().x;
         int topImpact = sprite1.getPosition().y + sprite1.getImageIcon().getIconHeight() - sprite2.getPosition().y;
         int bottomImpact = sprite2.getPosition().y + sprite2.getSize().height - sprite1.getPosition().y;
-
-        if (leftImpact < rightImpact && leftImpact < topImpact && leftImpact < bottomImpact) {
-            return EdgeType.LEFT_EDGE;
-        } else if (rightImpact < leftImpact && rightImpact < topImpact && rightImpact < bottomImpact) {
-            return EdgeType.RIGHT_EDGE;
-        } else if (topImpact < leftImpact && topImpact < rightImpact && topImpact < bottomImpact) {
-            return EdgeType.TOP_EDGE;
-        } else {
-            return EdgeType.BOTTOM_EDGE;
-        }
+        int[] impacts = {leftImpact, rightImpact, topImpact, bottomImpact};
+        int minImpact = Arrays.stream(impacts).min().orElse(0);
+        if (minImpact == rightImpact) edgeType = EdgeType.RIGHT_EDGE;
+        else if (minImpact == topImpact) edgeType = EdgeType.TOP_EDGE;
+        else if (minImpact == bottomImpact) edgeType = EdgeType.BOTTOM_EDGE;
+        return edgeType;
     }
 
-    private static void changeBallDirection(Ball ball, EdgeType edgeType, Sprite sprite) {
+    private static void changeBallDirection(Ball ball, EdgeType edgeType) {
 
         switch (edgeType) {
-            case LEFT_EDGE, RIGHT_EDGE -> {
-                ball.setDx(-ball.getDx());
-            }
-            case TOP_EDGE, BOTTOM_EDGE -> {
-                ball.setDy(-ball.getDy());
-            }
+            case LEFT_EDGE, RIGHT_EDGE -> ball.setDx(-ball.getDx());
+            case TOP_EDGE, BOTTOM_EDGE -> ball.setDy(-ball.getDy());
         }
     }
 
@@ -60,9 +60,10 @@ public final class Collision {
     public static void bounceBall(Ball ball, Sprite sprite) {
 
         EdgeType edgeType = distanceBallEdge(ball, sprite);
-        changeBallDirection(ball, edgeType, sprite);
+        changeBallDirection(ball, edgeType);
         // Se ajusta la posición de la pelota después de la colisión.
         switch (edgeType) {
+
             case LEFT_EDGE -> ball.getPosition().x = sprite.getPosition().x - ball.getImageIcon().getIconWidth();
             case RIGHT_EDGE -> ball.getPosition().x = sprite.getPosition().x + sprite.getSize().width;
             case TOP_EDGE -> ball.getPosition().y = sprite.getPosition().y - ball.getImageIcon().getIconHeight();

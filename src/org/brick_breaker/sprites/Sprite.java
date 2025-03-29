@@ -42,7 +42,7 @@ public abstract class Sprite implements Serializable {
     /**
      * Función que se encarga de dibujar el sprite.
      *
-     * @param g Gráficos de la ventana.
+     * @param g2d Gráficos de la ventana.
      */
     public void draw(Graphics2D g2d) {
 

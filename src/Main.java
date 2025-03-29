@@ -9,8 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-//        Level level = new Level("background",
-//                "music");
+//        Level level = new Level();
 //        FileManager.writeLevel(level);
 //        level = FileManager.readLevel(1);
 //        for(Brick[] row : level.getBricks()) {

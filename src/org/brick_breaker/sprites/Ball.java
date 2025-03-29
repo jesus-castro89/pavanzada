@@ -5,7 +5,6 @@ import org.brick_breaker.cache.SpriteLoader;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.ImageObserver;
 
 public class Ball extends MovingSprite implements Resettable {
 
@@ -19,30 +18,42 @@ public class Ball extends MovingSprite implements Resettable {
     private int dxStop;
 
     public Ball() {
-        super(INITIAL_BALL_POSITION, "ball",
-                BALL_SIZE, 1, -1);
+
+        super(INITIAL_BALL_POSITION, "ball", BALL_SIZE, 1, -1);
         this.speed = 3;
         this.stop = true;
         this.dxStop = 0;
     }
 
-    public void draw(Graphics2D g2d, ImageObserver observer) {
+    @Override
+    public void draw(Graphics2D g2d) {
 
-        SpriteCache cache = SpriteCache.getInstance();
-        ImageIcon ballIcon = cache.getImage(getImageName(), true);
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2d.drawImage(ballIcon.getImage(), position.x, position.y, observer);
+        g2d.drawImage(getImageIcon().getImage(), position.x, position.y, null);
     }
 
     @Override
     public void move() {
+
         if (!stop) {
             position.x += dx * speed;
             position.y += dy * speed;
         } else {
             position.x += dxStop * speed;
         }
+    }
+
+    @Override
+    public void resetPosition() {
+
+        // Se reinicia la posición de la pelota a la posición inicial.
+        position = new Point(INITIAL_BALL_X, INITIAL_BALL_Y);
+        // Se reinicia la velocidad de la pelota.
+        speed = 3;
+        // Se reinicia la dirección de la pelota.
+        dx = 1;
+        dy = -1;
+        // Se reinicia el estado de la pelota.
+        stop = true;
     }
 
     @Override
@@ -53,42 +64,11 @@ public class Ball extends MovingSprite implements Resettable {
 
     public ImageIcon getImageIcon() {
 
-        return SpriteCache.getInstance().getImage(getImageName(), true);
-    }
-
-    public int getMiddle() {
-
-        return getImageIcon().getIconWidth() / 2;
+        return SpriteCache.getInstance().getImageIcon(getImageName());
     }
 
     // Getters y setters
-    public int getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
-    public boolean isStop() {
-        return stop;
-    }
-
     public void setStop(boolean stop) {
         this.stop = stop;
-    }
-
-    public int getDxStop() {
-        return dxStop;
-    }
-
-    public void setDxStop(int dxStop) {
-        this.dxStop = dxStop;
-    }
-
-    @Override
-    public void resetPosition() {
-
-        position = new Point(INITIAL_BALL_X, INITIAL_BALL_Y);
     }
 }

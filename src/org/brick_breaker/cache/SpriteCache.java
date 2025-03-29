@@ -13,6 +13,9 @@ public class SpriteCache {
      * Caché de imágenes. Se almacenan las imágenes cargadas en la aplicación.
      */
     private final HashMap<String, BufferedImage> cache = new HashMap<>();
+    /**
+     * Caché de imágenes GIF. Se almacenan las imágenes GIF cargadas en la aplicación.
+     */
     private final HashMap<String, ImageIcon> gifCache = new HashMap<>();
     /**
      * Instancia de la caché de imágenes.
@@ -47,6 +50,12 @@ public class SpriteCache {
         cache.putIfAbsent(name, image);
     }
 
+    /**
+     * Función que se encarga de añadir una imagen GIF a la caché.
+     *
+     * @param name  Nombre de la imagen.
+     * @param image Imagen a añadir a la caché.
+     */
     public void addImage(String name, ImageIcon image) {
         gifCache.putIfAbsent(name, image);
     }
@@ -62,7 +71,13 @@ public class SpriteCache {
         return cache.getOrDefault(name, null);
     }
 
-    public ImageIcon getImage(String name, boolean gif) {
+    /**
+     * Función que se encarga de obtener una imagen GIF de la caché.
+     *
+     * @param name Nombre de la imagen.
+     * @return Imagen a retornar de la caché o null en caso de que la imagen a buscar no exista.
+     */
+    public ImageIcon getImageIcon(String name) {
         return gifCache.getOrDefault(name, null);
     }
 }

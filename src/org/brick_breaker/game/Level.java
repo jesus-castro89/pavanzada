@@ -62,14 +62,12 @@ public class Level implements Serializable {
 
     /**
      * Constructor de la clase.
-     *
-     * @param backgroundName Nombre de la imagen de fondo del nivel.
-     * @param musicName      Nombre de la música del nivel.
+     * Nombre de la música del nivel.
      */
-    public Level(String backgroundName, String musicName) {
+    public Level() {
 
-        this.backgroundName = backgroundName;
-        this.musicName = musicName;
+        this.backgroundName = "bg_level_"+levelNumber;
+        this.musicName = "m_level_"+levelNumber;
         bricks = new Brick[LEVEL_WIDTH][LEVEL_HEIGHT];
         currentLevel = levelNumber++;
         populateLevel();
