@@ -1,6 +1,7 @@
 package org.brick_breaker.sprites.bricks;
 
 import org.brick_breaker.cache.SpriteCache;
+import org.brick_breaker.cache.SpriteLoader;
 
 import java.io.Serializable;
 
@@ -43,6 +44,17 @@ public enum BrickType implements Serializable {
 
         this.life = life;
         this.score = score;
+    }
+
+    public void loadSprite(String imageName) {
+
+        SpriteCache spriteCache = SpriteCache.getInstance();
+        switch (this) {
+            case YELLOW -> spriteCache.addImage(imageName, SpriteLoader.loadImage("brick-yellow.png"));
+            case RED -> spriteCache.addImage(imageName, SpriteLoader.loadImage("brick-red.png"));
+            case BLUE -> spriteCache.addImage(imageName, SpriteLoader.loadImage("brick-blue.png"));
+            case GREEN -> spriteCache.addImage(imageName, SpriteLoader.loadImage("brick-green.png"));
+        }
     }
 
     public int getLife() {

@@ -32,6 +32,8 @@ public class Borders extends Sprite {
         SpriteCache spriteCache = SpriteCache.getInstance();
         BufferedImage image = SpriteLoader.loadImage(imageName + ".png");
         spriteCache.addImage(imageName, image);
-        setSize(new Dimension(image.getWidth(), image.getHeight()));
+        if (image != null) {
+            setSize(new Dimension(image.getWidth(), image.getHeight()));
+        }
     }
 }

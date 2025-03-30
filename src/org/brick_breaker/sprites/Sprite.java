@@ -1,6 +1,7 @@
 package org.brick_breaker.sprites;
 
 import org.brick_breaker.cache.SpriteCache;
+import org.brick_breaker.utils.colissions.CollisionManager;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -37,6 +38,7 @@ public abstract class Sprite implements Serializable {
         this.imageName = imageName;
         this.size = size;
         addImageToCache();
+        CollisionManager.getInstance().registerCollidable(this);
     }
 
     /**

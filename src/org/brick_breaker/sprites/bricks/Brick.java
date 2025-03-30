@@ -1,6 +1,9 @@
 package org.brick_breaker.sprites.bricks;
 
 import org.brick_breaker.sprites.Sprite;
+import org.brick_breaker.utils.EdgeType;
+import org.brick_breaker.utils.colissions.CollisionListener;
+import org.brick_breaker.utils.colissions.CollisionManager;
 
 import java.awt.*;
 import java.io.Serializable;
@@ -50,8 +53,10 @@ public class Brick extends Sprite implements Serializable {
     }
 
     @Override
-    protected void addImageToCache() {
+    public void addImageToCache() {
 
+        if (type != null)
+            type.loadSprite(imageName);
     }
 
     public void hit() {
@@ -60,6 +65,7 @@ public class Brick extends Sprite implements Serializable {
         if (life == 0) {
 
             destroyed = true;
+            CollisionManager.getInstance().unregisterCollidable(this);
         }
     }
 

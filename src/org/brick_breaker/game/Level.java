@@ -52,14 +52,6 @@ public class Level implements Serializable {
      */
     private int currentLevel;
 
-    static {
-        SpriteCache spriteCache = SpriteCache.getInstance();
-        spriteCache.addImage("red_brick", SpriteLoader.loadImage("brick-red.png"));
-        spriteCache.addImage("blue_brick", SpriteLoader.loadImage("brick-blue.png"));
-        spriteCache.addImage("green_brick", SpriteLoader.loadImage("brick-green.png"));
-        spriteCache.addImage("yellow_brick", SpriteLoader.loadImage("brick-yellow.png"));
-    }
-
     /**
      * Constructor de la clase.
      * Nombre de la música del nivel.
