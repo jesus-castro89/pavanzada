@@ -71,7 +71,7 @@ Para ello, se deben seguir los siguientes pasos:
 | Documentación | Contiene la documentación de las clases y tipos enumerados implementados.                            | 5%       |
 | Funcionalidad | El sistema de vehículos realiza los cálculos de tarifa y renta de forma correcta.                    | 40%      |
 | Interfaz      | El sistema de vehículos permite agregar vehículos, mostrar información y calcular tarifas y rentas.  | 20%      |
-| Pruebas       | Se realizan pruebas unitarias para verificar el correcto funcionamiento de las clases implementadas. | 20%      |
+| Pruebas       | Se realizan pruebas unitarias para verificar el correcto funcionamiento de las clases implementadas. | 30%      |
 | **Total**     |                                                                                                      | **100**% |
 
 ## Fecha de entrega
