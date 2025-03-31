@@ -76,16 +76,8 @@ public abstract class Sprite implements Serializable {
         return position;
     }
 
-    public void setPosition(Point position) {
-        this.position = position;
-    }
-
     public String getImageName() {
         return imageName;
-    }
-
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
     }
 
     public Dimension getSize() {

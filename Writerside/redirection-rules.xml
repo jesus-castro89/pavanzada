@@ -11,4 +11,8 @@
         </description>
         <accepts>static-final.html</accepts>
     </rule>
+    <rule id="cec3e4b">
+        <description>Created after removal of "Código" from Programación Avanzada</description>
+        <accepts>código.html</accepts>
+    </rule>
 </rules>

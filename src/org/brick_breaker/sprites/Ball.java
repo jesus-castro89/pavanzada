@@ -27,9 +27,9 @@ public class Ball extends MovingSprite implements Resettable, CollisionListener 
     public Ball() {
 
         super(INITIAL_BALL_POSITION, "ball", BALL_SIZE, 1, -1);
-        this.speed = 3;
-        this.stop = false;
-        this.dxStop = 0;
+        speed = 3;
+        stop = false;
+        dxStop = 0;
         CollisionManager.getInstance().addListener(this);
     }
 
@@ -89,7 +89,8 @@ public class Ball extends MovingSprite implements Resettable, CollisionListener 
     @Override
     public void resetPosition() {
         // Se reinicia la posición de la pelota a la posición inicial.
-        position = new Point(INITIAL_BALL_X, INITIAL_BALL_Y);
+        position.x = INITIAL_BALL_X;
+        position.y = INITIAL_BALL_Y;
         // Se reinicia la velocidad de la pelota.
         speed = 3;
         // Se reinicia la dirección de la pelota.
