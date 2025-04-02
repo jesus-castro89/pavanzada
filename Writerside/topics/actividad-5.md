@@ -185,3 +185,209 @@ La estructura de clases del paquete `sprites` es la siguiente:
           public static final Borders TOP_BAR = new Borders("topBar", new Point(18, 0));
           public static final Borders BOTTOM_BAR = new Borders("topBar", new Point(18, 622));
       ```
+
+## Los Bonus
+
+1. Verifica que la clase `Bonus` extienda de `MovingSprite` e implemente la interfaz `Resettable` y
+   `Serializable`.
+2. Verifica que la clase cuente con los siguientes atributos:
+    - `boolean active`: indica si el bonus está activo o no.
+    - `BonusType type`: tipo de bonus.
+3. Verifica la existencia del siguiente constructor:
+   ```java
+       public Bonus(Point startPosition, BonusType type) {
+
+        super(startPosition, type.getImageName(), Brick.BRICK_SIZE, 0, 1);
+        this.type = type;
+        this.active = false;
+       }
+   ```
+4. La implementación como tal de la función `addImageToCache` no es necesaria, ya que la imagen del bonus se
+   cargará posteriormente.
+5. Verifica que el enumerado `BonusType` cuente con los siguientes atributos:
+    - `String imageName`: nombre de la imagen del bonus.
+6. Define la función abstracta `activateBonus` que permite activar el bonus.
+7. Agrega al menos 3 tipos de bonus:
+    - `BonusType.BALL_SPEED`: aumenta la velocidad de la bola.
+    - `BonusType.PADDLE_SPEED`: aumenta la velocidad de la paleta.
+    - `BonusType.MISSILE`: permite disparar un misil.
+8. De tal manera que deberán quedar de la siguiente manera en el tipo enumerado:
+   ```java
+       BALL_SPEED("ballSpeed"){
+        @Override
+        public void activateBonus() {
+        }
+       },
+       PADDLE_SPEED("paddleSpeed"){
+        @Override
+        public void activateBonus() {
+        }
+       },
+       MISSILE("missile"){
+        @Override
+        public void activateBonus() {
+        }
+       };
+   ```
+
+## Actualizando la clase Paddle.java
+
+1. Verifica que la clase `Paddle` extienda de `MovingSprite` e implemente la interfaz `Resettable`.
+2. Verifica que la clase cuente con los siguientes atributos:
+    ```java
+   public static final int INITIAL_PADDLE_X = 202;
+    public static final int INITIAL_PADDLE_Y = 588;
+    public static final Point INITIAL_PADDLE_POSITION =
+            new Point(INITIAL_PADDLE_X, INITIAL_PADDLE_Y);
+    private PaddleType type;
+   ```
+3. Verifica la existencia del siguiente constructor:
+   ```java
+       public Paddle(PaddleType type) {
+
+        super(INITIAL_PADDLE_POSITION, type.getImageName(), type.getSize(), 0, 0);
+        this.type = type;
+       }
+   ```
+4. Verifica la existencia de la función `addImageToCache` que permite almacenar la imagen en caché de las siguiente
+   manera:
+   ```java
+       @Override
+       protected void addImageToCache() {
+
+        SpriteCache spriteCache = SpriteCache.getInstance();
+        spriteCache.addImage(PaddleType.SMALL.getImageName(),
+                SpriteLoader.loadImage("paddle.png"));
+        spriteCache.addImage(PaddleType.MEDIUM.getImageName(),
+                SpriteLoader.loadImage("paddle.png"));
+        spriteCache.addImage(PaddleType.LARGE.getImageName(),
+                SpriteLoader.loadImage("paddle-large.png"));
+        spriteCache.addImage(PaddleType.SHOOTER.getImageName(),
+                SpriteLoader.loadImage("paddle-laser.png"));
+       }
+   ```
+5. Verifica la existencia de la función `resetPosition` que permite restablecer la posición del sprite a su posición
+   inicial.
+   ```java
+       @Override
+       public void resetPosition() {
+           position.x = INITIAL_PADDLE_X;
+           position.y = INITIAL_PADDLE_Y;
+           dx = 0;
+           dy = 0;
+       }
+   ```
+6. Define la función `changeType` que permite cambiar el tipo de paleta.
+   ```java
+       public void changeType(PaddleType type) {
+           this.type = type;
+           setSize(type.getSize());
+           this.imageName = type.getImageName();
+       }
+   ```
+7. Verifica la existencia de la función `getType` que permite obtener el tipo de paleta.
+   ```java
+       public PaddleType getType() {
+           return type;
+       }
+   ```
+8. Verifica que el enumerado `PaddleType` se vea de la siguiente manera:
+   ```java
+   package org.brick_breaker.sprites.paddles;
+   
+   import java.awt.*;
+   
+   public enum PaddleType {
+   SMALL(new Dimension(32, 16)),
+   MEDIUM(new Dimension(64, 16)),
+   LARGE(new Dimension(128, 16)),
+   SHOOTER(new Dimension(64, 16));
+   
+       private final Dimension size;
+   
+       PaddleType(Dimension size) {
+           this.size = size;
+       }
+   
+       public Dimension getSize() {
+           return size;
+       }
+   
+       public String getImageName() {
+           return name().toLowerCase() + "Paddle";
+       }
+   }
+   ```
+
+## Actualizando la clase Brick.java
+
+1. Verifica que la clase `Brick` extienda de `Sprite` e implemente la interfaz `Resettable` y `Serializable`.
+2. Verifica que la clase cuente con los siguientes atributos:
+   ```java
+    public final static int BRICK_WIDTH = 42;
+    public final static int BRICK_HEIGHT = 20;
+    public final static Dimension BRICK_SIZE = new Dimension(BRICK_WIDTH, BRICK_HEIGHT);
+    private final BrickType type;
+    private int life;
+    private boolean destroyed;
+   ```
+3. Verifica la existencia del siguiente constructor:
+   ```java
+    public Brick(Point position, String imageName, BrickType type) {
+
+        super(position, imageName, BRICK_SIZE);
+        this.type = type;
+        this.life = type.getLife();
+        this.destroyed = false;
+    }
+   ```
+4. Verifica la existencia de la función `addImageToCache` que permite almacenar la imagen en caché de las siguiente
+   manera:
+   ```java
+       @Override
+       protected void addImageToCache() {
+           if (type != null)
+            type.loadSprite(imageName);
+       }
+   ```
+5. Verifica la existencia de la función `hit` que permite golpear el ladrillo.
+   ```java
+       public void hit() {
+           life--;
+           if (life <= 0) {
+               destroyed = true;
+           }
+       }
+   ```
+6. Verifica la existencia de la existencia de los getters y setters para los atributos `life` y `destroyed`.
+7. Verifica que el enumerado `BrickType` cuente con los siguientes atributos:
+    - `int life`: vida del ladrillo.
+    - `int score`: puntaje del ladrillo.
+8. Verifica la existencia de la función `loadSprite` de la siguiente manera:
+   ```java
+       public void loadSprite(String imageName) {
+           SpriteCache spriteCache = SpriteCache.getInstance();
+           BufferedImage image = SpriteLoader.loadImage(imageName + ".png");
+           spriteCache.addImage(imageName, image);
+       }
+   ```
+9. Verifica la existencia de los getters de los atributos `life` y `score`.
+10. Crea al menos 3 ladrillos:
+    - `BrickType.RED`: ladrillo rojo.
+    - `BrickType.GREEN`: ladrillo verde.
+    - `BrickType.BLUE`: ladrillo azul.
+
+> Recuerda que al crear los tipos de ladrillos, debes definir la resistencia y el puntaje de cada uno de ellos. Por
+> ejemplo:
+> ```java
+>    RED(1, 10),
+>    GREEN(2, 20),
+>    BLUE(3, 30);
+> ```
+> {style="note"}
+
+## Consideraciones finales
+
+- Recuerda que estos componentes serán usados posteriormente para dibujar los elementos en el área de juego.
+- Recuerda adecuar la clase `FileManager` para que cargue los elementos de la clase `Sprite` y sus respectivos
+  atributos al momento de crear el archivo del nivel.

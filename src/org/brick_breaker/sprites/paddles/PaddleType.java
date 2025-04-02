@@ -8,7 +8,7 @@ public enum PaddleType {
     LARGE(new Dimension(128, 16)),
     SHOOTER(new Dimension(64, 16));
 
-    private Dimension size;
+    private final Dimension size;
 
     PaddleType(Dimension size) {
         this.size = size;
