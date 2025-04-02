@@ -43,6 +43,15 @@ public class SpriteLoader {
      */
     public static ImageIcon loadGif(String fileName) {
 
-        return new ImageIcon(SPRITES_PATH + fileName);
+        try {
+
+            return new ImageIcon(SPRITES_PATH + fileName);
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(null,
+                    "Error al cargar la imagen: " + fileName,
+                    "Error", JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
     }
 }

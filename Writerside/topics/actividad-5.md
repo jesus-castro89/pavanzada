@@ -84,6 +84,19 @@ La estructura de clases del paquete `sprites` es la siguiente:
 3. Verifica la existencia de la función abstracta `move` que permite mover el sprite en función de su velocidad.
 4. Verifica la existencia de los getters y setters para los atributos `dx` y `dy`.
 
+Toma en cuenta la tabla de direcciones de la siguiente manera:
+
+| Dirección        | dx | dy |
+|------------------|----|----|
+| Arriba           | 0  | -1 |
+| Abajo            | 0  | 1  |
+| Izquierda        | -1 | 0  |
+| Derecha          | 1  | 0  |
+| Arriba-Izquierda | -1 | -1 |
+| Arriba-Derecha   | 1  | -1 |
+| Abajo-Izquierda  | -1 | 1  |
+| Abajo-Derecha    | 1  | 1  |
+
 ## Agregando la interfaz Resettable.java
 
 1. Crea la interfaz `Resettable`.

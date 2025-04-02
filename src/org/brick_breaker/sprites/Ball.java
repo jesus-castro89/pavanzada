@@ -28,7 +28,7 @@ public class Ball extends MovingSprite implements Resettable, CollisionListener 
 
         super(INITIAL_BALL_POSITION, "ball", BALL_SIZE, 1, -1);
         speed = 3;
-        stop = false;
+        stop = true;
         dxStop = 0;
         CollisionManager.getInstance().addListener(this);
     }
@@ -97,7 +97,7 @@ public class Ball extends MovingSprite implements Resettable, CollisionListener 
         dx = 1;
         dy = -1;
         // Se reinicia el estado de la pelota.
-        // stop = true;
+        stop = true;
     }
 
     @Override
