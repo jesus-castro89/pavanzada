@@ -50,10 +50,10 @@ public enum BrickType implements Serializable {
 
         SpriteCache spriteCache = SpriteCache.getInstance();
         switch (this) {
-            case YELLOW -> spriteCache.addImage(imageName, SpriteLoader.loadImage("brick-yellow.png"));
-            case RED -> spriteCache.addImage(imageName, SpriteLoader.loadImage("brick-red.png"));
-            case BLUE -> spriteCache.addImage(imageName, SpriteLoader.loadImage("brick-blue.png"));
-            case GREEN -> spriteCache.addImage(imageName, SpriteLoader.loadImage("brick-green.png"));
+            case YELLOW -> spriteCache.addImage(imageName, SpriteLoader.loadImage("bricks/brick-yellow.png"));
+            case RED -> spriteCache.addImage(imageName, SpriteLoader.loadImage("bricks/brick-red.png"));
+            case BLUE -> spriteCache.addImage(imageName, SpriteLoader.loadImage("bricks/brick-blue.png"));
+            case GREEN -> spriteCache.addImage(imageName, SpriteLoader.loadImage("bricks/brick-green.png"));
         }
     }
 
