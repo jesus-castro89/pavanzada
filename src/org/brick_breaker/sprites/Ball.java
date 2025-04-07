@@ -97,7 +97,7 @@ public class Ball extends MovingSprite implements Resettable, CollisionListener 
         dx = 1;
         dy = -1;
         // Se reinicia el estado de la pelota.
-        stop = true;
+        //stop = true;
     }
 
     @Override

@@ -99,20 +99,12 @@ public class GamePanel extends JPanel {
      */
     private void initPanelSize() {
 
-        SpriteCache spriteCache = SpriteCache.getInstance();
-        int width;
-        int height;
-        BufferedImage image = spriteCache.getImage(LEFT_BORDER.getImageName());
-        width = image.getWidth();
-        height = image.getHeight();
-        image = spriteCache.getImage(RIGHT_BORDER.getImageName());
-        width += image.getWidth();
-        image = spriteCache.getImage(TOP_BORDER.getImageName());
-        width += image.getWidth();
-        this.setSize(width, height);
-        this.setPreferredSize(this.getSize());
-        this.setMinimumSize(this.getSize());
-        this.setMaximumSize(this.getSize());
+        int width = (int) (2 * LEFT_BORDER.getSize().getWidth() + TOP_BORDER.getSize().getWidth());
+        int height = (int) (LEFT_BORDER.getSize().getHeight());
+        setSize(width, height);
+        setPreferredSize(getSize());
+        setMinimumSize(getSize());
+        setMaximumSize(getSize());
     }
 
     /**

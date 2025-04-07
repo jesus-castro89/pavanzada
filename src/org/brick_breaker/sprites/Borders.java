@@ -24,6 +24,7 @@ public class Borders extends Sprite {
     private Borders(String imageName, Point location) {
 
         super(location, imageName, new Dimension(0, 0));
+        addImageToCache();
     }
 
     @Override
