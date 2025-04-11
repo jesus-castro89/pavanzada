@@ -10,6 +10,7 @@ import org.brick_breaker.sprites.Sprite;
 import org.brick_breaker.sprites.bricks.Brick;
 import org.brick_breaker.sprites.paddles.Paddle;
 import org.brick_breaker.sprites.paddles.PaddleType;
+import org.brick_breaker.ui.events.KeyboardAction;
 import org.brick_breaker.utils.FileManager;
 import org.brick_breaker.utils.GameCycle;
 import org.brick_breaker.utils.colissions.CollisionManager;
@@ -30,20 +31,21 @@ import java.util.Collections;
  */
 public class GamePanel extends JPanel {
 
-    public static final int INITIAL_LIVES = 15;
-    public static final int INITIAL_SCORE = 0;
-    public static final int INITIAL_LEVEL = 1;
-    public static final int MAX_LEVEL = 5;
     private static final Borders LEFT_BORDER = Borders.LEFT_BAR;
     private static final Borders RIGHT_BORDER = Borders.RIGHT_BAR;
     private static final Borders TOP_BORDER = Borders.TOP_BAR;
     private static final Borders BOTTOM_BORDER = Borders.BOTTOM_BAR;
+    public static GamePanel INSTANCE;
+    public static final int INITIAL_LIVES = 15;
+    public static final int INITIAL_SCORE = 0;
+    public static final int INITIAL_LEVEL = 1;
+    public static final int MAX_LEVEL = 5;
     public static final int WIDTH = (int) (2 * LEFT_BORDER.getSize().getWidth() + TOP_BORDER.getSize().getWidth());
     public static final int HEIGHT = (int) (LEFT_BORDER.getSize().getHeight());
     public static final int GAME_WIDTH = WIDTH - RIGHT_BORDER.getSize().width;
     private static Level level;
     private static final ArrayList<Ball> balls = new ArrayList<>();
-    private static Paddle paddle;
+    private Paddle paddle;
     public static Timer timer;
     private static boolean gameRunning = true;
     private boolean bricksDestroyed = false;
@@ -52,7 +54,7 @@ public class GamePanel extends JPanel {
     private int levelNumber = INITIAL_LEVEL;
     private static ArrayList<Sprite> gameObjects = new ArrayList<>();
 
-    public GamePanel() {
+    private GamePanel() {
 
         initPanelSize();
         level = FileManager.readLevel(Level.levelNumber);
@@ -62,26 +64,17 @@ public class GamePanel extends JPanel {
         playGame();
         registerObjects();
         registerCollidableObjects();
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    paddle.setDx(-1);
-                } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    paddle.setDx(1);
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-
-                if (e.getKeyCode() == java.awt.event.KeyEvent.VK_LEFT || e.getKeyCode() == java.awt.event.KeyEvent.VK_RIGHT) {
-                    paddle.setDx(0);
-                }
-            }
-        });
+        addKeyListener(new KeyboardAction(this));
         setFocusable(true);
         requestFocus();
+    }
+
+    public static GamePanel getInstance() {
+
+        if (INSTANCE == null) {
+            INSTANCE = new GamePanel();
+        }
+        return INSTANCE;
     }
 
     private void registerCollidableObjects() {
@@ -168,7 +161,7 @@ public class GamePanel extends JPanel {
         }
     }
 
-    public static void removeBall(Ball ball) {
+    public void removeBall(Ball ball) {
 
         if (ball != null) {
 
@@ -209,7 +202,7 @@ public class GamePanel extends JPanel {
         }
     }
 
-    public static Paddle getPaddle() {
+    public Paddle getPaddle() {
         return paddle;
     }
 }

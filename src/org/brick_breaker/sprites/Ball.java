@@ -62,8 +62,9 @@ public class Ball extends MovingSprite implements Resettable, CollisionListener 
                 // Si es un borde y además es el borde inferior, se eliminará la pelota.
                 case "Borders" -> {
                     if (collidedWith == Borders.BOTTOM_BAR) {
-                        GamePanel.removeBall(this);
-                        GamePanel.getPaddle().resetPosition();
+                        GamePanel panel=GamePanel.getInstance();
+                        panel.removeBall(this);
+                        panel.getPaddle().resetPosition();
                     }
                 }
             }

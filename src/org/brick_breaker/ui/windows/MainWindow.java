@@ -36,7 +36,7 @@ public class MainWindow extends JFrame {
 
     private void createUIComponents() {
 
-        gamePanel = new GamePanel();
+        gamePanel = GamePanel.getInstance();
         startButton = new BaseButton("Reanudar");
         stopButton = new BaseButton("Pausar");
     }
