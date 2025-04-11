@@ -1,7 +1,6 @@
 package org.brick_breaker.utils.colissions;
 
 import org.brick_breaker.sprites.Sprite;
-import org.brick_breaker.utils.EdgeType;
 
 import java.awt.*;
 import java.util.ArrayList;

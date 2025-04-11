@@ -4,7 +4,7 @@ import org.brick_breaker.cache.SpriteCache;
 import org.brick_breaker.cache.SpriteLoader;
 import org.brick_breaker.sprites.bricks.Brick;
 import org.brick_breaker.ui.panels.GamePanel;
-import org.brick_breaker.utils.EdgeType;
+import org.brick_breaker.utils.colissions.EdgeType;
 import org.brick_breaker.utils.colissions.CollisionListener;
 import org.brick_breaker.utils.colissions.CollisionManager;
 
@@ -27,8 +27,8 @@ public class Ball extends MovingSprite implements Resettable, CollisionListener 
     public Ball() {
 
         super(INITIAL_BALL_POSITION, "ball", BALL_SIZE, 1, -1);
-        speed = 3;
-        stop = true;
+        speed = 4;
+        stop = false;
         dxStop = 0;
         CollisionManager.getInstance().addListener(this);
     }
@@ -63,6 +63,7 @@ public class Ball extends MovingSprite implements Resettable, CollisionListener 
                 case "Borders" -> {
                     if (collidedWith == Borders.BOTTOM_BAR) {
                         GamePanel.removeBall(this);
+                        GamePanel.getPaddle().resetPosition();
                     }
                 }
             }

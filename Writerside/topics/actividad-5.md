@@ -121,7 +121,7 @@ Toma en cuenta la tabla de direcciones de la siguiente manera:
        public Ball() {
            super(INITIAL_BALL_POSITION, "ball", BALL_SIZE, 1, -1);
            speed = 3;
-           stop = false;
+           stop = true;
            dxStop = 0;
        }
    ```

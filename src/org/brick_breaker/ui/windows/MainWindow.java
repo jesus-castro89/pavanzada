@@ -5,6 +5,7 @@ import org.brick_breaker.ui.buttons.events.InGameAction;
 import org.brick_breaker.ui.panels.GamePanel;
 
 import javax.swing.*;
+import java.awt.event.MouseAdapter;
 
 public class MainWindow extends JFrame {
     private JPanel mainPanel;
@@ -12,16 +13,19 @@ public class MainWindow extends JFrame {
     private JPanel actionPanel;
     private JButton startButton;
     private JButton stopButton;
+    private JLabel lbl1;
 
     public MainWindow() {
 
         super("Brick Breaker");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setContentPane(mainPanel);
-        this.pack();
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setContentPane(mainPanel);
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
         addActions();
+        lbl1.addMouseListener(new MouseAdapter() {
+        });
     }
 
     private void addActions() {

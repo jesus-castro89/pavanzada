@@ -22,7 +22,6 @@ public class GameCycle implements ActionListener {
 
     private void doGameCycle() {
 
-        panel.move();
         panel.update();
         panel.repaint();
     }

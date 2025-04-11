@@ -16,6 +16,8 @@ import org.brick_breaker.utils.colissions.CollisionManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,9 +38,12 @@ public class GamePanel extends JPanel {
     private static final Borders RIGHT_BORDER = Borders.RIGHT_BAR;
     private static final Borders TOP_BORDER = Borders.TOP_BAR;
     private static final Borders BOTTOM_BORDER = Borders.BOTTOM_BAR;
+    public static final int WIDTH = (int) (2 * LEFT_BORDER.getSize().getWidth() + TOP_BORDER.getSize().getWidth());
+    public static final int HEIGHT = (int) (LEFT_BORDER.getSize().getHeight());
+    public static final int GAME_WIDTH = WIDTH - RIGHT_BORDER.getSize().width;
     private static Level level;
     private static final ArrayList<Ball> balls = new ArrayList<>();
-    private final Paddle paddle;
+    private static Paddle paddle;
     public static Timer timer;
     private static boolean gameRunning = true;
     private boolean bricksDestroyed = false;
@@ -51,12 +56,32 @@ public class GamePanel extends JPanel {
 
         initPanelSize();
         level = FileManager.readLevel(Level.levelNumber);
-        this.paddle = new Paddle(PaddleType.MEDIUM);
+        paddle = new Paddle(PaddleType.MEDIUM);
         balls.add(new Ball());
         timer = new Timer(10, new GameCycle(this));
         playGame();
         registerObjects();
         registerCollidableObjects();
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                    paddle.setDx(-1);
+                } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                    paddle.setDx(1);
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+                if (e.getKeyCode() == java.awt.event.KeyEvent.VK_LEFT || e.getKeyCode() == java.awt.event.KeyEvent.VK_RIGHT) {
+                    paddle.setDx(0);
+                }
+            }
+        });
+        setFocusable(true);
+        requestFocus();
     }
 
     private void registerCollidableObjects() {
@@ -99,23 +124,10 @@ public class GamePanel extends JPanel {
      */
     private void initPanelSize() {
 
-        int width = (int) (2 * LEFT_BORDER.getSize().getWidth() + TOP_BORDER.getSize().getWidth());
-        int height = (int) (LEFT_BORDER.getSize().getHeight());
-        setSize(width, height);
+        setSize(WIDTH, HEIGHT);
         setPreferredSize(getSize());
         setMinimumSize(getSize());
         setMaximumSize(getSize());
-    }
-
-    /**
-     * Función que se ejecuta cada vez que se actualiza el panel.
-     * Se encarga de mover la pelota y actualizar su posición.
-     * Así como de actualizar el paddle, los bonus y misiles en el juego.
-     */
-    public void move() {
-
-        for (Ball ball : balls)
-            ball.move();
     }
 
     @Override
@@ -195,5 +207,9 @@ public class GamePanel extends JPanel {
                 ((MovingSprite) sprite).move();
             }
         }
+    }
+
+    public static Paddle getPaddle() {
+        return paddle;
     }
 }

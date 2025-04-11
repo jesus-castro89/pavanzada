@@ -81,6 +81,15 @@
         <toc-element topic="buttons.md"/>
         <toc-element topic="jlabel.md"/>
     </toc-element>
+    <toc-element toc-title="Colisiones y Patrones de Diseño">
+        <toc-element topic="rect.md"/>
+        <toc-element topic="observer.md"/>
+        <toc-element topic="singleton.md"/>
+    </toc-element>
+    <toc-element toc-title="Eventos">
+        <toc-element topic="eventos.md"/>
+        <toc-element topic="action-listener.md"/>
+    </toc-element>
     <toc-element toc-title="Entregables">
         <toc-element topic="notas-entregables.md"/>
         <toc-element topic="entregable-1.md"/>
@@ -95,5 +104,6 @@
         <toc-element topic="actividad-4.md"/>
         <toc-element topic="actividad-5.md"/>
         <toc-element topic="actividad-6.md"/>
+        <toc-element topic="colissions.md"/>
     </toc-element>
 </instance-profile>

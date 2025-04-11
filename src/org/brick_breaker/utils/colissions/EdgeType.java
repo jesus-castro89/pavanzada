@@ -1,4 +1,4 @@
-package org.brick_breaker.utils;
+package org.brick_breaker.utils.colissions;
 
 public enum EdgeType {
 
