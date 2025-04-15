@@ -11,6 +11,7 @@ import org.brick_breaker.sprites.bricks.Brick;
 import org.brick_breaker.sprites.paddles.Paddle;
 import org.brick_breaker.sprites.paddles.PaddleType;
 import org.brick_breaker.ui.events.KeyboardAction;
+import org.brick_breaker.ui.windows.MainWindow;
 import org.brick_breaker.utils.FileManager;
 import org.brick_breaker.utils.GameCycle;
 import org.brick_breaker.utils.colissions.CollisionManager;
@@ -53,6 +54,7 @@ public class GamePanel extends JPanel {
     private int score = INITIAL_SCORE;
     private int levelNumber = INITIAL_LEVEL;
     private static ArrayList<Sprite> gameObjects = new ArrayList<>();
+    private MainWindow mainWindow;
 
     private GamePanel() {
 
@@ -141,14 +143,11 @@ public class GamePanel extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                 RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-        if (gameRunning) {
+        BufferedImage background = SpriteLoader.loadImage(level.getBackgroundName() + ".png");
+        g2d.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
+        for (Sprite sprite : gameObjects) {
 
-            BufferedImage background = SpriteLoader.loadImage(level.getBackgroundName() + ".png");
-            g2d.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
-            for (Sprite sprite : gameObjects) {
-
-                sprite.draw(g2d);
-            }
+            sprite.draw(g2d);
         }
         Toolkit.getDefaultToolkit().sync();
     }
