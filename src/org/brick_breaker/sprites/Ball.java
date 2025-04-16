@@ -62,7 +62,7 @@ public class Ball extends MovingSprite implements Resettable, CollisionListener 
                 // Si es un borde y además es el borde inferior, se eliminará la pelota.
                 case "Borders" -> {
                     if (collidedWith == Borders.BOTTOM_BAR) {
-                        GamePanel panel=GamePanel.getInstance();
+                        GamePanel panel = GamePanel.getInstance();
                         panel.removeBall(this);
                         panel.getPaddle().resetPosition();
                     }
@@ -74,7 +74,9 @@ public class Ball extends MovingSprite implements Resettable, CollisionListener 
     @Override
     public void draw(Graphics2D g2d) {
 
-        g2d.drawImage(getImageIcon().getImage(), position.x, position.y, null);
+        Graphics2D g2 = (Graphics2D) g2d.create();
+        g2.drawImage(getImageIcon().getImage(), position.x, position.y, null);
+        g2.dispose();
     }
 
     @Override

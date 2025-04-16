@@ -3,6 +3,8 @@ package org.brick_breaker.ui.windows;
 import org.brick_breaker.ui.buttons.ThreePartButtonUI;
 import org.brick_breaker.ui.events.StartButtonAction;
 import org.brick_breaker.ui.events.StopButtonAction;
+import org.brick_breaker.ui.labels.LifeLabelUI;
+import org.brick_breaker.ui.labels.ScoreLabelUI;
 import org.brick_breaker.ui.panels.GamePanel;
 
 import javax.swing.*;
@@ -16,7 +18,8 @@ public class MainWindow extends JFrame {
     private JPanel actionPanel;
     private JButton startButton;
     private JButton stopButton;
-    private JLabel lbl1;
+    private JLabel lifeLabel;
+    private JLabel scoreLabel;
 
     private MainWindow() {
 
@@ -27,7 +30,7 @@ public class MainWindow extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
         addActions();
-        lbl1.addMouseListener(new MouseAdapter() {
+        lifeLabel.addMouseListener(new MouseAdapter() {
         });
     }
 
@@ -50,8 +53,12 @@ public class MainWindow extends JFrame {
         gamePanel = GamePanel.getInstance();
         startButton = new JButton("Reanudar");
         stopButton = new JButton("Pausar");
+        scoreLabel = new JLabel("0");
+        lifeLabel = new JLabel("3");
         ThreePartButtonUI.configureButton(startButton);
         ThreePartButtonUI.configureButton(stopButton);
+        ScoreLabelUI.configureLabel(scoreLabel);
+        LifeLabelUI.configureLabel(lifeLabel);
     }
 
     public JButton getStartButton() {

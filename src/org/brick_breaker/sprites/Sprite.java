@@ -48,7 +48,9 @@ public abstract class Sprite implements Serializable {
      */
     public void draw(Graphics2D g2d) {
 
-        g2d.drawImage(getImage(), position.x, position.y, null);
+        Graphics2D g2 = (Graphics2D) g2d.create();
+        g2.drawImage(getImage(), position.x, position.y, null);
+        g2.dispose();
     }
 
     /**
