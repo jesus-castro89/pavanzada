@@ -6,6 +6,7 @@ import org.brick_breaker.sprites.Borders;
 import org.brick_breaker.sprites.MovingSprite;
 import org.brick_breaker.sprites.Resettable;
 import org.brick_breaker.sprites.Sprite;
+import org.brick_breaker.sprites.bonus.Bonus;
 import org.brick_breaker.ui.panels.GamePanel;
 import org.brick_breaker.utils.colissions.EdgeType;
 import org.brick_breaker.utils.colissions.CollisionListener;
@@ -42,7 +43,14 @@ public class Paddle extends MovingSprite implements Resettable, CollisionListene
     @Override
     public void onCollisionDetected(Sprite collider, Sprite collidedWith, EdgeType edgeType) {
 
-        //TODO: Implementar la lógica de colisión para el Paddle
+        if (collider == this) {
+            System.out.println(collider.getBounds());
+            if(collidedWith instanceof Bonus) {
+
+                System.out.println("Bonus collected: " + ((Bonus) collidedWith).getType());
+                //((Bonus) collidedWith).setActive(false);
+            }
+        }
     }
 
     @Override

@@ -1,5 +1,7 @@
 package org.brick_breaker.utils;
 
+import org.brick_breaker.sprites.bonus.BonusType;
+
 import java.util.Random;
 
 /**
@@ -12,6 +14,23 @@ public class Randomized {
      */
     private Randomized() {
 
+    }
+
+    public static boolean getRandomBoolean() {
+
+        return randomInt(0, 1) == 1;
+    }
+
+    /**
+     * Función que se encarga de generar un número aleatorio entre 0 y el número de tipos de bonus.
+     *
+     * @return Tipo de bonus aleatorio.
+     */
+    public static BonusType getRandomBonusType() {
+
+        BonusType[] bonusTypes = BonusType.values();
+        int randomIndex = randomInt(0, bonusTypes.length - 1);
+        return bonusTypes[randomIndex];
     }
 
     /**

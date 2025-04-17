@@ -1,15 +1,19 @@
 package org.brick_breaker.utils.colissions;
 
+import org.brick_breaker.sprites.Borders;
 import org.brick_breaker.sprites.Sprite;
+import org.brick_breaker.sprites.bonus.Bonus;
+import org.brick_breaker.ui.panels.GamePanel;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CollisionManager {
     private static CollisionManager instance;
-    private final List<CollisionListener> listeners = new ArrayList<>();
-    private final List<Sprite> collidableObjects = new ArrayList<>();
+    private final CopyOnWriteArrayList<CollisionListener> listeners = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<Sprite> collidableObjects = new CopyOnWriteArrayList<>();
 
     private CollisionManager() {
     }
@@ -30,6 +34,7 @@ public class CollisionManager {
     }
 
     public void addListener(CollisionListener listener) {
+        System.out.println("Listener added: " + listener.getClass().getSimpleName());
         listeners.add(listener);
     }
 
@@ -38,19 +43,14 @@ public class CollisionManager {
     }
 
     public void checkCollisions() {
-
         for (int i = 0; i < collidableObjects.size(); i++) {
             Sprite obj1 = collidableObjects.get(i);
-
             // Verificar colisión con bordes
             checkBorderCollisions(obj1);
-
             // Verificar colisión con otros objetos
             for (int j = i + 1; j < collidableObjects.size(); j++) {
                 Sprite obj2 = collidableObjects.get(j);
-
                 if (obj1.getBounds().intersects(obj2.getBounds())) {
-
                     EdgeType collisionSide = determineCollisionSide(obj1.getBounds(), obj2.getBounds());
                     notifyListeners(obj1, obj2, collisionSide);
                     notifyListeners(obj2, obj1, inverseCollisionSide(collisionSide));
@@ -68,14 +68,25 @@ public class CollisionManager {
         if (bounds.y <= 0) {
             notifyListeners(obj, null, EdgeType.TOP_EDGE);
         }
+        if (bounds.x + bounds.width >= GamePanel.GAME_WIDTH) {
+            notifyListeners(obj, null, EdgeType.RIGHT_EDGE);
+        }
+        if (bounds.y + bounds.height >= GamePanel.HEIGHT - Borders.BOTTOM_BAR.getBounds().height) {
+            if (obj instanceof Bonus) {
+                System.out.println("Bonus: " + ((Bonus) obj).getType());
+            }
+            notifyListeners(obj, null, EdgeType.BOTTOM_EDGE);
+        }
     }
 
     private void notifyListeners(Sprite collider, Sprite collidedWith, EdgeType side) {
-
-        for (CollisionListener listener : listeners) {
+        // Crear una copia de la lista de listeners para evitar ConcurrentModificationException
+        List<CollisionListener> listenersCopy = new ArrayList<>(listeners);
+        for (CollisionListener listener : listenersCopy) {
             listener.onCollisionDetected(collider, collidedWith, side);
         }
     }
+
 
     private EdgeType determineCollisionSide(Rectangle obj1, Rectangle obj2) {
 

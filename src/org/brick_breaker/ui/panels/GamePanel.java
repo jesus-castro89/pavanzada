@@ -7,6 +7,8 @@ import org.brick_breaker.sprites.Ball;
 import org.brick_breaker.sprites.Borders;
 import org.brick_breaker.sprites.MovingSprite;
 import org.brick_breaker.sprites.Sprite;
+import org.brick_breaker.sprites.bonus.Bonus;
+import org.brick_breaker.sprites.bonus.BonusType;
 import org.brick_breaker.sprites.bricks.Brick;
 import org.brick_breaker.sprites.paddles.Paddle;
 import org.brick_breaker.sprites.paddles.PaddleType;
@@ -14,6 +16,7 @@ import org.brick_breaker.ui.events.KeyboardAction;
 import org.brick_breaker.ui.windows.MainWindow;
 import org.brick_breaker.utils.FileManager;
 import org.brick_breaker.utils.GameCycle;
+import org.brick_breaker.utils.Randomized;
 import org.brick_breaker.utils.colissions.CollisionManager;
 
 import javax.swing.*;
@@ -48,24 +51,25 @@ public class GamePanel extends JPanel {
     private static final ArrayList<Ball> balls = new ArrayList<>();
     private Paddle paddle;
     public static Timer timer;
-    private static boolean gameRunning = true;
+    private static boolean gameRunning = false;
     private boolean bricksDestroyed = false;
     private static int lives = INITIAL_LIVES;
-    private int score = INITIAL_SCORE;
+    private static int score = INITIAL_SCORE;
     private int levelNumber = INITIAL_LEVEL;
-    private static ArrayList<Sprite> gameObjects = new ArrayList<>();
-    private MainWindow mainWindow;
+    private static final ArrayList<Sprite> gameObjects = new ArrayList<>();
 
     private GamePanel() {
 
         initPanelSize();
         level = FileManager.readLevel(Level.levelNumber);
+    }
+
+    public void startGame() {
         paddle = new Paddle(PaddleType.MEDIUM);
         balls.add(new Ball());
         timer = new Timer(10, new GameCycle(this));
         playGame();
         registerObjects();
-        registerCollidableObjects();
         addKeyListener(new KeyboardAction(this));
         setFocusable(true);
         requestFocus();
@@ -77,17 +81,6 @@ public class GamePanel extends JPanel {
             INSTANCE = new GamePanel();
         }
         return INSTANCE;
-    }
-
-    private void registerCollidableObjects() {
-
-        CollisionManager collisionManager = CollisionManager.getInstance();
-        for (Sprite sprite : gameObjects) {
-            if (sprite instanceof Brick) {
-                ((Brick) sprite).addImageToCache();
-                collisionManager.registerCollidable(sprite);
-            }
-        }
     }
 
     private void registerObjects() {
@@ -103,6 +96,12 @@ public class GamePanel extends JPanel {
         gameObjects.add(BOTTOM_BORDER);
         gameObjects.add(paddle);
         gameObjects.addAll(balls);
+        for (Sprite sprite : gameObjects) {
+            if (sprite instanceof Brick) {
+                ((Brick) sprite).addImageToCache();
+            }
+            CollisionManager.getInstance().registerCollidable(sprite);
+        }
     }
 
     /**
@@ -127,7 +126,6 @@ public class GamePanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         // Se activa el antializado de la imagen para mejorar la calidad de la imagen.
@@ -142,21 +140,42 @@ public class GamePanel extends JPanel {
         // Se activa el antializado de texto para mejorar la calidad del texto.
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                 RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
         BufferedImage background = SpriteLoader.loadImage(level.getBackgroundName() + ".png");
         g2d.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
-        for (Sprite sprite : gameObjects) {
-
+        for (Sprite sprite : gameObjects)
             sprite.draw(g2d);
-        }
         Toolkit.getDefaultToolkit().sync();
+    }
+
+    private static void createBonus(Brick brick) {
+
+        //if (brick != null && Randomized.getRandomBoolean()) {
+
+        BonusType bonusType = Randomized.getRandomBonusType();
+        Bonus bonus = new Bonus(brick.getPosition(), bonusType);
+        //System.out.println("Bonus: " + bonusType);
+        bonus.addImageToCache();
+        gameObjects.add(bonus);
+        CollisionManager.getInstance().registerCollidable(bonus);
+        //}
+    }
+
+    public static void removeBonus(Bonus bonus) {
+
+        if (bonus != null) {
+            gameObjects.remove(bonus);
+            CollisionManager.getInstance().unregisterCollidable(bonus);
+        }
     }
 
     public static void removeBrick(Brick brick) {
 
         if (brick != null) {
 
+            score += brick.getScore();
             gameObjects.remove(brick);
+            CollisionManager.getInstance().unregisterCollidable(brick);
+            createBonus(brick);
         }
     }
 
@@ -165,8 +184,10 @@ public class GamePanel extends JPanel {
         if (ball != null) {
 
             if (balls.size() > 1) {
+
                 balls.remove(ball);
                 gameObjects.remove(ball);
+                CollisionManager.getInstance().unregisterCollidable(ball);
             } else {
                 ball.resetPosition();
                 lives--;
@@ -190,18 +211,54 @@ public class GamePanel extends JPanel {
         this.requestFocus();
     }
 
+    private void updateLabels() {
+
+        MainWindow mainWindow = MainWindow.getInstance();
+        mainWindow.getScoreLabel().setText(String.valueOf(score));
+        mainWindow.getLifeLabel().setText(String.valueOf(lives));
+    }
+
     public void update() {
 
-        CollisionManager.getInstance().checkCollisions();
-        for (Sprite sprite : gameObjects) {
+        if (gameRunning) {
+            updateLabels();
+            CollisionManager.getInstance().checkCollisions();
+            for (Sprite sprite : gameObjects) {
 
-            if (sprite instanceof MovingSprite) {
-                ((MovingSprite) sprite).move();
+                if (sprite instanceof MovingSprite) {
+                    ((MovingSprite) sprite).move();
+                }
             }
         }
     }
 
     public Paddle getPaddle() {
         return paddle;
+    }
+
+    public boolean isGameRunning() {
+
+        return gameRunning;
+    }
+
+    public ArrayList<Ball> getBalls() {
+
+        return balls;
+    }
+
+    public boolean isBricksDestroyed() {
+        return bricksDestroyed;
+    }
+
+    public void setBricksDestroyed(boolean bricksDestroyed) {
+        this.bricksDestroyed = bricksDestroyed;
+    }
+
+    public int getLevelNumber() {
+        return levelNumber;
+    }
+
+    public void setLevelNumber(int levelNumber) {
+        this.levelNumber = levelNumber;
     }
 }

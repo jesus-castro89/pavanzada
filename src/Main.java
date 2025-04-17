@@ -16,7 +16,7 @@ public class Main {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                MainWindow.getInstance();
+                MainWindow.getInstance().startGame();
             }
         });
     }

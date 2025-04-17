@@ -1,6 +1,7 @@
 package org.brick_breaker.utils.colissions;
 
 import org.brick_breaker.sprites.Sprite;
+import org.brick_breaker.ui.panels.GamePanel;
 
 /**
  * Interfaz que define un listener para detectar colisiones entre sprites.

@@ -61,6 +61,12 @@ public class MainWindow extends JFrame {
         LifeLabelUI.configureLabel(lifeLabel);
     }
 
+    public void startGame() {
+        GamePanel.getInstance().startGame();
+        startButton.setEnabled(false);
+        stopButton.setEnabled(true);
+    }
+
     public JButton getStartButton() {
 
         return startButton;
@@ -69,5 +75,15 @@ public class MainWindow extends JFrame {
     public JButton getStopButton() {
 
         return stopButton;
+    }
+
+    public JLabel getLifeLabel() {
+
+        return lifeLabel;
+    }
+
+    public JLabel getScoreLabel() {
+
+        return scoreLabel;
     }
 }

@@ -3,6 +3,7 @@ package org.brick_breaker.sprites;
 import org.brick_breaker.cache.SpriteCache;
 import org.brick_breaker.cache.SpriteLoader;
 import org.brick_breaker.sprites.bricks.Brick;
+import org.brick_breaker.sprites.paddles.Paddle;
 import org.brick_breaker.ui.panels.GamePanel;
 import org.brick_breaker.utils.colissions.EdgeType;
 import org.brick_breaker.utils.colissions.CollisionListener;
@@ -28,44 +29,44 @@ public class Ball extends MovingSprite implements Resettable, CollisionListener 
 
         super(INITIAL_BALL_POSITION, "ball", BALL_SIZE, 1, -1);
         speed = 4;
-        stop = false;
+        stop = true;
         dxStop = 0;
         CollisionManager.getInstance().addListener(this);
     }
 
     @Override
     public void onCollisionDetected(Sprite collider, Sprite collidedWith, EdgeType edgeType) {
-
+        // Se verifica si la pelota colisiona con otro objeto.
         if (collider == this) {
-            // Se ajusta la posición de la pelota para que no se quede pegada al borde del objeto con el que colisionó.
-            switch (edgeType) {
+            if (collidedWith instanceof Paddle || collidedWith instanceof Brick || collidedWith instanceof Borders) {
+                // Se ajusta la posición de la pelota para que no se quede pegada al borde del objeto con el que colisionó.
+                switch (edgeType) {
 
-                case LEFT_EDGE -> getPosition().x = collidedWith.getPosition().x - getImageIcon().getIconWidth();
-                case RIGHT_EDGE -> getPosition().x = collidedWith.getPosition().x + collidedWith.getSize().width;
-                case TOP_EDGE -> getPosition().y = collidedWith.getPosition().y - getImageIcon().getIconHeight();
-                case BOTTOM_EDGE -> getPosition().y = collidedWith.getPosition().y + collidedWith.getSize().height;
-            }
-            // Se invierte la dirección de la pelota al colisionar con un borde o un ladrillo.
-            switch (edgeType) {
-                case LEFT_EDGE, RIGHT_EDGE -> setDx(-getDx());
-                case TOP_EDGE, BOTTOM_EDGE -> setDy(-getDy());
+                    case LEFT_EDGE -> getPosition().x = collidedWith.getPosition().x - getImageIcon().getIconWidth();
+                    case RIGHT_EDGE -> getPosition().x = collidedWith.getPosition().x + collidedWith.getSize().width;
+                    case TOP_EDGE -> getPosition().y = collidedWith.getPosition().y - getImageIcon().getIconHeight();
+                    case BOTTOM_EDGE -> getPosition().y = collidedWith.getPosition().y + collidedWith.getSize().height;
+                }
+                // Se invierte la dirección de la pelota al colisionar con un borde o un ladrillo.
+                switch (edgeType) {
+                    case LEFT_EDGE, RIGHT_EDGE -> setDx(-getDx());
+                    case TOP_EDGE, BOTTOM_EDGE -> setDy(-getDy());
+                }
             }
             // Se determina el tipo de objeto con el que colisiona la pelota.
-            switch (collidedWith.getClass().getSimpleName()) {
-                // Si es un ladrillo, se indicará al panel que lo elimine.
-                case "Brick" -> {
-                    ((Brick) collidedWith).hit();
-                    if (((Brick) collidedWith).isDestroyed()) {
-                        GamePanel.removeBrick((Brick) collidedWith);
-                    }
+            // Si es un ladrillo, se indicará al panel que lo elimine.
+            if (collidedWith instanceof Brick brick) {
+                brick.hit();
+                if (brick.isDestroyed()) {
+                    GamePanel.removeBrick(brick);
                 }
-                // Si es un borde y además es el borde inferior, se eliminará la pelota.
-                case "Borders" -> {
-                    if (collidedWith == Borders.BOTTOM_BAR) {
-                        GamePanel panel = GamePanel.getInstance();
-                        panel.removeBall(this);
-                        panel.getPaddle().resetPosition();
-                    }
+            }
+            // Si es un borde y además es el borde inferior, se eliminará la pelota.
+            if (collidedWith instanceof Borders) {
+                if (collidedWith == Borders.BOTTOM_BAR) {
+                    GamePanel panel = GamePanel.getInstance();
+                    panel.removeBall(this);
+                    panel.getPaddle().resetPosition();
                 }
             }
         }
@@ -86,7 +87,10 @@ public class Ball extends MovingSprite implements Resettable, CollisionListener 
             position.x += dx * speed;
             position.y += dy * speed;
         } else {
-            position.x += dxStop * speed;
+            // Si la pelota está detenida, se ajusta su posición a la posición de la paleta.
+            Paddle paddle = GamePanel.getInstance().getPaddle();
+            position.x = paddle.getPosition().x + (paddle.getSize().width / 2) - (getSize().width / 2);
+            position.y = paddle.getPosition().y - getSize().height;
         }
     }
 
@@ -101,7 +105,7 @@ public class Ball extends MovingSprite implements Resettable, CollisionListener 
         dx = 1;
         dy = -1;
         // Se reinicia el estado de la pelota.
-        //stop = true;
+        stop = true;
     }
 
     @Override

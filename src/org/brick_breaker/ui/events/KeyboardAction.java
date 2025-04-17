@@ -22,6 +22,15 @@ public class KeyboardAction extends KeyAdapter {
             case KeyEvent.VK_RIGHT:
                 gamePanel.getPaddle().setDx(1);
                 break;
+            case KeyEvent.VK_SPACE:
+                if (gamePanel.isGameRunning()) {
+
+                    if (!gamePanel.getBalls().isEmpty()) {
+
+                        gamePanel.getBalls().get(0).setStop(false);
+                    }
+                }
+                break;
             default:
                 break;
         }

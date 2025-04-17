@@ -1,5 +1,8 @@
 package org.brick_breaker.sprites.bonus;
 
+import org.brick_breaker.cache.SpriteCache;
+import org.brick_breaker.cache.SpriteLoader;
+
 import java.io.Serializable;
 
 /**
@@ -10,7 +13,7 @@ import java.io.Serializable;
  * R: Para reducir el tamaño de la barra del jugador
  * E: Para expandir la barra del jugador
  * B: Es para subir en 1000 puntos el puntaje del jugador
- * C: Es para regresar la barra al tamaño comun o base del jugador
+ * C: Es para regresar la barra al tamaño común o base del jugador
  * D: TODO Definir un bonus a su gusto (Puede ser un aumento de puntos o algo más)
  * P: TODO Definir un bonus a su gusto (Puede ser un aumento de puntos o algo más)
  * T: TODO Definir un bonus a su gusto (Puede ser un aumento de puntos o algo más)
@@ -52,7 +55,7 @@ public enum BonusType implements Serializable {
         public void activateBonus() {
         }
     },
-    D("D_bonus") {
+    D("d_bonus") {
         @Override
         public void activateBonus() {
         }
@@ -79,6 +82,7 @@ public enum BonusType implements Serializable {
      * @param imageName Nombre de la imagen asociada al tipo de Bonus
      */
     BonusType(String imageName) {
+
         this.imageName = imageName;
     }
 
