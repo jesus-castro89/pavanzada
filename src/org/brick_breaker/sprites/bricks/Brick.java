@@ -83,4 +83,8 @@ public class Brick extends Sprite implements Serializable {
     public BrickType getType() {
         return type;
     }
+
+    public void setDestroyed(boolean destroyed) {
+        this.destroyed = destroyed;
+    }
 }

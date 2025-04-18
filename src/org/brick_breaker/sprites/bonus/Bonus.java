@@ -70,10 +70,12 @@ public class Bonus extends MovingSprite implements Serializable, CollisionListen
     public void onCollisionDetected(Sprite collider, Sprite collidedWith, EdgeType edgeType) {
 
         if (collider == this) {
-            System.out.println("Bonus colisionado con el borde");
             if (collidedWith == null) {
-                System.out.println("Bonus colisionado con el borde");
-                System.out.println(edgeType);
+                GamePanel.removeBonus(this);
+            }
+            if(collidedWith instanceof Paddle) {
+                GamePanel.removeBonus(this);
+                this.type.activateBonus();
             }
         }
     }

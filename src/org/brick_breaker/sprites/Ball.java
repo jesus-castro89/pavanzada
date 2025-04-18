@@ -23,14 +23,19 @@ public class Ball extends MovingSprite implements Resettable, CollisionListener 
     public static final Dimension BALL_SIZE = new Dimension(BALL_WIDTH, BALL_WIDTH);
     private int speed;
     private boolean stop;
-    private int dxStop;
 
     public Ball() {
 
         super(INITIAL_BALL_POSITION, "ball", BALL_SIZE, 1, -1);
         speed = 4;
         stop = true;
-        dxStop = 0;
+        CollisionManager.getInstance().addListener(this);
+    }
+
+    public Ball(Point startPosition) {
+        super(startPosition, "ball", BALL_SIZE, 1, -1);
+        speed = 4;
+        stop = true;
         CollisionManager.getInstance().addListener(this);
     }
 
@@ -122,5 +127,9 @@ public class Ball extends MovingSprite implements Resettable, CollisionListener 
     // Getters y setters
     public void setStop(boolean stop) {
         this.stop = stop;
+    }
+
+    public boolean isStop() {
+        return stop;
     }
 }

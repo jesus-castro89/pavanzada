@@ -1,7 +1,7 @@
 package org.brick_breaker.sprites.bonus;
 
-import org.brick_breaker.cache.SpriteCache;
-import org.brick_breaker.cache.SpriteLoader;
+import org.brick_breaker.sprites.paddles.PaddleType;
+import org.brick_breaker.ui.panels.GamePanel;
 
 import java.io.Serializable;
 
@@ -23,36 +23,43 @@ public enum BonusType implements Serializable {
     L("l_bonus") {
         @Override
         public void activateBonus() {
+            GamePanel.getInstance().addLife();
         }
     },
     S("s_bonus") {
         @Override
         public void activateBonus() {
+            GamePanel.getInstance().getPaddle().changeType(PaddleType.SHOOTER);
         }
     },
     M("m_bonus") {
         @Override
         public void activateBonus() {
+            GamePanel.getInstance().duplicateBall();
         }
     },
     R("r_bonus") {
         @Override
         public void activateBonus() {
+            GamePanel.getInstance().getPaddle().changeType(PaddleType.SMALL);
         }
     },
     E("e_bonus") {
         @Override
         public void activateBonus() {
+            GamePanel.getInstance().getPaddle().changeType(PaddleType.LARGE);
         }
     },
     B("b_bonus") {
         @Override
         public void activateBonus() {
+            GamePanel.getInstance().addScore(1000);
         }
     },
     C("c_bonus") {
         @Override
         public void activateBonus() {
+            GamePanel.getInstance().getPaddle().changeType(PaddleType.MEDIUM);
         }
     },
     D("d_bonus") {

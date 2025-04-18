@@ -75,6 +75,10 @@ public class Paddle extends MovingSprite implements Resettable, CollisionListene
         setSize(type.getSize());
     }
 
+    public PaddleType getType() {
+        return type;
+    }
+
     @Override
     public void resetPosition() {
         position.x = INITIAL_PADDLE_X;

@@ -1,5 +1,7 @@
 package org.brick_breaker.ui.events;
 
+import org.brick_breaker.sprites.Missile;
+import org.brick_breaker.sprites.paddles.PaddleType;
 import org.brick_breaker.ui.panels.GamePanel;
 
 import java.awt.event.KeyAdapter;
@@ -24,13 +26,14 @@ public class KeyboardAction extends KeyAdapter {
                 break;
             case KeyEvent.VK_SPACE:
                 if (gamePanel.isGameRunning()) {
-
-                    if (!gamePanel.getBalls().isEmpty()) {
-
-                        gamePanel.getBalls().get(0).setStop(false);
-                    }
+                    if (!gamePanel.getBalls().isEmpty() && gamePanel.getBalls().getFirst().isStop())
+                        gamePanel.getBalls().getFirst().setStop(false);
+                    if (gamePanel.getPaddle().getType() == PaddleType.SHOOTER)
+                        gamePanel.addMissile();
                 }
                 break;
+            case KeyEvent.VK_F:
+                gamePanel.destroyAllBricks();
             default:
                 break;
         }
