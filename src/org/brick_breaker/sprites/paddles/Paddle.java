@@ -13,7 +13,7 @@ import org.brick_breaker.utils.colissions.CollisionListener;
 
 import java.awt.*;
 
-public class Paddle extends MovingSprite implements Resettable, CollisionListener {
+public class Paddle extends MovingSprite implements Resettable {
 
     private static final int SPEED = 3;
     public static final int INITIAL_PADDLE_X = 202;
@@ -36,19 +36,6 @@ public class Paddle extends MovingSprite implements Resettable, CollisionListene
                 position.x = Borders.LEFT_BAR.getImage().getWidth();
             } else if (position.x > GamePanel.GAME_WIDTH - getImage().getWidth()) {
                 position.x = GamePanel.GAME_WIDTH - getImage().getWidth();
-            }
-        }
-    }
-
-    @Override
-    public void onCollisionDetected(Sprite collider, Sprite collidedWith, EdgeType edgeType) {
-
-        if (collider == this) {
-            System.out.println(collider.getBounds());
-            if(collidedWith instanceof Bonus) {
-
-                System.out.println("Bonus collected: " + ((Bonus) collidedWith).getType());
-                //((Bonus) collidedWith).setActive(false);
             }
         }
     }

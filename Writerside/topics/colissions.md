@@ -49,16 +49,19 @@ estar en el paquete `org.brick_breaker.utils.colissions` y se verá de la siguie
 ```java
 package org.brick_breaker.utils.colissions;
 
+import org.brick_breaker.sprites.Borders;
 import org.brick_breaker.sprites.Sprite;
+import org.brick_breaker.ui.panels.GamePanel;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CollisionManager {
     private static CollisionManager instance;
-    private final List<CollisionListener> listeners = new ArrayList<>();
-    private final List<Sprite> collidableObjects = new ArrayList<>();
+    private final CopyOnWriteArrayList<CollisionListener> listeners = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<Sprite> collidableObjects = new CopyOnWriteArrayList<>();
 
     private CollisionManager() {
     }
@@ -111,17 +114,21 @@ public class CollisionManager {
     private void checkBorderCollisions(Sprite obj) {
 
         Rectangle bounds = obj.getBounds();
-        if (bounds.x <= 0) {
+        if (bounds.x <= 0)
             notifyListeners(obj, null, EdgeType.LEFT_EDGE);
-        }
-        if (bounds.y <= 0) {
+        if (bounds.y <= 0)
             notifyListeners(obj, null, EdgeType.TOP_EDGE);
-        }
+        if (bounds.x + bounds.width >= GamePanel.GAME_WIDTH)
+            notifyListeners(obj, null, EdgeType.RIGHT_EDGE);
+        if (bounds.y + bounds.height >= GamePanel.HEIGHT - Borders.BOTTOM_BAR.getBounds().height)
+            notifyListeners(obj, null, EdgeType.BOTTOM_EDGE);
     }
 
     private void notifyListeners(Sprite collider, Sprite collidedWith, EdgeType side) {
 
-        for (CollisionListener listener : listeners) {
+        // Crear una copia de la lista de listeners para evitar ConcurrentModificationException
+        List<CollisionListener> listenersCopy = new ArrayList<>(listeners);
+        for (CollisionListener listener : listenersCopy) {
             listener.onCollisionDetected(collider, collidedWith, side);
         }
     }
@@ -132,11 +139,9 @@ public class CollisionManager {
         int rightImpact = obj2.x + obj2.width - obj1.x;
         int topImpact = obj1.y + obj1.height - obj2.y;
         int bottomImpact = obj2.y + obj2.height - obj1.y;
-
         int[] impacts = {leftImpact, rightImpact, topImpact, bottomImpact};
         int minImpact = Integer.MAX_VALUE;
         EdgeType edgeType = EdgeType.LEFT_EDGE;
-
         for (int i = 0; i < impacts.length; i++) {
             if (impacts[i] < minImpact) {
                 minImpact = impacts[i];
@@ -208,39 +213,86 @@ Para actualizar el `GamePanel`, debemos hacer lo siguiente:
 
 Para ello tendremos que modificar el `GamePanel` de la siguiente manera:
 
+### Importar las clases necesarias
+
+```java
+import org.brick_breaker.cache.SpriteCache;
+import org.brick_breaker.cache.SpriteLoader;
+import org.brick_breaker.game.Level;
+import org.brick_breaker.sprites.*;
+import org.brick_breaker.sprites.bonus.Bonus;
+import org.brick_breaker.sprites.bonus.BonusType;
+import org.brick_breaker.sprites.bricks.Brick;
+import org.brick_breaker.sprites.paddles.Paddle;
+import org.brick_breaker.sprites.paddles.PaddleType;
+import org.brick_breaker.ui.events.KeyboardAction;
+import org.brick_breaker.ui.windows.MainWindow;
+import org.brick_breaker.utils.FileManager;
+import org.brick_breaker.utils.GameCycle;
+import org.brick_breaker.utils.Randomized;
+import org.brick_breaker.utils.colissions.CollisionManager;
+```
+
+### Atributos de la clase
+
+```java
+private static final Borders LEFT_BORDER = Borders.LEFT_BAR;
+private static final Borders RIGHT_BORDER = Borders.RIGHT_BAR;
+private static final Borders TOP_BORDER = Borders.TOP_BAR;
+private static final Borders BOTTOM_BORDER = Borders.BOTTOM_BAR;
+public static GamePanel INSTANCE;
+public static final int INITIAL_LIVES = 15;
+public static final int INITIAL_SCORE = 0;
+public static final int INITIAL_LEVEL = 1;
+public static final int MAX_LEVEL = 5;
+public static final int WIDTH = (int) (2 * LEFT_BORDER.getSize().getWidth() + TOP_BORDER.getSize().getWidth());
+public static final int HEIGHT = (int) (LEFT_BORDER.getSize().getHeight());
+public static final int GAME_WIDTH = WIDTH - RIGHT_BORDER.getSize().width;
+private static Level level;
+private static final ArrayList<Ball> balls = new ArrayList<>();
+private Paddle paddle;
+public static Timer timer;
+private static boolean gameRunning = false;
+private boolean bricksDestroyed = false;
+private static int lives = INITIAL_LIVES;
+private static int score = INITIAL_SCORE;
+private int levelNumber = INITIAL_LEVEL;
+private static final CopyOnWriteArrayList<Sprite> gameObjects = new CopyOnWriteArrayList<>();
+private static final CopyOnWriteArrayList<Missile> missiles = new CopyOnWriteArrayList<>();
+```
+
 ### Constructor
 
 ```java
-public GamePanel() {
+private GamePanel() {
 
     initPanelSize();
     level = FileManager.readLevel(Level.levelNumber);
-    this.paddle = new Paddle(PaddleType.MEDIUM);
-    balls.add(new Ball());
-    timer = new Timer(10, new GameCycle(this));
-    playGame();
-    registerObjects();
-    registerCollidableObjects();
 }
 ```
 
-Recuerda agregar como atributo el `Timer` y el `ArrayList` de `Sprite`:
+Recuerda agregar como atributo el `Timer` y el `CopyOnWriteArrayList` de `Sprite` y `Missile`:
 
 ```java
-private static ArrayList<Sprite> gameObjects = new ArrayList<>();
+private static final CopyOnWriteArrayList<Sprite> gameObjects = new CopyOnWriteArrayList<>();
+private static final CopyOnWriteArrayList<Missile> missiles = new CopyOnWriteArrayList<>();
 public static Timer timer;
 ```
 
-### Método `registerCollidableObjects`
+### Método `registerBricks`
 
 ```java
-private void registerCollidableObjects() {
-
-    CollisionManager collisionManager = CollisionManager.getInstance();
-    for (Sprite sprite : gameObjects) {
-        if (sprite instanceof Brick) {
-            ((Brick) sprite).addImageToCache();
-            collisionManager.registerCollidable(sprite);
+private void registerBricks() {
+    if (level != null) {
+        for (Brick[] row : level.getBricks()) {
+            Collections.addAll(gameObjects, row);
+        }
+    }
+    if (isGameRunning()) {
+        for (Sprite sprite : gameObjects) {
+            if (sprite instanceof Brick brick) {
+                CollisionManager.getInstance().registerCollidable(brick);
+            }
         }
     }
 }
@@ -251,23 +303,36 @@ private void registerCollidableObjects() {
 ```java
 private void registerObjects() {
 
-    if (level != null) {
-        for (Brick[] row : level.getBricks()) {
-            Collections.addAll(gameObjects, row);
-        }
-    }
+    registerBricks();
     gameObjects.add(LEFT_BORDER);
     gameObjects.add(RIGHT_BORDER);
     gameObjects.add(TOP_BORDER);
     gameObjects.add(BOTTOM_BORDER);
     gameObjects.add(paddle);
     gameObjects.addAll(balls);
+    for (Sprite sprite : gameObjects) {
+        if (sprite instanceof Brick) {
+            ((Brick) sprite).addImageToCache();
+        }
+        CollisionManager.getInstance().registerCollidable(sprite);
+    }
 }
 ```
 
-### Métodos `playGame`, `stopGame` y `update`
+### Métodos `playGame`, `startGame`, `stopGame`, `updateLabels`, `checkBricksDestroy`, `loadLevel` y `update`
 
 ```java
+public void startGame() {
+    paddle = new Paddle(PaddleType.SHOOTER);
+    balls.add(new Ball());
+    timer = new Timer(10, new GameCycle(this));
+    playGame();
+    registerObjects();
+    addKeyListener(new KeyboardAction(this));
+    setFocusable(true);
+    requestFocus();
+}
+
 public void stopGame() {
 
     gameRunning = false;
@@ -283,12 +348,62 @@ public void playGame() {
 
 public void update() {
 
-    CollisionManager.getInstance().checkCollisions();
-    for (Sprite sprite : gameObjects) {
-
-        if (sprite instanceof MovingSprite) {
-            ((MovingSprite) sprite).move();
+    if (gameRunning) {
+        updateLabels();
+        checkBricksDestroy();
+        // Se verifica si se ha llegado al final del nivel.
+        if (bricksDestroyed) {
+            loadLevel();
         }
+        // Se verifica si se ha colisionado con algún objeto.
+        CollisionManager.getInstance().checkCollisions();
+        // Se actualiza la posición de los objetos del juego.
+        for (Sprite sprite : gameObjects) {
+
+            if (sprite instanceof MovingSprite) {
+                ((MovingSprite) sprite).move();
+            }
+        }
+    }
+}
+
+private void updateLabels() {
+
+    MainWindow mainWindow = MainWindow.getInstance();
+    mainWindow.getScoreLabel().setText(String.valueOf(score));
+    mainWindow.getLifeLabel().setText(String.valueOf(lives));
+}
+
+private void checkBricksDestroy() {
+    // Se verifica si se han destruido todos los ladrillos.
+    if (level != null && level.getBricks() != null) {
+        bricksDestroyed = true;
+        for (Brick[] row : level.getBricks()) {
+            for (Brick brick : row) {
+                if (!brick.isDestroyed()) {
+                    bricksDestroyed = false;
+                    break;
+                }
+            }
+        }
+    }
+}
+
+private void loadLevel() {
+    levelNumber++;
+    if (levelNumber <= MAX_LEVEL) {
+        level = FileManager.readLevel(levelNumber);
+        if (level != null) {
+            paddle.resetPosition();
+            int size = balls.size();
+            for (int i = 1; i < size; i++) {
+                balls.removeLast();
+            }
+            balls.getFirst().resetPosition();
+            registerBricks();
+        }
+    } else {
+        stopGame();
     }
 }
 ```
@@ -305,3 +420,12 @@ objetos del juego. También hemos actualizado el `GamePanel` para registrar los 
 ciclo del juego. Con esto, hemos dado un paso importante hacia la creación de un juego más dinámico y realista.
 Hemos aprendido a detectar colisiones entre objetos y a manejar las interacciones resultantes, lo que es fundamental
 para crear una experiencia de juego fluida y realista.
+
+## Actividad
+
+Para esta actividad, deberás implementar lo mencionado anteriormente. Deberás importar las imágenes de los objetos
+del juego y crear los objetos necesarios para el juego. Además, deberás implementar la lógica de colisiones y
+manejar las interacciones resultantes, para ello recuerda que los objetos que colisionan deben implementar la
+interfaz `CollisionListener`. Y por ahora no te preocupes por las funciones de reacción de los componentes.
+
+En este caso la actividad no cuenta con entrega, pero es importante realizarla para el resto de pasos del proyecto.

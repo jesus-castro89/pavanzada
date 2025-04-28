@@ -2,7 +2,6 @@ package org.brick_breaker.utils.colissions;
 
 import org.brick_breaker.sprites.Borders;
 import org.brick_breaker.sprites.Sprite;
-import org.brick_breaker.sprites.bonus.Bonus;
 import org.brick_breaker.ui.panels.GamePanel;
 
 import java.awt.*;
