@@ -146,6 +146,9 @@ public void onCollisionDetected(Sprite collider, Sprite collidedWith, EdgeType e
 }
 ```
 
+**Para las pruebas, cambiar el valor de `stop` a `false` para que la pelota se mueva, esto tanto en el constructor como en
+el método `resetPosition`.**
+
 ## Actualizando `Bonus`
 
 La clase `Bonus` es la encargada de gestionar los bonús que aparecen en el juego. Por lo que es necesario asegurarse

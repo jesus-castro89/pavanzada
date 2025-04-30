@@ -24,6 +24,9 @@ public class Ball extends MovingSprite implements Resettable, CollisionListener 
     private int speed;
     private boolean stop;
 
+    /**
+     * Constructor por defecto de la pelota que la inicializa en un punto específico.
+     */
     public Ball() {
 
         super(INITIAL_BALL_POSITION, "ball", BALL_SIZE, 1, -1);
@@ -32,6 +35,11 @@ public class Ball extends MovingSprite implements Resettable, CollisionListener 
         CollisionManager.getInstance().addListener(this);
     }
 
+    /**
+     * Constructor de la pelota que requiere la posición inicial.
+     *
+     * @param startPosition Posición inicial de la pelota.
+     */
     public Ball(Point startPosition) {
         super(startPosition, "ball", BALL_SIZE, 1, -1);
         speed = 4;
@@ -46,7 +54,6 @@ public class Ball extends MovingSprite implements Resettable, CollisionListener 
             if (collidedWith instanceof Paddle || collidedWith instanceof Brick || collidedWith instanceof Borders) {
                 // Se ajusta la posición de la pelota para que no se quede pegada al borde del objeto con el que colisionó.
                 switch (edgeType) {
-
                     case LEFT_EDGE -> getPosition().x = collidedWith.getPosition().x - getImageIcon().getIconWidth();
                     case RIGHT_EDGE -> getPosition().x = collidedWith.getPosition().x + collidedWith.getSize().width;
                     case TOP_EDGE -> getPosition().y = collidedWith.getPosition().y - getImageIcon().getIconHeight();

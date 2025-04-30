@@ -1,0 +1,14 @@
+unnamed package
+org.brick_breaker.cache
+org.brick_breaker.game
+org.brick_breaker.sprites
+org.brick_breaker.sprites.bonus
+org.brick_breaker.sprites.bricks
+org.brick_breaker.sprites.paddles
+org.brick_breaker.ui.buttons
+org.brick_breaker.ui.events
+org.brick_breaker.ui.labels
+org.brick_breaker.ui.panels
+org.brick_breaker.ui.windows
+org.brick_breaker.utils
+org.brick_breaker.utils.colissions
