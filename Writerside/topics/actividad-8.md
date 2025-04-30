@@ -102,6 +102,50 @@ public void addImageToCache() {
 }
 ```
 
+Por último, es necesario implementar el método `onCollisionDetected` para que la pelota colisione con los objetos
+dentro del juego. Por lo que es necesario asegurarse que la clase contenga el siguiente método:
+
+```java
+
+@Override
+public void onCollisionDetected(Sprite collider, Sprite collidedWith, EdgeType edgeType) {
+    // Se verifica si la pelota colisiona con otro objeto.
+    if (collider == this) {
+        if (collidedWith instanceof Paddle || collidedWith instanceof Brick || collidedWith instanceof Borders) {
+            // Se ajusta la posición de la pelota para que no se quede pegada al borde del objeto con el que colisionó.
+            switch (edgeType) {
+
+                case LEFT_EDGE -> getPosition().x = collidedWith.getPosition().x - getImageIcon().getIconWidth();
+                case RIGHT_EDGE -> getPosition().x = collidedWith.getPosition().x + collidedWith.getSize().width;
+                case TOP_EDGE -> getPosition().y = collidedWith.getPosition().y - getImageIcon().getIconHeight();
+                case BOTTOM_EDGE -> getPosition().y = collidedWith.getPosition().y + collidedWith.getSize().height;
+            }
+            // Se invierte la dirección de la pelota al colisionar con un borde o un ladrillo.
+            switch (edgeType) {
+                case LEFT_EDGE, RIGHT_EDGE -> setDx(-getDx());
+                case TOP_EDGE, BOTTOM_EDGE -> setDy(-getDy());
+            }
+        }
+        // Se determina el tipo de objeto con el que colisiona la pelota.
+        // Si es un ladrillo, se indicará al panel que lo elimine.
+        if (collidedWith instanceof Brick brick) {
+            brick.hit();
+            if (brick.isDestroyed()) {
+                GamePanel.removeBrick(brick);
+            }
+        }
+        // Si es un borde y además es el borde inferior, se eliminará la pelota.
+        if (collidedWith instanceof Borders) {
+            if (collidedWith == Borders.BOTTOM_BAR) {
+                GamePanel panel = GamePanel.getInstance();
+                panel.removeBall(this);
+                panel.getPaddle().resetPosition();
+            }
+        }
+    }
+}
+```
+
 ## Actualizando `Bonus`
 
 La clase `Bonus` es la encargada de gestionar los bonús que aparecen en el juego. Por lo que es necesario asegurarse
@@ -370,6 +414,10 @@ el juego funcione correctamente.
 
 El entregable de esta actividad es el proyecto completo, con los cambios realizados en las clases `Ball`, `Bonus`,
 `Missile`, `GamePanel`, y `KeyboardAction`. Además de asegurarse que el juego funcione correctamente.
+
+En el caso de la clase `MainWindow`, es necesario agregar dos etiquetas con los nombres: `scoreLabel` y `lifeLabel` para
+que el juego muestre la puntuación y las vidas restantes, estas etiquetas deben ir en el panel derecho de la ventana
+del juego.
 
 ## Criterios de evaluación
 
