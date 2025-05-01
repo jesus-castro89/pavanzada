@@ -24,6 +24,14 @@ public class CollisionManager {
         return instance;
     }
 
+    public void clearCollidableObjects() {
+        collidableObjects.clear();
+    }
+
+    public void clearListeners() {
+        listeners.clear();
+    }
+
     public void registerCollidable(Sprite object) {
         collidableObjects.add(object);
     }

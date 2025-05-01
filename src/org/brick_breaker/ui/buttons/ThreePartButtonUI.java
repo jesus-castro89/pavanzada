@@ -1,5 +1,6 @@
 package org.brick_breaker.ui.buttons;
 
+import org.brick_breaker.cache.FontCache;
 import org.brick_breaker.cache.SpriteCache;
 import org.brick_breaker.cache.SpriteLoader;
 import org.brick_breaker.ui.labels.ScoreLabelUI;
@@ -30,6 +31,7 @@ public class ThreePartButtonUI extends BasicButtonUI {
         cache.addImage("rightSideHover", SpriteLoader.loadImage("buttons/hover/rightSide.png"));
         cache.addImage("rightSidePressed", SpriteLoader.loadImage("buttons/pressed/rightSide.png"));
         cache.addImage("rightSideDisabled", SpriteLoader.loadImage("buttons/disabled/rightSide.png"));
+        FontCache.addFont("diffusion", "fonts/diffusion.ttf");
     }
 
     /**
@@ -101,6 +103,7 @@ public class ThreePartButtonUI extends BasicButtonUI {
         button.setVerticalTextPosition(SwingConstants.CENTER);
         button.setVerticalAlignment(SwingConstants.CENTER);
         button.setHorizontalAlignment(SwingConstants.CENTER);
+        button.setFont(FontCache.getFont("diffusion").deriveFont(Font.PLAIN, 20));
     }
 
     /**

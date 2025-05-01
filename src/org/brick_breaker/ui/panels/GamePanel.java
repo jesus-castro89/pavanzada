@@ -10,6 +10,7 @@ import org.brick_breaker.sprites.bricks.Brick;
 import org.brick_breaker.sprites.paddles.Paddle;
 import org.brick_breaker.sprites.paddles.PaddleType;
 import org.brick_breaker.ui.events.KeyboardAction;
+import org.brick_breaker.ui.windows.GameOverWindow;
 import org.brick_breaker.ui.windows.MainWindow;
 import org.brick_breaker.utils.FileManager;
 import org.brick_breaker.utils.GameCycle;
@@ -36,7 +37,7 @@ public class GamePanel extends JPanel {
     private static final Borders TOP_BORDER = Borders.TOP_BAR;
     private static final Borders BOTTOM_BORDER = Borders.BOTTOM_BAR;
     public static GamePanel INSTANCE;
-    public static final int INITIAL_LIVES = 15;
+    public static final int INITIAL_LIVES = 3;
     public static final int INITIAL_SCORE = 0;
     public static final int INITIAL_LEVEL = 1;
     public static final int MAX_LEVEL = 5;
@@ -56,9 +57,26 @@ public class GamePanel extends JPanel {
     private static final CopyOnWriteArrayList<Missile> missiles = new CopyOnWriteArrayList<>();
 
     private GamePanel() {
-
         initPanelSize();
         level = FileManager.readLevel(Level.levelNumber);
+    }
+
+    public void restartGame() {
+        levelNumber = INITIAL_LEVEL;
+        lives = INITIAL_LIVES;
+        score = INITIAL_SCORE;
+        gameRunning = false;
+        bricksDestroyed = false;
+        gameObjects.clear();
+        CollisionManager.getInstance().clearCollidableObjects();
+        CollisionManager.getInstance().clearListeners();
+        CollisionManager.getInstance().addListener(balls.getFirst());
+        missiles.clear();
+        level = FileManager.readLevel(levelNumber);
+        paddle.resetPosition();
+        balls.getFirst().resetPosition();
+        registerObjects();
+        playGame();
     }
 
     public void addMissile() {
@@ -114,7 +132,7 @@ public class GamePanel extends JPanel {
     }
 
     public void startGame() {
-        paddle = new Paddle(PaddleType.SHOOTER);
+        paddle = new Paddle(PaddleType.MEDIUM);
         balls.add(new Ball());
         timer = new Timer(10, new GameCycle(this));
         playGame();
@@ -175,7 +193,6 @@ public class GamePanel extends JPanel {
      * @see Borders
      */
     private void initPanelSize() {
-
         setSize(WIDTH, HEIGHT);
         setPreferredSize(getSize());
         setMinimumSize(getSize());
@@ -206,9 +223,9 @@ public class GamePanel extends JPanel {
     }
 
     private static void createBonus(Brick brick) {
-        if (brick != null && Randomized.getRandomBoolean()) {
+        if (brick != null && Randomized.getRandomBoolean(35)) {
             BonusType bonusType = Randomized.getRandomBonusType();
-            Bonus bonus = new Bonus(brick.getPosition(), BonusType.S);
+            Bonus bonus = new Bonus(brick.getPosition(), bonusType);
             bonus.addImageToCache();
             gameObjects.add(bonus);
             CollisionManager.getInstance().registerCollidable(bonus);
@@ -231,9 +248,7 @@ public class GamePanel extends JPanel {
     }
 
     public static void removeBrick(Brick brick) {
-
         if (brick != null) {
-
             score += brick.getScore();
             gameObjects.remove(brick);
             CollisionManager.getInstance().unregisterCollidable(brick);
@@ -242,11 +257,8 @@ public class GamePanel extends JPanel {
     }
 
     public void removeBall(Ball ball) {
-
         if (ball != null) {
-
             if (balls.size() > 1) {
-
                 balls.remove(ball);
                 gameObjects.remove(ball);
                 CollisionManager.getInstance().unregisterCollidable(ball);
@@ -255,26 +267,27 @@ public class GamePanel extends JPanel {
                 lives--;
                 if (lives == 0) {
                     gameRunning = false;
+                    MainWindow mainWindow = MainWindow.getInstance();
+                    mainWindow.setVisible(false);
+                    mainWindow.dispose();
+                    GameOverWindow gameOverWindow = new GameOverWindow();
                 }
             }
         }
     }
 
     public void stopGame() {
-
         gameRunning = false;
         timer.stop();
     }
 
     public void playGame() {
-
         gameRunning = true;
         timer.start();
         this.requestFocus();
     }
 
     private void updateLabels() {
-
         MainWindow mainWindow = MainWindow.getInstance();
         mainWindow.getScoreLabel().setText(String.valueOf(score));
         mainWindow.getLifeLabel().setText(String.valueOf(lives));
@@ -291,7 +304,6 @@ public class GamePanel extends JPanel {
     }
 
     public void update() {
-
         if (gameRunning) {
             updateLabels();
             checkBricksDestroy();
@@ -303,7 +315,6 @@ public class GamePanel extends JPanel {
             CollisionManager.getInstance().checkCollisions();
             // Se actualiza la posición de los objetos del juego.
             for (Sprite sprite : gameObjects) {
-
                 if (sprite instanceof MovingSprite) {
                     ((MovingSprite) sprite).move();
                 }

@@ -61,6 +61,14 @@ public class MainWindow extends JFrame {
         LifeLabelUI.configureLabel(lifeLabel);
     }
 
+    public void restartGame() {
+        GamePanel.getInstance().restartGame();
+        GamePanel.getInstance().update();
+        startButton.setEnabled(true);
+        stopButton.setEnabled(false);
+        setVisible(true);
+    }
+
     public void startGame() {
         GamePanel.getInstance().startGame();
         startButton.setEnabled(false);

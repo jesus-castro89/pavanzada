@@ -21,6 +21,11 @@ public class Randomized {
         return randomInt(0, 1) == 1;
     }
 
+    public static boolean getRandomBoolean(int probability) {
+
+        return randomInt(0, 100) < probability;
+    }
+
     /**
      * Función que se encarga de generar un número aleatorio entre 0 y el número de tipos de bonus.
      *
