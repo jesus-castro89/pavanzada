@@ -1,6 +1,7 @@
 import org.brick_breaker.game.Level;
 import org.brick_breaker.sprites.bricks.Brick;
 import org.brick_breaker.ui.windows.MainWindow;
+import org.brick_breaker.ui.windows.StartWindow;
 import org.brick_breaker.utils.FileManager;
 
 import javax.swing.*;
@@ -20,7 +21,7 @@ public class Main {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                MainWindow.getInstance().startGame();
+                new StartWindow();
             }
         });
     }

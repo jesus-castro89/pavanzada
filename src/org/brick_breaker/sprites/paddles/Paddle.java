@@ -72,5 +72,6 @@ public class Paddle extends MovingSprite implements Resettable {
         position.y = INITIAL_PADDLE_Y;
         dy = 0;
         dx = 0;
+        changeType(PaddleType.MEDIUM);
     }
 }

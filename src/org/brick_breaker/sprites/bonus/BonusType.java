@@ -7,16 +7,6 @@ import java.io.Serializable;
 
 /**
  * Esta clase permitirá definir los tipos de bonus posibles dentro del juego, la lista de opciones es la siguientes:
- * L: Para una vida extra
- * S: Para activar el modo de disparo
- * M: Para activar los multi esferas (aquí cada que se recoja un bonus, se triplicará la esfera principal)
- * R: Para reducir el tamaño de la barra del jugador
- * E: Para expandir la barra del jugador
- * B: Es para subir en 1000 puntos el puntaje del jugador
- * C: Es para regresar la barra al tamaño común o base del jugador
- * D: TODO Definir un bonus a su gusto (Puede ser un aumento de puntos o algo más)
- * P: TODO Definir un bonus a su gusto (Puede ser un aumento de puntos o algo más)
- * T: TODO Definir un bonus a su gusto (Puede ser un aumento de puntos o algo más)
  */
 public enum BonusType implements Serializable {
 
@@ -35,7 +25,7 @@ public enum BonusType implements Serializable {
     M("m_bonus") {
         @Override
         public void activateBonus() {
-            GamePanel.getInstance().duplicateBall();
+            GamePanel.getInstance().duplicateScore();
         }
     },
     R("r_bonus") {

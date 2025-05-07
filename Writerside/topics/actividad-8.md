@@ -297,11 +297,21 @@ Como te habrás dado cuenta, es necesario actualizar la clase `GamePanel` para q
 Singleton, además de que contenga los siguientes métodos:
 
 ```java
-   public static GamePanel getInstance() {
+public static GamePanel getInstance() {
     if (INSTANCE == null) {
         INSTANCE = new GamePanel();
     }
     return INSTANCE;
+}
+
+private static void createBonus(Brick brick) {
+   if (brick != null && Randomized.getRandomBoolean()) {
+      BonusType bonusType = Randomized.getRandomBonusType();
+      Bonus bonus = new Bonus(brick.getPosition(), bonusType);
+      bonus.addImageToCache();
+      gameObjects.add(bonus);
+      CollisionManager.getInstance().registerCollidable(bonus);
+   }
 }
 
 public static void removeBonus(Bonus bonus) {

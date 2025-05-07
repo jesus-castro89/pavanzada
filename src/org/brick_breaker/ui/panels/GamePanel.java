@@ -45,7 +45,7 @@ public class GamePanel extends JPanel {
     public static final int HEIGHT = (int) (LEFT_BORDER.getSize().getHeight());
     public static final int GAME_WIDTH = WIDTH - RIGHT_BORDER.getSize().width;
     private static Level level;
-    private static final ArrayList<Ball> balls = new ArrayList<>();
+    private static final CopyOnWriteArrayList<Ball> balls = new CopyOnWriteArrayList<>();
     private Paddle paddle;
     public static Timer timer;
     private static boolean gameRunning = false;
@@ -111,24 +111,8 @@ public class GamePanel extends JPanel {
         GamePanel.score += score;
     }
 
-    public void duplicateBall() {
-        ArrayList<Ball> addedBalls = new ArrayList<>();
-        for (Ball ball : balls) {
-            if (ball.getPosition().y < paddle.getPosition().y) {
-                // Se ajusta la posición de la nueva pelota para que esté justo al lado de la original.
-                Point newBallPosition = new Point(ball.getPosition().x + ball.getSize().width, ball.getPosition().y);
-                // Se crea una nueva pelota con la posición ajustada.
-                Ball newBall = new Ball(ball.getPosition());
-                // Se ajusta la dirección de la nueva pelota para que se mueva en la dirección opuesta a la original.
-                newBall.setDx(-ball.getDx());
-                newBall.setDy(-ball.getDy());
-                // Se agrega la nueva pelota a la lista de pelotas y a la lista de objetos del juego.
-                addedBalls.add(newBall);
-                gameObjects.add(newBall);
-                CollisionManager.getInstance().registerCollidable(newBall);
-            }
-        }
-        balls.addAll(addedBalls);
+    public void duplicateScore() {
+        GamePanel.score *= 2;
     }
 
     public void startGame() {
@@ -364,7 +348,7 @@ public class GamePanel extends JPanel {
         return gameRunning;
     }
 
-    public ArrayList<Ball> getBalls() {
+    public CopyOnWriteArrayList<Ball> getBalls() {
 
         return balls;
     }
