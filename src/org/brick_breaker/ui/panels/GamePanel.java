@@ -207,9 +207,9 @@ public class GamePanel extends JPanel {
     }
 
     private static void createBonus(Brick brick) {
-        if (brick != null && Randomized.getRandomBoolean(35)) {
+        if (brick != null && Randomized.getRandomBoolean(99)) {
             BonusType bonusType = Randomized.getRandomBonusType();
-            Bonus bonus = new Bonus(brick.getPosition(), bonusType);
+            Bonus bonus = new Bonus(brick.getPosition(), BonusType.M);
             bonus.addImageToCache();
             gameObjects.add(bonus);
             CollisionManager.getInstance().registerCollidable(bonus);

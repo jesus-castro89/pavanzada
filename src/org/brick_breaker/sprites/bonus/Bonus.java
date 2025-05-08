@@ -73,9 +73,13 @@ public class Bonus extends MovingSprite implements Serializable, CollisionListen
             if (collidedWith == null) {
                 GamePanel.removeBonus(this);
             }
-            if(collidedWith instanceof Paddle) {
+            if (collidedWith instanceof Paddle) {
+                switch (edgeType) {
+                    case TOP_EDGE -> getPosition().y = collidedWith.getPosition().y - getImageIcon().getIconHeight();
+                    case BOTTOM_EDGE -> getPosition().y = collidedWith.getPosition().y + collidedWith.getSize().height;
+                }
                 GamePanel.removeBonus(this);
-                this.type.activateBonus();
+                getType().activateBonus();
             }
         }
     }
