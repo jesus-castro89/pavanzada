@@ -2,8 +2,6 @@ package org.brick_breaker.sprites.bonus;
 
 import org.brick_breaker.cache.SpriteCache;
 import org.brick_breaker.cache.SpriteLoader;
-import org.brick_breaker.game.Level;
-import org.brick_breaker.sprites.Borders;
 import org.brick_breaker.sprites.MovingSprite;
 import org.brick_breaker.sprites.Sprite;
 import org.brick_breaker.sprites.bricks.Brick;

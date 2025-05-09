@@ -1,4 +1,4 @@
-# Actividad 10: Definiendo etiquetas y funciones
+# Actividad 10: Definiendo etiquetas y botones
 
 ## Objetivo
 
