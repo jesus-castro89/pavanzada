@@ -27,18 +27,17 @@
 * ![brick-yellow.png](../../image/bricks/brick-yellow.png)
 
 ### Botones
-
 #### Desactivados
 
 * ![leftSide.png](../../image/buttons/disabled/leftSide.png)
 * ![middleSide.png](../../image/buttons/disabled/middleSide.png)
-* ![rightSide.png](../../image/buttons/disabled/rightSide.png)
+* ![rightSide.hpng](../../image/buttons/disabled/rightSide.png)
 
 #### Hover
 
 * ![leftSide.png](../../image/buttons/hover/leftSide.png)
 * ![middleSide.png](../../image/buttons/hover/middleSide.png)
-* ![rightSide.png](../../image/buttons/hover/rightSide.png)
+* ![rightSide.hpng](../../image/buttons/hover/rightSide.png)
 
 #### Normal
 

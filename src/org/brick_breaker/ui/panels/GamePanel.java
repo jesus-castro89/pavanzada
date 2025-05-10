@@ -254,7 +254,7 @@ public class GamePanel extends JPanel {
                     MainWindow mainWindow = MainWindow.getInstance();
                     mainWindow.setVisible(false);
                     mainWindow.dispose();
-                    GameOverWindow gameOverWindow = new GameOverWindow();
+                    new GameOverWindow();
                 }
             }
         }

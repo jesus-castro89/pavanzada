@@ -70,19 +70,19 @@ public class ThreePartButtonUI extends BasicButtonUI {
         // Parte izquierda
         g2.drawImage(images[0], 0, 0, imageWidths[0], imageHeight, null);
         // Parte central (se estira según el texto)
-        g2.drawImage(images[1], imageWidths[0], 0, imageWidths[0] + centerWidth, imageHeight,
-                0, 0, imageWidths[1], imageHeight, null);
+        g2.drawImage(images[1], imageWidths[0], 0, centerWidth, imageHeight, null);
         // Parte derecha
         g2.drawImage(images[2], imageWidths[0] + centerWidth, 0, imageWidths[2], imageHeight, null);
         // Dibujar el texto
         int textX = imageWidths[0] + (centerWidth - textWidth) / 2;
         int textY = (imageHeight - fm.getHeight()) / 2 + fm.getAscent();
         if (button.getModel().isPressed()) {
-
             textX += 1;
             textY += 1;
         }
         g2.setColor(button.getModel().isEnabled() ? button.getForeground() : Color.GRAY);
+        g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON));
         g2.drawString(button.getText(), textX, textY);
         g2.dispose();
     }
@@ -103,7 +103,7 @@ public class ThreePartButtonUI extends BasicButtonUI {
         button.setVerticalTextPosition(SwingConstants.CENTER);
         button.setVerticalAlignment(SwingConstants.CENTER);
         button.setHorizontalAlignment(SwingConstants.CENTER);
-        button.setFont(FontCache.getFont("diffusion").deriveFont(Font.PLAIN, 20));
+        button.setFont(FontCache.getFont("diffusion").deriveFont(Font.BOLD, 20f));
     }
 
     /**
@@ -129,12 +129,11 @@ public class ThreePartButtonUI extends BasicButtonUI {
      * @param button El botón al que se le asignarán las imágenes.
      */
     private void setButtonImages(JButton button) {
-
         String stateName = switch (ButtonState.getButtonState(button)) {
-            case NORMAL -> stateName = "Normal";
-            case ROLLOVER -> stateName = "Hover";
-            case PRESSED -> stateName = "Pressed";
-            case DISABLED -> stateName = "Disabled";
+            case NORMAL -> "Normal";
+            case ROLLOVER -> "Hover";
+            case PRESSED -> "Pressed";
+            case DISABLED -> "Disabled";
         };
         images[0] = SpriteCache.getInstance().getImage("leftSide" + stateName);
         images[1] = SpriteCache.getInstance().getImage("middle" + stateName);

@@ -12,9 +12,7 @@ public class StartWindow extends JFrame {
     private JLabel titleLabel;
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new StartWindow();
-        });
+        SwingUtilities.invokeLater(StartWindow::new);
     }
 
     public StartWindow() {

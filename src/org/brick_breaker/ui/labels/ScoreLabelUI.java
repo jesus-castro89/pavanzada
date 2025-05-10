@@ -53,6 +53,8 @@ public class ScoreLabelUI extends BasicLabelUI {
         int x = (background.getWidth() - textWidth) / 2;
         int y = (background.getHeight() + textHeight) / 2;
         g2.setColor(label.getForeground());
+        g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON));
         g2.drawString(label.getText(), x, y);
         g2.dispose();
     }
@@ -61,12 +63,10 @@ public class ScoreLabelUI extends BasicLabelUI {
 
         g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON));
-        g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING,
-                RenderingHints.VALUE_RENDER_QUALITY));
-        g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_BILINEAR));
         g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
                 RenderingHints.VALUE_TEXT_ANTIALIAS_ON));
+        g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BICUBIC));
     }
 
     public static void configureLabel(JLabel label) {

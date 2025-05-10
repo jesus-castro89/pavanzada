@@ -11,7 +11,6 @@ import java.awt.image.BufferedImage;
 public class LifeLabelUI extends ScoreLabelUI {
 
     static {
-
         SpriteCache cache = SpriteCache.getInstance();
         cache.addImage("lifeBackground", SpriteLoader.loadImage("labels/life-label.png"));
         cache.addImage("lifeIcon", SpriteLoader.loadImage("labels/life-count.png"));
@@ -54,6 +53,8 @@ public class LifeLabelUI extends ScoreLabelUI {
         int iconY = ((background.getHeight() - iconHeight) / 2) + 3;
         g2.drawImage(lifeIcon, iconX, iconY, null);
         g2.setColor(label.getForeground());
+        g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON));
         g2.drawString(label.getText(), x, y);
         g2.dispose();
     }
