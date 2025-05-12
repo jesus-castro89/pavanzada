@@ -43,7 +43,6 @@ public class Brick extends Sprite implements Serializable {
      * @param type      Tipo del ladrillo.
      */
     public Brick(Point position, String imageName, BrickType type) {
-
         super(position, imageName, BRICK_SIZE);
         this.type = type;
         this.life = type.getLife();
@@ -52,16 +51,13 @@ public class Brick extends Sprite implements Serializable {
 
     @Override
     public void addImageToCache() {
-
         if (type != null)
             type.loadSprite(imageName);
     }
 
     public void hit() {
-
         life--;
         if (life == 0) {
-
             destroyed = true;
             CollisionManager.getInstance().unregisterCollidable(this);
         }

@@ -1,6 +1,5 @@
 package org.brick_breaker.ui.events;
 
-import org.brick_breaker.sprites.Missile;
 import org.brick_breaker.sprites.paddles.PaddleType;
 import org.brick_breaker.ui.panels.GamePanel;
 
@@ -50,5 +49,4 @@ public class KeyboardAction extends KeyAdapter {
                 break;
         }
     }
-
 }

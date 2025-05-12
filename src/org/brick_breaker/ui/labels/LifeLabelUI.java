@@ -1,6 +1,5 @@
 package org.brick_breaker.ui.labels;
 
-import org.brick_breaker.cache.FontCache;
 import org.brick_breaker.cache.SpriteCache;
 import org.brick_breaker.cache.SpriteLoader;
 

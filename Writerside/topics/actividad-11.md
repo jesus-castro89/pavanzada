@@ -91,7 +91,7 @@ public class FontCache {
     public static FontCache getInstance() {
         return INSTANCE;
     }
-    
+
     public static Font addFont(String fontName, String fontPath) {
         Font font;
         if (!cache.containsKey(fontName)) {
@@ -105,11 +105,11 @@ public class FontCache {
     public static Font getFont(String fontName, int style, int size) {
         return cache.getOrDefault(fontName, Font.getFont("Arial")).deriveFont(style, size);
     }
-    
+
     public static Font getFont(String fontName) {
         return getFont(fontName, Font.PLAIN, 12);
     }
-    
+
     public static Font getFont(String fontName, int size) {
         return getFont(fontName, Font.PLAIN, size);
     }
@@ -126,7 +126,7 @@ import java.awt.*;
 import java.io.File;
 
 public class FontLoader {
-    
+
     public static Font loadFont(String path) {
         try {
             return Font.createFont(Font.TRUETYPE_FONT, new File(path)).deriveFont(12f);
@@ -149,7 +149,7 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 public class SpriteCache {
-    
+
     private final HashMap<String, BufferedImage> cache = new HashMap<>();
     private final HashMap<String, ImageIcon> gifCache = new HashMap<>();
     private static final SpriteCache INSTANCE = new SpriteCache();
@@ -232,7 +232,7 @@ import java.awt.*;
 import java.io.Serializable;
 
 public class Level implements Serializable {
-    
+
     public static final int ROW_MARGIN = 18;
     public static final int COLUMN_MARGIN = 19;
     public static final int LEVEL_WIDTH = 10;
@@ -250,7 +250,7 @@ public class Level implements Serializable {
         currentLevel = levelNumber++;
         populateLevel();
     }
-    
+
     private void populateLevel() {
         BrickType brickType;
         Point position;
@@ -289,3 +289,1911 @@ public class Level implements Serializable {
     }
 }
 ```
+
+## 6. Clase `Brick`
+
+```java
+package org.brick_breaker.sprites.bricks;
+
+import org.brick_breaker.sprites.Sprite;
+import org.brick_breaker.utils.collisions.CollisionManager;
+
+import java.awt.*;
+import java.io.Serializable;
+
+public class Brick extends Sprite implements Serializable {
+    public final static int BRICK_WIDTH = 42;
+    public final static int BRICK_HEIGHT = 20;
+    public final static Dimension BRICK_SIZE = new Dimension(BRICK_WIDTH, BRICK_HEIGHT);
+    private final BrickType type;
+    private int life;
+    private boolean destroyed;
+
+    public Brick(Point position, String imageName, BrickType type) {
+        super(position, imageName, BRICK_SIZE);
+        this.type = type;
+        this.life = type.getLife();
+        this.destroyed = false;
+    }
+
+    @Override
+    public void addImageToCache() {
+        if (type != null)
+            type.loadSprite(imageName);
+    }
+
+    public void hit() {
+        life--;
+        if (life == 0) {
+            destroyed = true;
+            CollisionManager.getInstance().unregisterCollidable(this);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return type.toString();
+    }
+
+    public boolean isDestroyed() {
+        return destroyed;
+    }
+
+    public int getScore() {
+        return type.getScore();
+    }
+
+    public BrickType getType() {
+        return type;
+    }
+
+    public void setDestroyed(boolean destroyed) {
+        this.destroyed = destroyed;
+    }
+}
+```
+
+## 7. Clase `BrickType`
+
+```java
+package org.brick_breaker.sprites.bricks;
+
+import org.brick_breaker.cache.SpriteCache;
+import org.brick_breaker.cache.SpriteLoader;
+
+import java.io.Serializable;
+
+public enum BrickType implements Serializable {
+    YELLOW(1, 10),
+    RED(2, 20),
+    BLUE(3, 30),
+    GREEN(4, 40);
+
+    private final int life;
+    private final int score;
+
+    BrickType(int life, int score) {
+
+        this.life = life;
+        this.score = score;
+    }
+
+    public void loadSprite(String imageName) {
+
+        SpriteCache spriteCache = SpriteCache.getInstance();
+        switch (this) {
+            case YELLOW -> spriteCache.addImage(imageName, SpriteLoader.loadImage("bricks/brick-yellow.png"));
+            case RED -> spriteCache.addImage(imageName, SpriteLoader.loadImage("bricks/brick-red.png"));
+            case BLUE -> spriteCache.addImage(imageName, SpriteLoader.loadImage("bricks/brick-blue.png"));
+            case GREEN -> spriteCache.addImage(imageName, SpriteLoader.loadImage("bricks/brick-green.png"));
+        }
+    }
+
+    public int getLife() {
+        return life;
+    }
+
+    public int getScore() {
+        return score;
+    }
+}
+```
+
+> NOTA: Toma en consideración que los tipos de ladrillos presentados solo son un ejemplo. Puedes crear los tipos de
+> ladrillos que desees, así como sus propiedades. Recuerda que los tipos de ladrillos deben de ser únicos y no
+> repetirse. Además, para la entrega final es necesario que los valores de puntaje y vida sean diferentes para cada
+> tipo de ladrillo. Por último, asegúrate de que los nombres de los tipos de ladrillos sean únicos y no se repitan.
+
+## 8. Clase `Paddle`
+
+```java
+package org.brick_breaker.sprites.paddles;
+
+import org.brick_breaker.cache.SpriteCache;
+import org.brick_breaker.cache.SpriteLoader;
+import org.brick_breaker.sprites.Borders;
+import org.brick_breaker.sprites.MovingSprite;
+import org.brick_breaker.sprites.Resettable;
+import org.brick_breaker.ui.panels.GamePanel;
+
+import java.awt.*;
+
+public class Paddle extends MovingSprite implements Resettable {
+    private static final int SPEED = 3;
+    public static final int INITIAL_PADDLE_X = 202;
+    public static final int INITIAL_PADDLE_Y = 588;
+    public static final Point INITIAL_PADDLE_POSITION = new Point(INITIAL_PADDLE_X, INITIAL_PADDLE_Y);
+    private PaddleType type;
+
+    public Paddle(PaddleType type) {
+        super(INITIAL_PADDLE_POSITION, type.getImageName(), type.getSize(), 0, 0);
+        this.type = type;
+    }
+
+    @Override
+    public void move() {
+        if (dx != 0) {
+            position.x += dx * SPEED;
+            if (position.x < Borders.LEFT_BAR.getImage().getWidth()) {
+                position.x = Borders.LEFT_BAR.getImage().getWidth();
+            } else if (position.x > GamePanel.GAME_WIDTH - getImage().getWidth()) {
+                position.x = GamePanel.GAME_WIDTH - getImage().getWidth();
+            }
+        }
+    }
+
+    @Override
+    protected void addImageToCache() {
+        SpriteCache spriteCache = SpriteCache.getInstance();
+        spriteCache.addImage(PaddleType.SMALL.getImageName(),
+                SpriteLoader.loadImage("paddle.png"));
+        spriteCache.addImage(PaddleType.MEDIUM.getImageName(),
+                SpriteLoader.loadImage("paddle.png"));
+        spriteCache.addImage(PaddleType.LARGE.getImageName(),
+                SpriteLoader.loadImage("paddle-large.png"));
+        spriteCache.addImage(PaddleType.SHOOTER.getImageName(),
+                SpriteLoader.loadImage("paddle-laser.png"));
+    }
+
+    public void changeType(PaddleType type) {
+
+        this.type = type;
+        this.imageName = type.getImageName();
+        setSize(type.getSize());
+    }
+
+    public PaddleType getType() {
+        return type;
+    }
+
+    @Override
+    public void resetPosition() {
+        position.x = INITIAL_PADDLE_X;
+        position.y = INITIAL_PADDLE_Y;
+        dy = 0;
+        dx = 0;
+        changeType(PaddleType.MEDIUM);
+    }
+}
+```
+
+## 9. Clase `PaddleType`
+
+```java
+package org.brick_breaker.sprites.paddles;
+
+import java.awt.*;
+
+public enum PaddleType {
+    SMALL(new Dimension(32, 16)),
+    MEDIUM(new Dimension(64, 16)),
+    LARGE(new Dimension(128, 16)),
+    SHOOTER(new Dimension(64, 16));
+
+    private final Dimension size;
+
+    PaddleType(Dimension size) {
+        this.size = size;
+    }
+
+    public Dimension getSize() {
+        return size;
+    }
+
+    public String getImageName() {
+        return name().toLowerCase() + "Paddle";
+    }
+}
+```
+
+## 10. Clase `Ball`
+
+```java
+package org.brick_breaker.sprites;
+
+import org.brick_breaker.cache.SpriteCache;
+import org.brick_breaker.cache.SpriteLoader;
+import org.brick_breaker.sprites.bricks.Brick;
+import org.brick_breaker.sprites.paddles.Paddle;
+import org.brick_breaker.ui.panels.GamePanel;
+import org.brick_breaker.utils.collisions.EdgeType;
+import org.brick_breaker.utils.collisions.CollisionListener;
+import org.brick_breaker.utils.collisions.CollisionManager;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class Ball extends MovingSprite implements Resettable, CollisionListener {
+    public static final int BALL_WIDTH = 20;
+    public static final int INITIAL_BALL_X = 224;
+    public static final int INITIAL_BALL_Y = 570;
+    public static final Point INITIAL_BALL_POSITION = new Point(INITIAL_BALL_X, INITIAL_BALL_Y);
+    public static final Dimension BALL_SIZE = new Dimension(BALL_WIDTH, BALL_WIDTH);
+    private int speed;
+    private boolean stop;
+
+    public Ball() {
+        super(INITIAL_BALL_POSITION, "ball", BALL_SIZE, 1, -1);
+        speed = 4;
+        stop = true;
+        CollisionManager.getInstance().addListener(this);
+    }
+
+    public Ball(Point startPosition) {
+        super(startPosition, "ball", BALL_SIZE, 1, -1);
+        speed = 4;
+        stop = true;
+        CollisionManager.getInstance().addListener(this);
+    }
+
+    @Override
+    public void onCollisionDetected(Sprite collider, Sprite collidedWith, EdgeType edgeType) {
+        // Se verifica si la pelota colisiona con otro objeto.
+        if (collider == this) {
+            if (collidedWith instanceof Paddle || collidedWith instanceof Brick || collidedWith instanceof Borders) {
+                // Se ajusta la posición de la pelota para que no se quede pegada al borde del objeto con el que colisionó.
+                switch (edgeType) {
+                    case LEFT_EDGE -> getPosition().x = collidedWith.getPosition().x - getImageIcon().getIconWidth();
+                    case RIGHT_EDGE -> getPosition().x = collidedWith.getPosition().x + collidedWith.getSize().width;
+                    case TOP_EDGE -> getPosition().y = collidedWith.getPosition().y - getImageIcon().getIconHeight();
+                    case BOTTOM_EDGE -> getPosition().y = collidedWith.getPosition().y + collidedWith.getSize().height;
+                }
+                // Se invierte la dirección de la pelota al colisionar con un borde o un ladrillo.
+                switch (edgeType) {
+                    case LEFT_EDGE, RIGHT_EDGE -> setDx(-getDx());
+                    case TOP_EDGE, BOTTOM_EDGE -> setDy(-getDy());
+                }
+            }
+            // Se determina el tipo de objeto con el que colisiona la pelota.
+            // Si es un ladrillo, se indicará al panel que lo elimine.
+            if (collidedWith instanceof Brick brick) {
+                brick.hit();
+                if (brick.isDestroyed()) {
+                    GamePanel.removeBrick(brick);
+                }
+            }
+            // Si es un borde y además es el borde inferior, se eliminará la pelota.
+            if (collidedWith instanceof Borders) {
+                if (collidedWith == Borders.BOTTOM_BAR) {
+                    GamePanel panel = GamePanel.getInstance();
+                    panel.removeBall(this);
+                    panel.getPaddle().resetPosition();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void draw(Graphics2D g2d) {
+        Graphics2D g2 = (Graphics2D) g2d.create();
+        g2.drawImage(getImageIcon().getImage(), position.x, position.y, null);
+        g2.dispose();
+    }
+
+    @Override
+    public void move() {
+
+        if (!stop) {
+            position.x += dx * speed;
+            position.y += dy * speed;
+        } else {
+            // Si la pelota está detenida, se ajusta su posición a la posición de la paleta.
+            Paddle paddle = GamePanel.getInstance().getPaddle();
+            position.x = paddle.getPosition().x + (paddle.getSize().width / 2) - (getSize().width / 2);
+            position.y = paddle.getPosition().y - getSize().height;
+        }
+    }
+
+    @Override
+    public void resetPosition() {
+        // Se reinicia la posición de la pelota a la posición inicial.
+        position.x = INITIAL_BALL_X;
+        position.y = INITIAL_BALL_Y;
+        // Se reinicia la velocidad de la pelota.
+        speed = 3;
+        // Se reinicia la dirección de la pelota.
+        dx = 1;
+        dy = -1;
+        // Se reinicia el estado de la pelota.
+        stop = true;
+    }
+
+    @Override
+    public void addImageToCache() {
+
+        SpriteCache.getInstance().addImage(imageName, SpriteLoader.loadGif("ball.gif"));
+    }
+
+    public ImageIcon getImageIcon() {
+
+        return SpriteCache.getInstance().getImageIcon(getImageName());
+    }
+
+    // Getters y setters
+    public void setStop(boolean stop) {
+        this.stop = stop;
+    }
+
+    public boolean isStop() {
+        return stop;
+    }
+}
+```
+
+## 11. Clase `Borders`
+
+```java
+package org.brick_breaker.sprites;
+
+import org.brick_breaker.cache.SpriteCache;
+import org.brick_breaker.cache.SpriteLoader;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
+public class Borders extends Sprite {
+
+    public static final Borders LEFT_BAR = new Borders("leftBar", new Point(0, 0));
+    public static final Borders RIGHT_BAR = new Borders("rightBar", new Point(438, 0));
+    public static final Borders TOP_BAR = new Borders("topBar", new Point(18, 0));
+    public static final Borders BOTTOM_BAR = new Borders("topBar", new Point(18, 622));
+
+    private Borders(String imageName, Point location) {
+        super(location, imageName, new Dimension(0, 0));
+        addImageToCache();
+    }
+
+    @Override
+    protected void addImageToCache() {
+        SpriteCache spriteCache = SpriteCache.getInstance();
+        BufferedImage image = SpriteLoader.loadImage(imageName + ".png");
+        spriteCache.addImage(imageName, image);
+        if (image != null) {
+            setSize(new Dimension(image.getWidth(), image.getHeight()));
+        }
+    }
+}
+```
+
+## 12. Clase `Missile`
+
+```java
+package org.brick_breaker.sprites;
+
+import org.brick_breaker.cache.SpriteCache;
+import org.brick_breaker.cache.SpriteLoader;
+import org.brick_breaker.sprites.bricks.Brick;
+import org.brick_breaker.ui.panels.GamePanel;
+import org.brick_breaker.utils.collisions.CollisionListener;
+import org.brick_breaker.utils.collisions.CollisionManager;
+import org.brick_breaker.utils.collisions.EdgeType;
+
+import java.awt.*;
+
+public class Missile extends MovingSprite implements CollisionListener {
+    public static final int MISSILE_WIDTH = 16;
+    public static final int MISSILE_HEIGHT = 37;
+    public static final int MISSILE_SPEED = 5;
+    public static final Dimension MISSILE_SIZE = new Dimension(MISSILE_WIDTH, MISSILE_HEIGHT);
+
+    public Missile(Point position) {
+        super(position, "missile", MISSILE_SIZE, 0, MISSILE_SPEED);
+        // Se registra el misil en el gestor de colisiones.
+        CollisionManager.getInstance().addListener(this);
+    }
+
+    @Override
+    public void onCollisionDetected(Sprite collider, Sprite collidedWith, EdgeType edgeType) {
+        // Se verifica si el misil colisiona con otro objeto.
+        if (collider == this) {
+            if (collidedWith instanceof Brick brick) {
+                brick.hit();
+                if (brick.isDestroyed()) {
+                    GamePanel.removeBrick(brick);
+                }
+                // Se destruye el misil al colisionar con un ladrillo.
+                GamePanel.removeMissile(this);
+            }
+            if (collidedWith instanceof Borders) {
+                // Se destruye el misil al colisionar con un borde.
+                GamePanel.removeMissile(this);
+            }
+        }
+    }
+
+    @Override
+    public void move() {
+        position.y -= dy;
+    }
+
+    @Override
+    public void addImageToCache() {
+        SpriteCache spriteCache = SpriteCache.getInstance();
+        spriteCache.addImage("missile", SpriteLoader.loadImage("missile.png"));
+    }
+}
+```
+
+## 13. Clase `MovingSprite`
+
+```java
+package org.brick_breaker.sprites;
+
+import java.awt.*;
+
+public abstract class MovingSprite extends Sprite {
+    protected int dx;
+    protected int dy;
+
+    public MovingSprite(Point position, String imageName, Dimension size, int dx, int dy) {
+
+        super(position, imageName, size);
+        this.dx = dx;
+        this.dy = dy;
+    }
+
+    public abstract void move();
+
+    public int getDx() {
+        return dx;
+    }
+
+    public void setDx(int dx) {
+        this.dx = dx;
+    }
+
+    public int getDy() {
+        return dy;
+    }
+
+    public void setDy(int dy) {
+        this.dy = dy;
+    }
+}
+```
+
+## 14. Interfaz `Resettable`
+
+```java
+package org.brick_breaker.sprites;
+
+public interface Resettable {
+    void resetPosition();
+}
+```
+
+## 15. Clase `Sprite`
+
+```java
+package org.brick_breaker.sprites;
+
+import org.brick_breaker.cache.SpriteCache;
+import org.brick_breaker.utils.collisions.CollisionManager;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.Serializable;
+
+public abstract class Sprite implements Serializable {
+    protected Point position;
+    protected String imageName;
+    protected Dimension size;
+
+    public Sprite(Point position, String imageName, Dimension size) {
+        this.position = position;
+        this.imageName = imageName;
+        this.size = size;
+        addImageToCache();
+        CollisionManager.getInstance().registerCollidable(this);
+    }
+
+    public void draw(Graphics2D g2d) {
+        Graphics2D g2 = (Graphics2D) g2d.create();
+        g2.drawImage(getImage(), position.x, position.y, null);
+        g2.dispose();
+    }
+
+    protected abstract void addImageToCache();
+
+    public Rectangle getBounds() {
+        return new Rectangle(position, size);
+    }
+
+    public BufferedImage getImage() {
+        return SpriteCache.getInstance().getImage(imageName);
+    }
+
+    public Point getPosition() {
+        return position;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public Dimension getSize() {
+        return size;
+    }
+
+    public void setSize(Dimension size) {
+        this.size = size;
+    }
+}
+```
+
+## 16. Clase `Bonus`
+
+```java
+package org.brick_breaker.sprites.bonus;
+
+import org.brick_breaker.cache.SpriteCache;
+import org.brick_breaker.cache.SpriteLoader;
+import org.brick_breaker.sprites.MovingSprite;
+import org.brick_breaker.sprites.Sprite;
+import org.brick_breaker.sprites.bricks.Brick;
+import org.brick_breaker.sprites.paddles.Paddle;
+import org.brick_breaker.ui.panels.GamePanel;
+import org.brick_breaker.utils.collisions.CollisionListener;
+import org.brick_breaker.utils.collisions.CollisionManager;
+import org.brick_breaker.utils.collisions.EdgeType;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.Serializable;
+
+public class Bonus extends MovingSprite implements Serializable, CollisionListener {
+    private boolean active;
+    private BonusType type;
+
+    public Bonus(Point startPosition, BonusType type) {
+        super(startPosition, type.getImageName(), Brick.BRICK_SIZE, 0, 1);
+        this.type = type;
+        this.active = false;
+        CollisionManager.getInstance().addListener(this);
+    }
+
+    @Override
+    public void move() {
+        position.y += dy;
+    }
+
+    @Override
+    public void draw(Graphics2D g2d) {
+        Graphics2D g2 = (Graphics2D) g2d.create();
+        g2.drawImage(getImageIcon().getImage(), position.x, position.y, null);
+        g2.dispose();
+    }
+
+    public ImageIcon getImageIcon() {
+        return SpriteCache.getInstance().getImageIcon(getImageName());
+    }
+
+    @Override
+    public void onCollisionDetected(Sprite collider, Sprite collidedWith, EdgeType edgeType) {
+        if (collider == this) {
+            if (collidedWith == null) {
+                GamePanel.removeBonus(this);
+            }
+            if (collidedWith instanceof Paddle) {
+                switch (edgeType) {
+                    case TOP_EDGE -> getPosition().y = collidedWith.getPosition().y - getImageIcon().getIconHeight();
+                    case BOTTOM_EDGE -> getPosition().y = collidedWith.getPosition().y + collidedWith.getSize().height;
+                }
+                GamePanel.removeBonus(this);
+                getType().activateBonus();
+            }
+        }
+    }
+
+    @Override
+    public void addImageToCache() {
+        SpriteCache cache = SpriteCache.getInstance();
+        if (type != null) {
+            switch (type) {
+                case L -> cache.addImage(imageName, SpriteLoader.loadGif("bonus/L.gif"));
+                case S -> cache.addImage(imageName, SpriteLoader.loadGif("bonus/S.gif"));
+                case M -> cache.addImage(imageName, SpriteLoader.loadGif("bonus/M.gif"));
+                case R -> cache.addImage(imageName, SpriteLoader.loadGif("bonus/R.gif"));
+                case E -> cache.addImage(imageName, SpriteLoader.loadGif("bonus/E.gif"));
+                case B -> cache.addImage(imageName, SpriteLoader.loadGif("bonus/B.gif"));
+                case C -> cache.addImage(imageName, SpriteLoader.loadGif("bonus/C.gif"));
+                case D -> cache.addImage(imageName, SpriteLoader.loadGif("bonus/D.gif"));
+                case P -> cache.addImage(imageName, SpriteLoader.loadGif("bonus/P.gif"));
+                case T -> cache.addImage(imageName, SpriteLoader.loadGif("bonus/T.gif"));
+            }
+        }
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public BonusType getType() {
+        return type;
+    }
+
+    public void setType(BonusType type) {
+        this.type = type;
+    }
+}
+```
+
+> NOTA: La clase `Bonus` cuenta con el método `addImageToCache()`, que permite cargar las imágenes de los bonos. Sin
+> embargo, es importante señalar que los bonus mostrados son solo un ejemplo. Puedes crear los tipos de bonus que
+> desees, así como sus propiedades. Recuerda que los tipos de bonus deben de ser únicos y no repetirse.
+
+## 17. Clase `BonusType`
+
+```java
+package org.brick_breaker.sprites.bonus;
+
+import org.brick_breaker.sprites.paddles.PaddleType;
+import org.brick_breaker.ui.panels.GamePanel;
+
+import java.io.Serializable;
+
+/**
+ * Esta clase permitirá definir los tipos de bonus posibles dentro del juego, la lista de opciones es la siguientes:
+ */
+public enum BonusType implements Serializable {
+
+    L("l_bonus") {
+        @Override
+        public void activateBonus() {
+            GamePanel.getInstance().addLife();
+        }
+    },
+    S("s_bonus") {
+        @Override
+        public void activateBonus() {
+        }
+    },
+    M("m_bonus") {
+        @Override
+        public void activateBonus() {
+        }
+    },
+    R("r_bonus") {
+        @Override
+        public void activateBonus() {
+        }
+    },
+    E("e_bonus") {
+        @Override
+        public void activateBonus() {
+        }
+    },
+    B("b_bonus") {
+        @Override
+        public void activateBonus() {
+        }
+    },
+    C("c_bonus") {
+        @Override
+        public void activateBonus() {
+        }
+    },
+    D("d_bonus") {
+        @Override
+        public void activateBonus() {
+        }
+    },
+    P("p_bonus") {
+        @Override
+        public void activateBonus() {
+        }
+    },
+    T("t_bonus") {
+        @Override
+        public void activateBonus() {
+        }
+    };
+
+    private final String imageName;
+
+    BonusType(String imageName) {
+
+        this.imageName = imageName;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public abstract void activateBonus();
+}
+```
+
+> NOTA: El tipo enumerado `BonusType` permite definir los tipos de bonus posibles dentro del juego. Así mismo define una
+> función abstracta `activateBonus()`, que permite definir el comportamiento de cada tipo de bonus al ser recogido por
+> la paleta. Puedes crear los tipos de bonus que desees, así como sus propiedades. Recuerda que los tipos de
+> bonus deben de ser únicos y no repetirse. Además, podrás notar que como en el ejemplo del bonus `L`, se puede
+> invoca una función estática al recoger el bonus. En este caso se invoca la función `addLife()` de la clase
+`GamePanel`, que permite añadir una vida al jugador. Deberás pues, definir las funciones que desees para cada tipo de
+> bonus e invocar la función que desees al recoger el bonus en el tipo que corresponda.
+
+## 18. Clase `ButtonState`
+
+```java
+package org.brick_breaker.ui.buttons;
+
+import javax.swing.*;
+
+public enum ButtonState {
+    NORMAL,
+    ROLLOVER,
+    PRESSED,
+    DISABLED;
+
+    public static ButtonState getButtonState(JButton button) {
+        if (button == null) {
+            throw new IllegalArgumentException("Button cannot be null");
+        }
+        if (button.isEnabled()) {
+            if (button.getModel().isPressed()) {
+                return ButtonState.PRESSED;
+            } else if (button.getModel().isRollover()) {
+                return ButtonState.ROLLOVER;
+            } else {
+                return ButtonState.NORMAL;
+            }
+        } else {
+            return ButtonState.DISABLED;
+        }
+    }
+}
+```
+
+## 19. Clase `ThreePartButtonUI`
+
+```java
+package org.brick_breaker.ui.buttons;
+
+import org.brick_breaker.cache.FontCache;
+import org.brick_breaker.cache.SpriteCache;
+import org.brick_breaker.cache.SpriteLoader;
+import org.brick_breaker.ui.labels.ScoreLabelUI;
+
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicButtonUI;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
+public class ThreePartButtonUI extends BasicButtonUI {
+    private final BufferedImage[] images = new BufferedImage[3];
+    private final int[] imageWidths = new int[3];
+    private final int imageHeight;
+
+    // Carga de imágenes estáticas
+    static {
+        SpriteCache cache = SpriteCache.getInstance();
+        cache.addImage("leftSideNormal", SpriteLoader.loadImage("buttons/normal/leftSide.png"));
+        cache.addImage("leftSideHover", SpriteLoader.loadImage("buttons/hover/leftSide.png"));
+        cache.addImage("leftSidePressed", SpriteLoader.loadImage("buttons/pressed/leftSide.png"));
+        cache.addImage("leftSideDisabled", SpriteLoader.loadImage("buttons/disabled/leftSide.png"));
+        cache.addImage("middleNormal", SpriteLoader.loadImage("buttons/normal/middleSide.png"));
+        cache.addImage("middleHover", SpriteLoader.loadImage("buttons/hover/middleSide.png"));
+        cache.addImage("middlePressed", SpriteLoader.loadImage("buttons/pressed/middleSide.png"));
+        cache.addImage("middleDisabled", SpriteLoader.loadImage("buttons/disabled/middleSide.png"));
+        cache.addImage("rightSideNormal", SpriteLoader.loadImage("buttons/normal/rightSide.png"));
+        cache.addImage("rightSideHover", SpriteLoader.loadImage("buttons/hover/rightSide.png"));
+        cache.addImage("rightSidePressed", SpriteLoader.loadImage("buttons/pressed/rightSide.png"));
+        cache.addImage("rightSideDisabled", SpriteLoader.loadImage("buttons/disabled/rightSide.png"));
+        FontCache.addFont("diffusion", "fonts/diffusion.ttf");
+    }
+
+    public ThreePartButtonUI() {
+        images[0] = SpriteCache.getInstance().getImage("leftSideNormal");
+        images[1] = SpriteCache.getInstance().getImage("middleNormal");
+        images[2] = SpriteCache.getInstance().getImage("rightSideNormal");
+        imageWidths[0] = images[0].getWidth(null);
+        imageWidths[1] = images[1].getWidth(null);
+        imageWidths[2] = images[2].getWidth(null);
+        imageHeight = images[0].getHeight(null);
+    }
+
+    @Override
+    public void paint(Graphics g, JComponent c) {
+        JButton button = (JButton) c;
+        Graphics2D g2 = (Graphics2D) g.create();
+        ScoreLabelUI.configureRenderingHints(g2);
+        // Determinar qué imágenes usar según el estado del botón
+        setButtonImages(button);
+        // Calcular dimensiones
+        FontMetrics fm = g2.getFontMetrics();
+        int textWidth = fm.stringWidth(button.getText());
+        int centerWidth = textWidth + 40; // 20px de padding a cada lado
+        // Dibujar las tres partes del botón
+        // Parte izquierda
+        g2.drawImage(images[0], 0, 0, imageWidths[0], imageHeight, null);
+        // Parte central (se estira según el texto)
+        g2.drawImage(images[1], imageWidths[0], 0, centerWidth, imageHeight, null);
+        // Parte derecha
+        g2.drawImage(images[2], imageWidths[0] + centerWidth, 0, imageWidths[2], imageHeight, null);
+        // Dibujar el texto
+        int textX = imageWidths[0] + (centerWidth - textWidth) / 2;
+        int textY = (imageHeight - fm.getHeight()) / 2 + fm.getAscent();
+        if (button.getModel().isPressed()) {
+            textX += 1;
+            textY += 1;
+        }
+        g2.setColor(button.getModel().isEnabled() ? button.getForeground() : Color.GRAY);
+        g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON));
+        g2.drawString(button.getText(), textX, textY);
+        g2.dispose();
+    }
+
+    public static void configureButton(JButton button) {
+        button.setUI(new ThreePartButtonUI());
+        button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
+        button.setFocusPainted(false);
+        button.setOpaque(false);
+        button.setHorizontalTextPosition(SwingConstants.CENTER);
+        button.setVerticalTextPosition(SwingConstants.CENTER);
+        button.setVerticalAlignment(SwingConstants.CENTER);
+        button.setHorizontalAlignment(SwingConstants.CENTER);
+        button.setFont(FontCache.getFont("diffusion").deriveFont(Font.BOLD, 20f));
+    }
+
+    @Override
+    public Dimension getPreferredSize(JComponent c) {
+
+        JButton button = (JButton) c;
+        FontMetrics fm = button.getFontMetrics(button.getFont());
+        int textWidth = fm.stringWidth(button.getText());
+        int centerWidth = textWidth + 18; // 9px de padding a cada lado
+        int width = imageWidths[0] + centerWidth + images[1].getWidth();
+        return new Dimension(width, imageHeight);
+    }
+
+    private void setButtonImages(JButton button) {
+        String stateName = switch (ButtonState.getButtonState(button)) {
+            case NORMAL -> "Normal";
+            case ROLLOVER -> "Hover";
+            case PRESSED -> "Pressed";
+            case DISABLED -> "Disabled";
+        };
+        images[0] = SpriteCache.getInstance().getImage("leftSide" + stateName);
+        images[1] = SpriteCache.getInstance().getImage("middle" + stateName);
+        images[2] = SpriteCache.getInstance().getImage("rightSide" + stateName);
+    }
+}
+```
+
+## 20. Clase `KeyboardAction`
+
+```java
+package org.brick_breaker.ui.events;
+
+import org.brick_breaker.sprites.paddles.PaddleType;
+import org.brick_breaker.ui.panels.GamePanel;
+
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
+public class KeyboardAction extends KeyAdapter {
+    GamePanel gamePanel;
+
+    public KeyboardAction(GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_LEFT:
+                gamePanel.getPaddle().setDx(-1);
+                break;
+            case KeyEvent.VK_RIGHT:
+                gamePanel.getPaddle().setDx(1);
+                break;
+            case KeyEvent.VK_SPACE:
+                if (gamePanel.isGameRunning()) {
+                    if (!gamePanel.getBalls().isEmpty() && gamePanel.getBalls().getFirst().isStop())
+                        gamePanel.getBalls().getFirst().setStop(false);
+                    if (gamePanel.getPaddle().getType() == PaddleType.SHOOTER)
+                        gamePanel.addMissile();
+                }
+                break;
+            case KeyEvent.VK_F:
+                gamePanel.destroyAllBricks();
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_LEFT:
+            case KeyEvent.VK_RIGHT:
+                gamePanel.getPaddle().setDx(0);
+                break;
+            default:
+                break;
+        }
+    }
+
+}
+```
+
+## 21. Clase `StartButtonAction`
+
+```java
+package org.brick_breaker.ui.events;
+
+import org.brick_breaker.ui.panels.GamePanel;
+import org.brick_breaker.ui.windows.MainWindow;
+
+import java.awt.event.ActionListener;
+
+public class StartButtonAction implements ActionListener {
+    @Override
+    public void actionPerformed(java.awt.event.ActionEvent e) {
+        GamePanel.getInstance().playGame();
+        MainWindow.getInstance().getStartButton().setEnabled(false);
+        MainWindow.getInstance().getStopButton().setEnabled(true);
+    }
+}
+```
+
+## 22. Clase `StopButtonAction`
+
+```java
+package org.brick_breaker.ui.events;
+
+import org.brick_breaker.ui.panels.GamePanel;
+import org.brick_breaker.ui.windows.MainWindow;
+
+import java.awt.event.ActionListener;
+
+public class StopButtonAction implements ActionListener {
+    @Override
+    public void actionPerformed(java.awt.event.ActionEvent e) {
+        GamePanel.getInstance().stopGame();
+        MainWindow.getInstance().getStartButton().setEnabled(true);
+        MainWindow.getInstance().getStopButton().setEnabled(false);
+    }
+}
+```
+
+## 23. Clase `LifeLabelUI`
+
+```java
+package org.brick_breaker.ui.labels;
+
+import org.brick_breaker.cache.SpriteCache;
+import org.brick_breaker.cache.SpriteLoader;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
+public class LifeLabelUI extends ScoreLabelUI {
+
+    static {
+        SpriteCache cache = SpriteCache.getInstance();
+        cache.addImage("lifeBackground", SpriteLoader.loadImage("labels/life-label.png"));
+        cache.addImage("lifeIcon", SpriteLoader.loadImage("labels/life-count.png"));
+    }
+
+    /**
+     * Constructor de la clase ScoreLabelUI.
+     * Carga la imagen de fondo para la etiqueta de puntuación.
+     */
+    public LifeLabelUI() {
+
+        background = SpriteCache.getInstance().getImage("lifeBackground");
+    }
+
+    /**
+     * FUnción que se encarga de pintar la etiqueta de puntuación.
+     *
+     * @param g El objeto Graphics utilizado para dibujar.
+     * @param c El componente JComponent que representa la etiqueta.
+     */
+    @Override
+    public void paint(Graphics g, JComponent c) {
+
+        Graphics2D g2 = (Graphics2D) g.create();
+        // Configura los hints de renderizado
+        configureRenderingHints(g2);
+        // Dibuja la imagen de fondo
+        g2.drawImage(background, 0, 0, null);
+        // Dibuja el texto de la etiqueta
+        JLabel label = (JLabel) c;
+        FontMetrics fm = g2.getFontMetrics(label.getFont());
+        BufferedImage lifeIcon = SpriteCache.getInstance().getImage("lifeIcon");
+        int textWidth = fm.stringWidth(label.getText());
+        int textHeight = fm.getHeight();
+        int iconWidth = lifeIcon.getWidth();
+        int iconHeight = lifeIcon.getHeight();
+        int x = (background.getWidth() - textWidth) / 2;
+        int y = (background.getHeight() + textHeight) / 2;
+        int iconX = 2 + iconWidth / 2;
+        int iconY = ((background.getHeight() - iconHeight) / 2) + 3;
+        g2.drawImage(lifeIcon, iconX, iconY, null);
+        g2.setColor(label.getForeground());
+        g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON));
+        g2.drawString(label.getText(), x, y);
+        g2.dispose();
+    }
+
+    public static void configureLabel(JLabel label) {
+
+        label.setUI(new LifeLabelUI());
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setVerticalAlignment(SwingConstants.CENTER);
+        label.setForeground(Color.WHITE);
+        label.setFont(new Font("Arial", Font.BOLD, 20));
+    }
+}
+```
+
+## 24. Clase `ScoreLabelUI`
+
+```java
+package org.brick_breaker.ui.labels;
+
+import org.brick_breaker.cache.SpriteCache;
+import org.brick_breaker.cache.SpriteLoader;
+
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicLabelUI;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
+public class ScoreLabelUI extends BasicLabelUI {
+    protected BufferedImage background;
+
+    static {
+        SpriteCache cache = SpriteCache.getInstance();
+        cache.addImage("scoreBackground", SpriteLoader.loadImage("labels/score-label.png"));
+    }
+
+    public ScoreLabelUI() {
+        background = SpriteCache.getInstance().getImage("scoreBackground");
+    }
+
+    @Override
+    public void paint(Graphics g, JComponent c) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        // Configura los hints de renderizado
+        configureRenderingHints(g2);
+        // Dibuja la imagen de fondo
+        g2.drawImage(background, 0, 0, null);
+        // Dibuja el texto de la etiqueta
+        JLabel label = (JLabel) c;
+        FontMetrics fm = g2.getFontMetrics(label.getFont());
+        int textWidth = fm.stringWidth(label.getText());
+        int textHeight = fm.getHeight();
+        int x = (background.getWidth() - textWidth) / 2;
+        int y = (background.getHeight() + textHeight) / 2;
+        g2.setColor(label.getForeground());
+        g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON));
+        g2.drawString(label.getText(), x, y);
+        g2.dispose();
+    }
+
+    public static void configureRenderingHints(Graphics2D g2) {
+        g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON));
+        g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON));
+        g2.setRenderingHints(new RenderingHints(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BICUBIC));
+    }
+
+    public static void configureLabel(JLabel label) {
+        label.setUI(new ScoreLabelUI());
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setVerticalAlignment(SwingConstants.CENTER);
+        label.setForeground(Color.WHITE);
+        label.setFont(new Font("Arial", Font.BOLD, 20));
+    }
+
+    @Override
+    public Dimension getPreferredSize(JComponent c) {
+        return new Dimension(background.getWidth(), background.getHeight());
+    }
+}
+```
+
+## 25. Clase `TitleLabel`
+
+```java
+package org.brick_breaker.ui.labels;
+
+import org.brick_breaker.cache.FontCache;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+
+public class TitleLabel extends JLabel {
+    static {
+        FontCache.addFont("diffusion", "fonts/diffusion.ttf");
+    }
+
+    public TitleLabel() {
+        Font font = FontCache.getFont("diffusion").deriveFont(Font.BOLD, 42);
+        setText("Brick Breaker");
+        setFont(font);
+        setHorizontalAlignment(SwingConstants.CENTER);
+        setVerticalAlignment(SwingConstants.CENTER);
+        setHorizontalTextPosition(SwingConstants.CENTER);
+        setVerticalTextPosition(SwingConstants.CENTER);
+    }
+
+    public void setTitle(String title) {
+        setText(title);
+    }
+}
+```
+
+> NOTA: Toma en consideración que la fuente `diffusion.ttf` es una fuente personalizada que debes de
+> sustituir por la fuente que desees. Puedes encontrar fuentes gratuitas en [Google Fonts](https://fonts.google.com/) o
+> en [DaFont](https://www.dafont.com/). Asegúrate de que la fuente que elijas sea de uso gratuito y
+> compatible con tu proyecto. Además, asegúrate de que la fuente esté en la carpeta `fonts` dentro de tu
+> proyecto.
+
+## 26. Clase `GamePanel`
+
+```java
+package org.brick_breaker.ui.panels;
+
+import org.brick_breaker.cache.SpriteCache;
+import org.brick_breaker.cache.SpriteLoader;
+import org.brick_breaker.game.Level;
+import org.brick_breaker.sprites.*;
+import org.brick_breaker.sprites.bonus.Bonus;
+import org.brick_breaker.sprites.bonus.BonusType;
+import org.brick_breaker.sprites.bricks.Brick;
+import org.brick_breaker.sprites.paddles.Paddle;
+import org.brick_breaker.sprites.paddles.PaddleType;
+import org.brick_breaker.ui.events.KeyboardAction;
+import org.brick_breaker.ui.windows.GameOverWindow;
+import org.brick_breaker.ui.windows.MainWindow;
+import org.brick_breaker.utils.FileManager;
+import org.brick_breaker.utils.GameCycle;
+import org.brick_breaker.utils.Randomized;
+import org.brick_breaker.utils.collisions.CollisionManager;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Collections;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+public class GamePanel extends JPanel {
+    private static final Borders LEFT_BORDER = Borders.LEFT_BAR;
+    private static final Borders RIGHT_BORDER = Borders.RIGHT_BAR;
+    private static final Borders TOP_BORDER = Borders.TOP_BAR;
+    private static final Borders BOTTOM_BORDER = Borders.BOTTOM_BAR;
+    public static GamePanel INSTANCE;
+    public static final int INITIAL_LIVES = 3;
+    public static final int INITIAL_SCORE = 0;
+    public static final int INITIAL_LEVEL = 1;
+    public static final int MAX_LEVEL = 5;
+    public static final int WIDTH = (int) (2 * LEFT_BORDER.getSize().getWidth() + TOP_BORDER.getSize().getWidth());
+    public static final int HEIGHT = (int) (LEFT_BORDER.getSize().getHeight());
+    public static final int GAME_WIDTH = WIDTH - RIGHT_BORDER.getSize().width;
+    private static Level level;
+    private static final CopyOnWriteArrayList<Ball> balls = new CopyOnWriteArrayList<>();
+    private Paddle paddle;
+    public static Timer timer;
+    private static boolean gameRunning = false;
+    private boolean bricksDestroyed = false;
+    private static int lives = INITIAL_LIVES;
+    private static int score = INITIAL_SCORE;
+    private int levelNumber = INITIAL_LEVEL;
+    private static final CopyOnWriteArrayList<Sprite> gameObjects = new CopyOnWriteArrayList<>();
+    private static final CopyOnWriteArrayList<Missile> missiles = new CopyOnWriteArrayList<>();
+
+    private GamePanel() {
+        initPanelSize();
+        level = FileManager.readLevel(Level.levelNumber);
+    }
+
+    public void restartGame() {
+        levelNumber = INITIAL_LEVEL;
+        lives = INITIAL_LIVES;
+        score = INITIAL_SCORE;
+        gameRunning = false;
+        bricksDestroyed = false;
+        gameObjects.clear();
+        CollisionManager.getInstance().clearCollidableObjects();
+        CollisionManager.getInstance().clearListeners();
+        CollisionManager.getInstance().addListener(balls.getFirst());
+        missiles.clear();
+        level = FileManager.readLevel(levelNumber);
+        paddle.resetPosition();
+        balls.getFirst().resetPosition();
+        registerObjects();
+        playGame();
+    }
+
+    public void addMissile() {
+        if (missiles.size() <= 5) {
+            // Si no existe un misil en la posición de la barra, se crea uno nuevo.
+            if (missiles.isEmpty()) {
+                createMissile();
+            } else {
+                // Verificamos la posición del último misil
+                Missile lastMissile = missiles.getLast();
+                // Si el último misil esta al menos a 50px de la barra, se crea uno nuevo
+                if (lastMissile.getPosition().y < paddle.getPosition().y - 150) {
+                    createMissile();
+                }
+            }
+        }
+    }
+
+    private void createMissile() {
+        Missile m = new Missile(new Point(paddle.getPosition().x + paddle.getSize().width / 2 - Missile.MISSILE_WIDTH / 2,
+                paddle.getPosition().y - Missile.MISSILE_HEIGHT));
+        missiles.add(m);
+        gameObjects.add(m);
+        CollisionManager.getInstance().registerCollidable(m);
+    }
+
+    public void addLife() {
+        lives++;
+    }
+
+    public void addScore(int score) {
+        GamePanel.score += score;
+    }
+
+    public void duplicateScore() {
+        GamePanel.score *= 2;
+    }
+
+    public void startGame() {
+        paddle = new Paddle(PaddleType.MEDIUM);
+        balls.add(new Ball());
+        timer = new Timer(10, new GameCycle(this));
+        playGame();
+        registerObjects();
+        addKeyListener(new KeyboardAction(this));
+        setFocusable(true);
+        requestFocus();
+    }
+
+    public static GamePanel getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new GamePanel();
+        }
+        return INSTANCE;
+    }
+
+    private void registerBricks() {
+        if (level != null) {
+            for (Brick[] row : level.getBricks()) {
+                Collections.addAll(gameObjects, row);
+            }
+        }
+        if (isGameRunning()) {
+            for (Sprite sprite : gameObjects) {
+                if (sprite instanceof Brick brick) {
+                    CollisionManager.getInstance().registerCollidable(brick);
+                }
+            }
+        }
+    }
+
+    private void registerObjects() {
+        registerBricks();
+        gameObjects.add(LEFT_BORDER);
+        gameObjects.add(RIGHT_BORDER);
+        gameObjects.add(TOP_BORDER);
+        gameObjects.add(BOTTOM_BORDER);
+        gameObjects.add(paddle);
+        gameObjects.addAll(balls);
+        for (Sprite sprite : gameObjects) {
+            if (sprite instanceof Brick) {
+                ((Brick) sprite).addImageToCache();
+            }
+            CollisionManager.getInstance().registerCollidable(sprite);
+        }
+    }
+
+    private void initPanelSize() {
+        setSize(WIDTH, HEIGHT);
+        setPreferredSize(getSize());
+        setMinimumSize(getSize());
+        setMaximumSize(getSize());
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        // Se activa el antializado de la imagen para mejorar la calidad de la imagen.
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        // Se activa el renderizado de calidad para mejorar la calidad de la imagen.
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_QUALITY);
+        // Se activa la interpolación bilineal para mejorar la calidad de la imagen.
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        // Se activa el antializado de texto para mejorar la calidad del texto.
+        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        BufferedImage background = SpriteLoader.loadImage(level.getBackgroundName() + ".png");
+        g2d.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
+        for (Sprite sprite : gameObjects)
+            sprite.draw(g2d);
+        Toolkit.getDefaultToolkit().sync();
+    }
+
+    private static void createBonus(Brick brick) {
+        if (brick != null && Randomized.getRandomBoolean(99)) {
+            BonusType bonusType = Randomized.getRandomBonusType();
+            Bonus bonus = new Bonus(brick.getPosition(), BonusType.M);
+            bonus.addImageToCache();
+            gameObjects.add(bonus);
+            CollisionManager.getInstance().registerCollidable(bonus);
+        }
+    }
+
+    public static void removeBonus(Bonus bonus) {
+        if (bonus != null) {
+            gameObjects.remove(bonus);
+            CollisionManager.getInstance().unregisterCollidable(bonus);
+        }
+    }
+
+    public static void removeMissile(Missile missile) {
+        if (missile != null) {
+            gameObjects.remove(missile);
+            CollisionManager.getInstance().unregisterCollidable(missile);
+            missiles.remove(missile);
+        }
+    }
+
+    public static void removeBrick(Brick brick) {
+        if (brick != null) {
+            score += brick.getScore();
+            gameObjects.remove(brick);
+            CollisionManager.getInstance().unregisterCollidable(brick);
+            createBonus(brick);
+        }
+    }
+
+    public void removeBall(Ball ball) {
+        if (ball != null) {
+            if (balls.size() > 1) {
+                balls.remove(ball);
+                gameObjects.remove(ball);
+                CollisionManager.getInstance().unregisterCollidable(ball);
+            } else {
+                ball.resetPosition();
+                lives--;
+                if (lives == 0) {
+                    gameRunning = false;
+                    MainWindow mainWindow = MainWindow.getInstance();
+                    mainWindow.setVisible(false);
+                    mainWindow.dispose();
+                    new GameOverWindow();
+                }
+            }
+        }
+    }
+
+    public void stopGame() {
+        gameRunning = false;
+        timer.stop();
+    }
+
+    public void playGame() {
+        gameRunning = true;
+        timer.start();
+        this.requestFocus();
+    }
+
+    private void updateLabels() {
+        MainWindow mainWindow = MainWindow.getInstance();
+        mainWindow.getScoreLabel().setText(String.valueOf(score));
+        mainWindow.getLifeLabel().setText(String.valueOf(lives));
+    }
+
+    public void destroyAllBricks() {
+        for (Sprite sprite : gameObjects) {
+            if (sprite instanceof Brick brick) {
+                brick.setDestroyed(true);
+                CollisionManager.getInstance().unregisterCollidable(brick);
+                gameObjects.remove(brick);
+            }
+        }
+    }
+
+    public void update() {
+        if (gameRunning) {
+            updateLabels();
+            checkBricksDestroy();
+            // Se verifica si se ha llegado al final del nivel.
+            if (bricksDestroyed) {
+                loadLevel();
+            }
+            // Se verifica si se ha colisionado con algún objeto.
+            CollisionManager.getInstance().checkCollisions();
+            // Se actualiza la posición de los objetos del juego.
+            for (Sprite sprite : gameObjects) {
+                if (sprite instanceof MovingSprite) {
+                    ((MovingSprite) sprite).move();
+                }
+            }
+        }
+    }
+
+    private void loadLevel() {
+        levelNumber++;
+        if (levelNumber <= MAX_LEVEL) {
+            level = FileManager.readLevel(levelNumber);
+            if (level != null) {
+                paddle.resetPosition();
+                int size = balls.size();
+                for (int i = 1; i < size; i++) {
+                    balls.removeLast();
+                }
+                balls.getFirst().resetPosition();
+                registerBricks();
+            }
+        } else {
+            stopGame();
+        }
+    }
+
+    private void checkBricksDestroy() {
+        // Se verifica si se han destruido todos los ladrillos.
+        if (level != null && level.getBricks() != null) {
+            bricksDestroyed = true;
+            for (Brick[] row : level.getBricks()) {
+                for (Brick brick : row) {
+                    if (!brick.isDestroyed()) {
+                        bricksDestroyed = false;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public Paddle getPaddle() {
+        return paddle;
+    }
+
+    public boolean isGameRunning() {
+        return gameRunning;
+    }
+
+    public CopyOnWriteArrayList<Ball> getBalls() {
+        return balls;
+    }
+
+    public boolean isBricksDestroyed() {
+        return bricksDestroyed;
+    }
+
+    public void setBricksDestroyed(boolean bricksDestroyed) {
+        this.bricksDestroyed = bricksDestroyed;
+    }
+
+    public int getLevelNumber() {
+        return levelNumber;
+    }
+
+    public void setLevelNumber(int levelNumber) {
+        this.levelNumber = levelNumber;
+    }
+}
+```
+
+> NOTA: La clase `GamePanel` es la clase principal del juego. Esta clase se encarga de gestionar el ciclo de vida del
+> juego, la creación de los objetos del juego, la gestión de los eventos del teclado y la actualización de la
+> pantalla. Además, esta clase se encarga de gestionar la puntuación y las vidas del jugador. La clase `GamePanel`
+> hereda de la clase `JPanel`, por lo que se puede utilizar como un panel dentro de una ventana.
+
+## 27. Clase `MainWindow`
+
+```java
+package org.brick_breaker.ui.windows;
+
+import org.brick_breaker.ui.buttons.ThreePartButtonUI;
+import org.brick_breaker.ui.events.StartButtonAction;
+import org.brick_breaker.ui.events.StopButtonAction;
+import org.brick_breaker.ui.labels.LifeLabelUI;
+import org.brick_breaker.ui.labels.ScoreLabelUI;
+import org.brick_breaker.ui.panels.GamePanel;
+
+import javax.swing.*;
+import java.awt.event.MouseAdapter;
+
+public class MainWindow extends JFrame {
+    public static MainWindow INSTANCE;
+    private JPanel mainPanel;
+    private JPanel gamePanel;
+    private JPanel actionPanel;
+    private JButton startButton;
+    private JButton stopButton;
+    private JLabel lifeLabel;
+    private JLabel scoreLabel;
+
+    private MainWindow() {
+        super("Brick Breaker");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setContentPane(mainPanel);
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+        addActions();
+        lifeLabel.addMouseListener(new MouseAdapter() {
+        });
+    }
+
+    public static MainWindow getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new MainWindow();
+        }
+        return INSTANCE;
+    }
+
+    private void addActions() {
+        startButton.addActionListener(new StartButtonAction());
+        stopButton.addActionListener(new StopButtonAction());
+    }
+
+    private void createUIComponents() {
+        gamePanel = GamePanel.getInstance();
+        startButton = new JButton("Reanudar");
+        stopButton = new JButton("Pausar");
+        scoreLabel = new JLabel("0");
+        lifeLabel = new JLabel("3");
+        ThreePartButtonUI.configureButton(startButton);
+        ThreePartButtonUI.configureButton(stopButton);
+        ScoreLabelUI.configureLabel(scoreLabel);
+        LifeLabelUI.configureLabel(lifeLabel);
+    }
+
+    public void restartGame() {
+        GamePanel.getInstance().restartGame();
+        GamePanel.getInstance().update();
+        startButton.setEnabled(true);
+        stopButton.setEnabled(false);
+        setVisible(true);
+    }
+
+    public void startGame() {
+        GamePanel.getInstance().startGame();
+        startButton.setEnabled(false);
+        stopButton.setEnabled(true);
+    }
+
+    public JButton getStartButton() {
+
+        return startButton;
+    }
+
+    public JButton getStopButton() {
+
+        return stopButton;
+    }
+
+    public JLabel getLifeLabel() {
+
+        return lifeLabel;
+    }
+
+    public JLabel getScoreLabel() {
+
+        return scoreLabel;
+    }
+}
+```
+
+> NOTA: La clase `MainWindow` es la clase principal de la ventana del juego. Por lo cual es importante que tengas la
+> parte de la vista de diseño correspondiente con los nombres de los componentes que se están utilizando en el código.
+
+## 28. Clase `CollisionListener`
+
+```java
+package org.brick_breaker.utils.collisions;
+
+import org.brick_breaker.sprites.Sprite;
+
+public interface CollisionListener {
+    void onCollisionDetected(Sprite collider, Sprite collidedWith, EdgeType edgeType);
+}
+```
+
+## 29. Clase `CollisionManager`
+
+```java
+package org.brick_breaker.utils.collisions;
+
+import org.brick_breaker.sprites.Borders;
+import org.brick_breaker.sprites.Sprite;
+import org.brick_breaker.ui.panels.GamePanel;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+public class CollisionManager {
+    private static CollisionManager instance;
+    private final CopyOnWriteArrayList<CollisionListener> listeners = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<Sprite> collidableObjects = new CopyOnWriteArrayList<>();
+
+    private CollisionManager() {
+    }
+
+    public static CollisionManager getInstance() {
+        if (instance == null) {
+            instance = new CollisionManager();
+        }
+        return instance;
+    }
+
+    public void clearCollidableObjects() {
+        collidableObjects.clear();
+    }
+
+    public void clearListeners() {
+        listeners.clear();
+    }
+
+    public void registerCollidable(Sprite object) {
+        collidableObjects.add(object);
+    }
+
+    public void unregisterCollidable(Sprite object) {
+        collidableObjects.remove(object);
+    }
+
+    public void addListener(CollisionListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeListener(CollisionListener listener) {
+        listeners.remove(listener);
+    }
+
+    public void checkCollisions() {
+        for (int i = 0; i < collidableObjects.size(); i++) {
+            Sprite obj1 = collidableObjects.get(i);
+            // Verificar colisión con bordes
+            checkBorderCollisions(obj1);
+            // Verificar colisión con otros objetos
+            for (int j = i + 1; j < collidableObjects.size(); j++) {
+                Sprite obj2 = collidableObjects.get(j);
+                if (obj1.getBounds().intersects(obj2.getBounds())) {
+                    EdgeType collisionSide = determineCollisionSide(obj1.getBounds(), obj2.getBounds());
+                    notifyListeners(obj1, obj2, collisionSide);
+                    notifyListeners(obj2, obj1, inverseCollisionSide(collisionSide));
+                }
+            }
+        }
+    }
+
+    private void checkBorderCollisions(Sprite obj) {
+        Rectangle bounds = obj.getBounds();
+        if (bounds.x <= 0)
+            notifyListeners(obj, null, EdgeType.LEFT_EDGE);
+        if (bounds.y <= 0)
+            notifyListeners(obj, null, EdgeType.TOP_EDGE);
+        if (bounds.x + bounds.width >= GamePanel.GAME_WIDTH)
+            notifyListeners(obj, null, EdgeType.RIGHT_EDGE);
+        if (bounds.y + bounds.height >= GamePanel.HEIGHT - Borders.BOTTOM_BAR.getBounds().height)
+            notifyListeners(obj, null, EdgeType.BOTTOM_EDGE);
+    }
+
+    private void notifyListeners(Sprite collider, Sprite collidedWith, EdgeType side) {
+        // Crear una copia de la lista de listeners para evitar ConcurrentModificationException
+        List<CollisionListener> listenersCopy = new ArrayList<>(listeners);
+        for (CollisionListener listener : listenersCopy) {
+            listener.onCollisionDetected(collider, collidedWith, side);
+        }
+    }
+
+    private EdgeType determineCollisionSide(Rectangle obj1, Rectangle obj2) {
+        int leftImpact = obj1.x + obj1.width - obj2.x;
+        int rightImpact = obj2.x + obj2.width - obj1.x;
+        int topImpact = obj1.y + obj1.height - obj2.y;
+        int bottomImpact = obj2.y + obj2.height - obj1.y;
+        int[] impacts = {leftImpact, rightImpact, topImpact, bottomImpact};
+        int minImpact = Integer.MAX_VALUE;
+        EdgeType edgeType = EdgeType.LEFT_EDGE;
+        for (int i = 0; i < impacts.length; i++) {
+            if (impacts[i] < minImpact) {
+                minImpact = impacts[i];
+                edgeType = EdgeType.values()[i];
+            }
+        }
+        return edgeType;
+    }
+
+    private EdgeType inverseCollisionSide(EdgeType side) {
+        return switch (side) {
+            case LEFT_EDGE -> EdgeType.RIGHT_EDGE;
+            case RIGHT_EDGE -> EdgeType.LEFT_EDGE;
+            case TOP_EDGE -> EdgeType.BOTTOM_EDGE;
+            case BOTTOM_EDGE -> EdgeType.TOP_EDGE;
+        };
+    }
+}
+```
+
+## 30. Clase `EdgeType`
+
+```java
+package org.brick_breaker.utils.collisions;
+
+public enum EdgeType {
+    LEFT_EDGE,
+    RIGHT_EDGE,
+    TOP_EDGE,
+    BOTTOM_EDGE
+}
+```
+
+## 31. Clase `GameCycle`
+
+```java
+package org.brick_breaker.utils;
+
+import org.brick_breaker.ui.panels.GamePanel;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class GameCycle implements ActionListener {
+    private final GamePanel panel;
+
+    public GameCycle(GamePanel panel) {
+        this.panel = panel;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        doGameCycle();
+    }
+
+    private void doGameCycle() {
+        panel.update();
+        panel.repaint();
+    }
+}
+```
+
+## 32. Clase `FileManager`
+
+```java
+package org.brick_breaker.utils;
+
+import org.brick_breaker.game.Level;
+
+import java.io.*;
+import javax.swing.*;
+
+public class FileManager {
+    public static Level readLevel(int currentLevel) {
+        Level level;
+        InputStream file;
+        InputStream buffer;
+        ObjectInput input;
+        try {
+            file = new FileInputStream("levels/level_" + currentLevel + ".lvl");
+            buffer = new BufferedInputStream(file);
+            input = new ObjectInputStream(buffer);
+            level = (Level) input.readObject();
+            input.close();
+            buffer.close();
+            file.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,
+                    "Error al cargar el nivel: " + currentLevel,
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+        return level;
+    }
+
+    public static void writeLevel(Level level) {
+        OutputStream file;
+        OutputStream buffer;
+        ObjectOutputStream output;
+        try {
+            file = new FileOutputStream(
+                    "levels/level_" + level.getCurrentLevel() + ".lvl");
+            buffer = new BufferedOutputStream(file);
+            output = new ObjectOutputStream(buffer);
+            output.writeObject(level);
+            output.close();
+            buffer.close();
+            file.close();
+            JOptionPane.showMessageDialog(null,
+                    "Nivel guardado: " + level.getCurrentLevel(),
+                    "Información",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e1) {
+            JOptionPane.showMessageDialog(null,
+                    "Error al guardar el nivel: " + level.getCurrentLevel(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+}
+```
+
+## 33. Clase `Randomized`
+
+```java
+package org.brick_breaker.utils;
+
+import org.brick_breaker.sprites.bonus.BonusType;
+
+import java.util.Random;
+
+public class Randomized {
+    private Randomized() {
+    }
+
+    public static boolean getRandomBoolean() {
+        return randomInt(0, 1) == 1;
+    }
+
+    public static boolean getRandomBoolean(int probability) {
+        return randomInt(0, 100) < probability;
+    }
+
+    public static BonusType getRandomBonusType() {
+
+        BonusType[] bonusTypes = BonusType.values();
+        int randomIndex = randomInt(0, bonusTypes.length - 1);
+        return bonusTypes[randomIndex];
+    }
+
+    public static int randomInt(int min, int max) {
+        Random random = new Random();
+        return random.nextInt(max - min + 1) + min;
+    }
+}
+```
+
+## Conclusión
+
+Con esta referencia, puedes verificar si tu código está completo y si no, puedes completarlo. Recuerda que el código
+puede variar dependiendo de la versión de Java que estés utilizando y de las librerías que estés utilizando. Si tienes
+alguna duda, no dudes en preguntar.
