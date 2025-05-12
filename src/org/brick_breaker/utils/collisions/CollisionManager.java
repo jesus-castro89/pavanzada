@@ -1,4 +1,4 @@
-package org.brick_breaker.utils.colissions;
+package org.brick_breaker.utils.collisions;
 
 import org.brick_breaker.sprites.Borders;
 import org.brick_breaker.sprites.Sprite;

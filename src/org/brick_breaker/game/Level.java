@@ -1,13 +1,10 @@
 package org.brick_breaker.game;
 
-import org.brick_breaker.cache.SpriteCache;
-import org.brick_breaker.cache.SpriteLoader;
 import org.brick_breaker.sprites.bricks.Brick;
 import org.brick_breaker.sprites.bricks.BrickType;
 import org.brick_breaker.utils.Randomized;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 /**
@@ -42,15 +39,15 @@ public class Level implements Serializable {
     /**
      * Nombre de la imagen de fondo del nivel.
      */
-    private String backgroundName;
+    private final String backgroundName;
     /**
      * Nombre de la música del nivel.
      */
-    private String musicName;
+    private final String musicName;
     /**
      * Nivel actual.
      */
-    private int currentLevel;
+    private final int currentLevel;
 
     /**
      * Constructor de la clase.
@@ -58,8 +55,8 @@ public class Level implements Serializable {
      */
     public Level() {
 
-        this.backgroundName = "bg_level_"+levelNumber;
-        this.musicName = "m_level_"+levelNumber;
+        this.backgroundName = "bg_level_" + levelNumber;
+        this.musicName = "m_level_" + levelNumber;
         bricks = new Brick[LEVEL_WIDTH][LEVEL_HEIGHT];
         currentLevel = levelNumber++;
         populateLevel();
@@ -106,23 +103,7 @@ public class Level implements Serializable {
         return backgroundName;
     }
 
-    public void setBackgroundName(String backgroundName) {
-        this.backgroundName = backgroundName;
-    }
-
-    public String getMusicName() {
-        return musicName;
-    }
-
-    public void setMusicName(String musicName) {
-        this.musicName = musicName;
-    }
-
     public int getCurrentLevel() {
         return currentLevel;
-    }
-
-    public void setCurrentLevel(int currentLevel) {
-        this.currentLevel = currentLevel;
     }
 }

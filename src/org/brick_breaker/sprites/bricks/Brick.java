@@ -1,7 +1,7 @@
 package org.brick_breaker.sprites.bricks;
 
 import org.brick_breaker.sprites.Sprite;
-import org.brick_breaker.utils.colissions.CollisionManager;
+import org.brick_breaker.utils.collisions.CollisionManager;
 
 import java.awt.*;
 import java.io.Serializable;

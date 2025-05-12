@@ -15,12 +15,11 @@ import org.brick_breaker.ui.windows.MainWindow;
 import org.brick_breaker.utils.FileManager;
 import org.brick_breaker.utils.GameCycle;
 import org.brick_breaker.utils.Randomized;
-import org.brick_breaker.utils.colissions.CollisionManager;
+import org.brick_breaker.utils.collisions.CollisionManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.CopyOnWriteArrayList;
 

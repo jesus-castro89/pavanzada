@@ -11,4 +11,4 @@ org.brick_breaker.ui.labels
 org.brick_breaker.ui.panels
 org.brick_breaker.ui.windows
 org.brick_breaker.utils
-org.brick_breaker.utils.colissions
+org.brick_breaker.utils.collisions

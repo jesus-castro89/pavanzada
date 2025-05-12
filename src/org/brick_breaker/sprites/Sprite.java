@@ -1,7 +1,7 @@
 package org.brick_breaker.sprites;
 
 import org.brick_breaker.cache.SpriteCache;
-import org.brick_breaker.utils.colissions.CollisionManager;
+import org.brick_breaker.utils.collisions.CollisionManager;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

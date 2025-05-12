@@ -5,11 +5,7 @@ import org.brick_breaker.cache.SpriteLoader;
 import org.brick_breaker.sprites.Borders;
 import org.brick_breaker.sprites.MovingSprite;
 import org.brick_breaker.sprites.Resettable;
-import org.brick_breaker.sprites.Sprite;
-import org.brick_breaker.sprites.bonus.Bonus;
 import org.brick_breaker.ui.panels.GamePanel;
-import org.brick_breaker.utils.colissions.EdgeType;
-import org.brick_breaker.utils.colissions.CollisionListener;
 
 import java.awt.*;
 

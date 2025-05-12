@@ -7,9 +7,9 @@ import org.brick_breaker.sprites.Sprite;
 import org.brick_breaker.sprites.bricks.Brick;
 import org.brick_breaker.sprites.paddles.Paddle;
 import org.brick_breaker.ui.panels.GamePanel;
-import org.brick_breaker.utils.colissions.CollisionListener;
-import org.brick_breaker.utils.colissions.CollisionManager;
-import org.brick_breaker.utils.colissions.EdgeType;
+import org.brick_breaker.utils.collisions.CollisionListener;
+import org.brick_breaker.utils.collisions.CollisionManager;
+import org.brick_breaker.utils.collisions.EdgeType;
 
 import javax.swing.*;
 import java.awt.*;

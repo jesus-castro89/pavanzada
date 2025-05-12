@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="dc.created" content="2025-05-07">
-<meta name="description" content="declaration: package: org.brick_breaker.utils.colissions, class: CollisionManager">
+<meta name="description" content="declaration: package: org.brick_breaker.utils.collisions, class: CollisionManager">
 <meta name="generator" content="javadoc/ClassWriter">
 <link rel="stylesheet" type="text/css" href="../../../../resource-files/jquery-ui.min.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../resource-files/stylesheet.css" title="Style">
@@ -40,7 +40,7 @@ loadScripts(document, 'script');</script>
 <div class="sub-nav">
 <div class="nav-content">
 <ol class="sub-nav-list">
-<li><a href="package-summary.html">org.brick_breaker.utils.colissions</a></li>
+<li><a href="package-summary.html">org.brick_breaker.utils.collisions</a></li>
 <li><a href="CollisionManager.html" class="current-selection">CollisionManager</a></li>
 </ol>
 <div class="nav-list-search">
@@ -100,7 +100,7 @@ loadScripts(document, 'script');</script>
 <h1 title="Class CollisionManager" class="title">Class CollisionManager</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance">org.brick_breaker.utils.colissions.CollisionManager</div>
+<div class="inheritance">org.brick_breaker.utils.collisions.CollisionManager</div>
 </div>
 <section class="class-description" id="class-description">
 <div class="horizontal-scroll">
@@ -123,10 +123,10 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>private final <a href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/concurrent/CopyOnWriteArrayList.html" title="class or interface in java.util.concurrent" class="external-link">CopyOnWriteArrayList</a><wbr>&lt;<a href="../../sprites/Sprite.html" title="class in org.brick_breaker.sprites">Sprite</a>&gt;</code></div>
 <div class="col-second even-row-color"><code><a href="#collidableObjects" class="member-name-link">collidableObjects</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>private static <a href="CollisionManager.html" title="class in org.brick_breaker.utils.colissions">CollisionManager</a></code></div>
+<div class="col-first odd-row-color"><code>private static <a href="CollisionManager.html" title="class in org.brick_breaker.utils.collisions">CollisionManager</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#instance" class="member-name-link">instance</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>private final <a href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/concurrent/CopyOnWriteArrayList.html" title="class or interface in java.util.concurrent" class="external-link">CopyOnWriteArrayList</a><wbr>&lt;<a href="CollisionListener.html" title="interface in org.brick_breaker.utils.colissions">CollisionListener</a>&gt;</code></div>
+<div class="col-first even-row-color"><code>private final <a href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/concurrent/CopyOnWriteArrayList.html" title="class or interface in java.util.concurrent" class="external-link">CopyOnWriteArrayList</a><wbr>&lt;<a href="CollisionListener.html" title="interface in org.brick_breaker.utils.collisions">CollisionListener</a>&gt;</code></div>
 <div class="col-second even-row-color"><code><a href="#listeners" class="member-name-link">listeners</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
@@ -159,7 +159,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addListener(org.brick_breaker.utils.colissions.CollisionListener)" class="member-name-link">addListener</a><wbr>(<a href="CollisionListener.html" title="interface in org.brick_breaker.utils.colissions">CollisionListener</a>&nbsp;listener)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addListener(org.brick_breaker.utils.colissions.CollisionListener)" class="member-name-link">addListener</a><wbr>(<a href="CollisionListener.html" title="interface in org.brick_breaker.utils.collisions">CollisionListener</a>&nbsp;listener)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>private void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#checkBorderCollisions(org.brick_breaker.sprites.Sprite)" class="member-name-link">checkBorderCollisions</a><wbr>(<a href="../../sprites/Sprite.html" title="class in org.brick_breaker.sprites">Sprite</a>&nbsp;obj)</code></div>
@@ -173,26 +173,26 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearListeners()" class="member-name-link">clearListeners</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>private <a href="EdgeType.html" title="enum class in org.brick_breaker.utils.colissions">EdgeType</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>private <a href="EdgeType.html" title="enum class in org.brick_breaker.utils.collisions">EdgeType</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#determineCollisionSide(java.awt.Rectangle,java.awt.Rectangle)" class="member-name-link">determineCollisionSide</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/23/docs/api/java.desktop/java/awt/Rectangle.html" title="class or interface in java.awt" class="external-link">Rectangle</a>&nbsp;obj1,
  <a href="https://docs.oracle.com/en/java/javase/23/docs/api/java.desktop/java/awt/Rectangle.html" title="class or interface in java.awt" class="external-link">Rectangle</a>&nbsp;obj2)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="CollisionManager.html" title="class in org.brick_breaker.utils.colissions">CollisionManager</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="CollisionManager.html" title="class in org.brick_breaker.utils.collisions">CollisionManager</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getInstance()" class="member-name-link">getInstance</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>private <a href="EdgeType.html" title="enum class in org.brick_breaker.utils.colissions">EdgeType</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#inverseCollisionSide(org.brick_breaker.utils.colissions.EdgeType)" class="member-name-link">inverseCollisionSide</a><wbr>(<a href="EdgeType.html" title="enum class in org.brick_breaker.utils.colissions">EdgeType</a>&nbsp;side)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>private <a href="EdgeType.html" title="enum class in org.brick_breaker.utils.collisions">EdgeType</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#inverseCollisionSide(org.brick_breaker.utils.colissions.EdgeType)" class="member-name-link">inverseCollisionSide</a><wbr>(<a href="EdgeType.html" title="enum class in org.brick_breaker.utils.collisions">EdgeType</a>&nbsp;side)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>private void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#notifyListeners(org.brick_breaker.sprites.Sprite,org.brick_breaker.sprites.Sprite,org.brick_breaker.utils.colissions.EdgeType)" class="member-name-link">notifyListeners</a><wbr>(<a href="../../sprites/Sprite.html" title="class in org.brick_breaker.sprites">Sprite</a>&nbsp;collider,
  <a href="../../sprites/Sprite.html" title="class in org.brick_breaker.sprites">Sprite</a>&nbsp;collidedWith,
- <a href="EdgeType.html" title="enum class in org.brick_breaker.utils.colissions">EdgeType</a>&nbsp;side)</code></div>
+ <a href="EdgeType.html" title="enum class in org.brick_breaker.utils.collisions">EdgeType</a>&nbsp;side)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerCollidable(org.brick_breaker.sprites.Sprite)" class="member-name-link">registerCollidable</a><wbr>(<a href="../../sprites/Sprite.html" title="class in org.brick_breaker.sprites">Sprite</a>&nbsp;object)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeListener(org.brick_breaker.utils.colissions.CollisionListener)" class="member-name-link">removeListener</a><wbr>(<a href="CollisionListener.html" title="interface in org.brick_breaker.utils.colissions">CollisionListener</a>&nbsp;listener)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeListener(org.brick_breaker.utils.colissions.CollisionListener)" class="member-name-link">removeListener</a><wbr>(<a href="CollisionListener.html" title="interface in org.brick_breaker.utils.collisions">CollisionListener</a>&nbsp;listener)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unregisterCollidable(org.brick_breaker.sprites.Sprite)" class="member-name-link">unregisterCollidable</a><wbr>(<a href="../../sprites/Sprite.html" title="class in org.brick_breaker.sprites">Sprite</a>&nbsp;object)</code></div>
@@ -218,7 +218,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="instance">
 <h3>instance</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private static</span>&nbsp;<span class="return-type"><a href="CollisionManager.html" title="class in org.brick_breaker.utils.colissions">CollisionManager</a></span>&nbsp;<span class="element-name">instance</span></div>
+<div class="member-signature"><span class="modifiers">private static</span>&nbsp;<span class="return-type"><a href="CollisionManager.html" title="class in org.brick_breaker.utils.collisions">CollisionManager</a></span>&nbsp;<span class="element-name">instance</span></div>
 </div>
 </section>
 </li>
@@ -226,7 +226,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="listeners">
 <h3>listeners</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/concurrent/CopyOnWriteArrayList.html" title="class or interface in java.util.concurrent" class="external-link">CopyOnWriteArrayList</a>&lt;<a href="CollisionListener.html" title="interface in org.brick_breaker.utils.colissions">CollisionListener</a>&gt;</span>&nbsp;<span class="element-name">listeners</span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/concurrent/CopyOnWriteArrayList.html" title="class or interface in java.util.concurrent" class="external-link">CopyOnWriteArrayList</a>&lt;<a href="CollisionListener.html" title="interface in org.brick_breaker.utils.collisions">CollisionListener</a>&gt;</span>&nbsp;<span class="element-name">listeners</span></div>
 </div>
 </section>
 </li>
@@ -266,7 +266,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getInstance()">
 <h3>getInstance</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="CollisionManager.html" title="class in org.brick_breaker.utils.colissions">CollisionManager</a></span>&nbsp;<span class="element-name">getInstance</span>()</div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="CollisionManager.html" title="class in org.brick_breaker.utils.collisions">CollisionManager</a></span>&nbsp;<span class="element-name">getInstance</span>()</div>
 </div>
 </section>
 </li>
@@ -306,7 +306,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="addListener(org.brick_breaker.utils.colissions.CollisionListener)">
 <h3>addListener</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addListener</span><wbr><span class="parameters">(<a href="CollisionListener.html" title="interface in org.brick_breaker.utils.colissions">CollisionListener</a>&nbsp;listener)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addListener</span><wbr><span class="parameters">(<a href="CollisionListener.html" title="interface in org.brick_breaker.utils.collisions">CollisionListener</a>&nbsp;listener)</span></div>
 </div>
 </section>
 </li>
@@ -314,7 +314,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="removeListener(org.brick_breaker.utils.colissions.CollisionListener)">
 <h3>removeListener</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">removeListener</span><wbr><span class="parameters">(<a href="CollisionListener.html" title="interface in org.brick_breaker.utils.colissions">CollisionListener</a>&nbsp;listener)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">removeListener</span><wbr><span class="parameters">(<a href="CollisionListener.html" title="interface in org.brick_breaker.utils.collisions">CollisionListener</a>&nbsp;listener)</span></div>
 </div>
 </section>
 </li>
@@ -340,7 +340,7 @@ loadScripts(document, 'script');</script>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">notifyListeners</span><wbr><span class="parameters">(<a href="../../sprites/Sprite.html" title="class in org.brick_breaker.sprites">Sprite</a>&nbsp;collider,
  <a href="../../sprites/Sprite.html" title="class in org.brick_breaker.sprites">Sprite</a>&nbsp;collidedWith,
- <a href="EdgeType.html" title="enum class in org.brick_breaker.utils.colissions">EdgeType</a>&nbsp;side)</span></div>
+ <a href="EdgeType.html" title="enum class in org.brick_breaker.utils.collisions">EdgeType</a>&nbsp;side)</span></div>
 </div>
 </section>
 </li>
@@ -348,7 +348,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="determineCollisionSide(java.awt.Rectangle,java.awt.Rectangle)">
 <h3>determineCollisionSide</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type"><a href="EdgeType.html" title="enum class in org.brick_breaker.utils.colissions">EdgeType</a></span>&nbsp;<span class="element-name">determineCollisionSide</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/23/docs/api/java.desktop/java/awt/Rectangle.html" title="class or interface in java.awt" class="external-link">Rectangle</a>&nbsp;obj1,
+<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type"><a href="EdgeType.html" title="enum class in org.brick_breaker.utils.collisions">EdgeType</a></span>&nbsp;<span class="element-name">determineCollisionSide</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/23/docs/api/java.desktop/java/awt/Rectangle.html" title="class or interface in java.awt" class="external-link">Rectangle</a>&nbsp;obj1,
  <a href="https://docs.oracle.com/en/java/javase/23/docs/api/java.desktop/java/awt/Rectangle.html" title="class or interface in java.awt" class="external-link">Rectangle</a>&nbsp;obj2)</span></div>
 </div>
 </section>
@@ -357,7 +357,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="inverseCollisionSide(org.brick_breaker.utils.colissions.EdgeType)">
 <h3>inverseCollisionSide</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type"><a href="EdgeType.html" title="enum class in org.brick_breaker.utils.colissions">EdgeType</a></span>&nbsp;<span class="element-name">inverseCollisionSide</span><wbr><span class="parameters">(<a href="EdgeType.html" title="enum class in org.brick_breaker.utils.colissions">EdgeType</a>&nbsp;side)</span></div>
+<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type"><a href="EdgeType.html" title="enum class in org.brick_breaker.utils.collisions">EdgeType</a></span>&nbsp;<span class="element-name">inverseCollisionSide</span><wbr><span class="parameters">(<a href="EdgeType.html" title="enum class in org.brick_breaker.utils.collisions">EdgeType</a>&nbsp;side)</span></div>
 </div>
 </section>
 </li>

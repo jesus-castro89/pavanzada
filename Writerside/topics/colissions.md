@@ -9,7 +9,7 @@ experiencia de juego fluida y realista.
 ## Creando el enumerado `EdgeType`
 
 Para representar los diferentes tipos de colisiones que pueden ocurrir entre objetos, crearemos un enumerado llamado
-`EdgeType`. Este enumerado estará en el paquete `org.brick_breaker.utils.colissions` y contendrá los siguientes valores:
+`EdgeType`. Este enumerado estará en el paquete `org.brick_breaker.utils.collisions` y contendrá los siguientes valores:
 
 * `TOP_EDGE`: Representa una colisión en la parte superior de un objeto.
 * `BOTTOM_EDGE`: Representa una colisión en la parte inferior de un objeto.
@@ -26,10 +26,10 @@ tendrá un método llamado `onCollisionDetected` que se llamará cada vez que se
 Este método recibirá dos parámetros: el objeto que ha colisionado y el objeto con el que ha colisionado. En este método
 podremos implementar la lógica de colisiones y las interacciones resultantes.
 
-Esta clase deberá estar en el paquete `org.brick_breaker.utils.colissions` y se verá de la siguiente manera:
+Esta clase deberá estar en el paquete `org.brick_breaker.utils.collisions` y se verá de la siguiente manera:
 
 ```java
-package org.brick_breaker.utils.colissions;
+package org.brick_breaker.utils.collisions;
 
 import org.brick_breaker.sprites.Sprite;
 
@@ -44,10 +44,10 @@ public interface CollisionListener {
 La clase `CollisionManager` se encargará de gestionar las colisiones entre los objetos del juego. Esta clase
 implementará la lógica de detección de colisiones y llamará al método `onCollisionDetected` de la interfaz
 `CollisionListener` cada vez que se detecte una colisión entre dos objetos. La clase `CollisionManager` deberá
-estar en el paquete `org.brick_breaker.utils.colissions` y se verá de la siguiente manera:
+estar en el paquete `org.brick_breaker.utils.collisions` y se verá de la siguiente manera:
 
 ```java
-package org.brick_breaker.utils.colissions;
+package org.brick_breaker.utils.collisions;
 
 import org.brick_breaker.sprites.Borders;
 import org.brick_breaker.sprites.Sprite;
@@ -216,21 +216,7 @@ Para ello tendremos que modificar el `GamePanel` de la siguiente manera:
 ### Importar las clases necesarias
 
 ```java
-import org.brick_breaker.cache.SpriteCache;
-import org.brick_breaker.cache.SpriteLoader;
-import org.brick_breaker.game.Level;
-import org.brick_breaker.sprites.*;
-import org.brick_breaker.sprites.bonus.Bonus;
-import org.brick_breaker.sprites.bonus.BonusType;
-import org.brick_breaker.sprites.bricks.Brick;
-import org.brick_breaker.sprites.paddles.Paddle;
-import org.brick_breaker.sprites.paddles.PaddleType;
-import org.brick_breaker.ui.events.KeyboardAction;
-import org.brick_breaker.ui.windows.MainWindow;
-import org.brick_breaker.utils.FileManager;
-import org.brick_breaker.utils.GameCycle;
-import org.brick_breaker.utils.Randomized;
-import org.brick_breaker.utils.colissions.CollisionManager;
+
 ```
 
 ### Atributos de la clase
