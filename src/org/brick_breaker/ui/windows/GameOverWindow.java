@@ -21,11 +21,11 @@ public class GameOverWindow extends JFrame {
         setVisible(true);
 
         restartButton.addActionListener(e -> {
-            this.dispose();
-            MainWindow mainWindow = MainWindow.getInstance();
-            mainWindow.restartGame();
+            dispose();
+            MainWindow.getInstance().restartGame();
         });
         exitButton.addActionListener(e -> {
+            dispose();
             System.exit(0);
         });
     }

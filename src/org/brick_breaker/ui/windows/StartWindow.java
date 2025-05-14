@@ -25,10 +25,11 @@ public class StartWindow extends JFrame {
         setResizable(false);
         // Add action listeners to buttons
         startButton.addActionListener(e -> {
-            this.dispose(); // Close the start window
+            dispose(); // Close the start window
             MainWindow.getInstance().startGame();
         });
         exitButton.addActionListener(e -> {
+            dispose();
             System.exit(0);
         });
     }
@@ -39,6 +40,5 @@ public class StartWindow extends JFrame {
         exitButton = new JButton("Salir");
         ThreePartButtonUI.configureButton(startButton);
         ThreePartButtonUI.configureButton(exitButton);
-        System.out.println(startButton.getFont());
     }
 }
