@@ -95,14 +95,16 @@ Una vez todos los cambios realizados, deberás de probar el juego para asegurart
 
 ## Criterios de evaluación
 
-| Criterios de evaluación    | Descripción                                                                             | Puntuación |
-|----------------------------|-----------------------------------------------------------------------------------------|------------|
-| Ventana de inicio          | La ventana de inicio debe tener los componentes correctos y funcionar correctamente.    | 20%        |
-| Ventana de Game Over       | La ventana de Game Over debe tener los componentes correctos y funcionar correctamente. | 20%        |
-| Interacción con el usuario | La interacción con el usuario debe ser correcta y funcionar correctamente.              | 20%        |
-| Código limpio              | El código debe estar limpio y ordenado.                                                 | 20%        |
-| Documentación              | El código debe estar bien documentado.                                                  | 20%        |
-| **Total**                  |                                                                                         | **100%**   |
+| Criterios de evaluación    | Descripción                                                                                                                                                   | Puntuación |
+|----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|------------|
+| Ventana de inicio          | La ventana de inicio debe tener los componentes correctos y funcionar correctamente.                                                                          | 10%        |
+| Ventana de Game Over       | La ventana de Game Over debe tener los componentes correctos y funcionar correctamente.                                                                       | 10%        |
+| Interacción con el usuario | La interacción con el usuario debe ser correcta y funcionar correctamente.                                                                                    | 10%        |
+| Pruebas del juego          | El juego debe funcionar correctamente y no tener errores y evidenciarse con grabación de pantalla.                                                            | 20%        |
+| Reflexión en video         | Como parte de la captura de pantalla, se debe incluir una reflexión sobre el proceso de desarrollo del juego, los desafíos enfrentados y cómo se resolvieron. | 10%        |
+| Código limpio              | El código debe estar limpio y ordenado.                                                                                                                       | 20%        |
+| Documentación              | El código debe estar bien documentado.                                                                                                                        | 20%        |
+| **Total**                  |                                                                                                                                                               | **100%**   |
 
 ## Fecha de entrega
 
