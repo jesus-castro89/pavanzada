@@ -216,7 +216,11 @@ Para ello tendremos que modificar el `GamePanel` de la siguiente manera:
 ### Importar las clases necesarias
 
 ```java
+import org.brick_breaker.cache.SpriteCache;
+import org.brick_breaker.cache.SpriteLoader;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 ```
 
 ### Atributos de la clase
